@@ -1,0 +1,1 @@
+export const addressFBAYC = "0x5310422D95aC64276304ba353bCfF551F4dEaEDD";
