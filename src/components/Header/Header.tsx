@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ConnectButton from "../ConnectButton/ConnectButton";
 import { ReactComponent as Logo } from "../../assets/logos/STOA_Blue_on_Transparent_Font_Logo 2.svg";
 import { ReactComponent as Stoa } from "../../assets/logos/STOA.svg";
 import { ReactComponent as Swap } from "../../assets/icons/Vector-2Black.svg";
@@ -15,6 +14,7 @@ import { ReactComponent as ETHLogo } from "../../assets/icons/EthLogo.svg";
 import { ReactComponent as Moon } from "../../assets/icons/Moon.svg";
 import { ReactComponent as Sun } from "../../assets/icons//Sun.svg";
 import { useNavigate } from "react-router-dom";
+import Dropdown from "../Dropdown/Dropdown";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -88,7 +88,7 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="col-span-1 flex items-center justify-end gap-[8px] ">
+      <div className="col-span-1 flex items-center justify-end gap-[8px]  ">
         <div className="flex gap-0.5 rounded-lg border-[0.5px] border-solid border-borderCardNavbar bg-bgCardNavbar p-[2px]">
           <div
             className={` flex h-8 w-8 items-center justify-center hover:cursor-pointer  ${
@@ -113,11 +113,12 @@ const Header = () => {
             <Moon />
           </div>
         </div>
+
         <Question />
         <div className="rounded-lg border-[0.5px] border-solid border-borderCardNavbar bg-bgCardNavbar p-2   ">
           <ETHLogo />
         </div>
-        <ConnectButton />
+        <Dropdown />
       </div>
     </div>
   );

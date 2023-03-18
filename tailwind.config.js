@@ -9,6 +9,7 @@ module.exports = {
       borderBottomConnectedCard: "#00000040",
       white: "#FFFFFF",
       yellow: "#FFD12F1F",
+      ethBalance: "#F5F5F5",
     },
     extend: {},
   },

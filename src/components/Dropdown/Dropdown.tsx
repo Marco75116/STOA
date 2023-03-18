@@ -1,15 +1,22 @@
 import { Popover, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import ConnectButton from "../ConnectButton/ConnectButton";
 import { ReactComponent as Explore } from "../../assets/icons/Explore.svg";
 import { ReactComponent as Warning } from "../../assets/icons/Warning.svg";
 import { ReactComponent as Disconnect } from "../../assets/icons/Disconnect.svg";
+import { ReactComponent as Wallet } from "../../assets/icons/Wallet.svg";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 
 export default function Dropdown() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [connected, setConnected] = useState<boolean>(false);
+  const { connect } = useConnect();
+  const { disconnect } = useDisconnect();
+  const { address, isConnected } = useAccount();
+
+  const connector = new MetaMaskConnector();
+
   return (
-    <div className="fixed top-16 w-full max-w-sm px-4">
+    <div className="">
       <Popover className="relative">
         {({ open }) => (
           <>
@@ -29,8 +36,8 @@ export default function Dropdown() {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              {!connected ? (
-                <Popover.Panel className="absolute left-1/2 z-10 mt-3 h-[272px]  w-[260px] -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-3xl">
+              {!isConnected ? (
+                <Popover.Panel className="absolute z-10 mt-3 h-[272px] w-[260px] translate-x-[-70%] transform px-4 sm:px-0 lg:max-w-3xl">
                   <div className="ring-black overflow-hidden rounded-lg shadow-lg ring-opacity-5">
                     <div className="relative flex grid  gap-[6px] bg-white p-3 lg:grid-cols-1">
                       <div className=" h-[48px] p-3 text-base font-normal">
@@ -50,24 +57,42 @@ export default function Dropdown() {
                           className="hover:cursor-pointer"
                           onClick={() =>
                             window.open(
-                              `https://mumbai.polygonscan.com/address/0x01738387092e007ccb8b5a73fac2a9ba23cf91d3`,
+                              `https://mumbai.polygonscan.com/address/${address}`,
                               "_blank"
                             )
                           }
                         />
                       </div>
                       <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
-                      <div className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-3 text-base font-normal text-white hover:cursor-pointer">
+                      <div
+                        className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-3 text-base font-normal text-white hover:cursor-pointer
+                      "
+                        onClick={() => {
+                          connect({ connector });
+                        }}
+                      >
                         Connect Wallet
                       </div>
                     </div>
                   </div>
                 </Popover.Panel>
               ) : (
-                <Popover.Panel className="absolute left-1/2 z-10 mt-3 h-[272px]  w-[260px] -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-3xl">
+                <Popover.Panel className="absolute z-10 mt-3 h-[272px] w-[260px]  translate-x-[-30%] transform px-4 sm:px-0 lg:max-w-3xl">
                   <div className="ring-black overflow-hidden rounded-lg shadow-lg ring-opacity-5">
                     <div className="relative flex grid  gap-[6px] bg-white p-3 lg:grid-cols-1">
-                      <div>Account Stats</div>
+                      <div className="flex h-[140px] w-[236px] flex-col rounded-lg border-[0.5px] border-solid border-bgCardNavbar bg-ethBalance">
+                        <div className="flex h-[52px] flex-row items-center justify-center gap-[12px]">
+                          <Wallet />
+                          <div>
+                            {address?.slice(0, 6) + "..." + address?.slice(38)}
+                          </div>
+                        </div>
+                        <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
+                        <div className=" flex h-[88px] flex-col items-center justify-center">
+                          <div className="text-3xl font-bold">0.059 ETH</div>
+                          <div>$94.49</div>
+                        </div>
+                      </div>
                       <div className="flex h-[48px] items-center justify-between p-3 text-base font-normal">
                         My Profile
                       </div>
@@ -88,9 +113,12 @@ export default function Dropdown() {
                         />
                       </div>
                       <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
-                      <div className="flex h-[48px] items-center justify-between p-3 text-base font-normal">
+                      <div
+                        className="flex h-[48px] items-center justify-between p-3 text-base font-normal hover:cursor-pointer"
+                        onClick={() => disconnect()}
+                      >
                         Disconnect
-                        <Disconnect className="hover:cursor-pointer" />
+                        <Disconnect />
                       </div>
                     </div>
                   </div>
