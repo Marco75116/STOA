@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { WalletContext } from "../../context/Wallet.context";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
@@ -15,7 +15,7 @@ const ConnectButton = () => {
   // const handleConnection = () => {
   //   isWalletConnected ? disconnect() : initWallet();
   // };
-
+  const [showPopup, setShowPopup] = useState<boolean>(false);
   const { address, isConnected } = useAccount();
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect();
@@ -29,7 +29,12 @@ const ConnectButton = () => {
           <Profile />
         </div>
         {address?.slice(0, 6) + "..." + address?.slice(38)}
-        <Arrow className="hover:cursor-pointer" />
+        <Arrow
+          className={` hover:cursor-pointer ${showPopup && "rotate-180"}`}
+          onClick={() => {
+            showPopup ? setShowPopup(false) : setShowPopup(true);
+          }}
+        />
         {/* <button onClick={() => disconnect()}>Disconnect</button> */}
       </div>
     );
@@ -55,7 +60,12 @@ const ConnectButton = () => {
             <Profile />
           </div>
 
-          <Arrow className="" />
+          <Arrow
+            className={`${showPopup && "rotate-180"}`}
+            onClick={() => {
+              showPopup ? setShowPopup(false) : setShowPopup(true);
+            }}
+          />
         </button>
       ))}
       {error && <div>{error.message}</div>}

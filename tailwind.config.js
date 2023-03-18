@@ -8,6 +8,7 @@ module.exports = {
       borderCardNavbar: "#00000014",
       borderBottomConnectedCard: "#00000040",
       white: "#FFFFFF",
+      yellow: "#FFD12F1F",
     },
     extend: {},
   },
