@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -15,6 +16,7 @@ import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import Header from "../components/Header/Header";
 const { chains, provider, webSocketProvider } = configureChains(
   [polygonMumbai],
   [
@@ -25,29 +27,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 
 const client = createClient({
   autoConnect: true,
-  connectors: [
-    new MetaMaskConnector({ chains }),
-    new CoinbaseWalletConnector({
-      chains,
-      options: {
-        appName: "wagmi",
-      },
-    }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        projectId: "72fe8cfe616d31f641b9199add6c17a3",
-        version: "2",
-      },
-    }),
-    new InjectedConnector({
-      chains,
-      options: {
-        name: "Injected",
-        shimDisconnect: true,
-      },
-    }),
-  ],
+  connectors: [new MetaMaskConnector({ chains })],
   provider,
   webSocketProvider,
 });
@@ -69,6 +49,7 @@ const App = () => {
           theme="colored"
         />
         <Router>
+          <Header />
           <Routes />
         </Router>
       </Providers>

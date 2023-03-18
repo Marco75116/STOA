@@ -3,6 +3,10 @@ import React, { useContext } from "react";
 import { WalletContext } from "../../context/Wallet.context";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
+import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";
+import { ReactComponent as Profile } from "../../assets/icons/profile.svg";
+import { ReactComponent as Shield } from "../../assets/icons/Shield.svg";
+import { ReactComponent as Validate } from "../../assets/icons/Validate.svg";
 
 const ConnectButton = () => {
   // const { initWallet, isWalletConnected, currentWalletAddress,  } =
@@ -17,38 +21,43 @@ const ConnectButton = () => {
     useConnect();
   const { disconnect } = useDisconnect();
 
-  // return (
-  //   <button
-  //     className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-  //     onClick={handleConnection}
-  //   >
-  //     {isWalletConnected ? currentWalletAddress : "Connect Wallet"}
-  //   </button>
-  // );
   if (isConnected)
     return (
-      <div>
-        Connected to {address}
-        <button onClick={() => disconnect()}>Disconnect</button>
+      <div className=" flex items-center justify-center gap-[6px] rounded-lg border-[0.5px] border-solid border-borderBottomConnectedCard bg-white p-2">
+        <div className="relative mr-[6px]">
+          <Validate className="absolute right-[-6px] bottom-[-2px] " />
+          <Profile />
+        </div>
+        {address?.slice(0, 6) + "..." + address?.slice(38)}
+        <Arrow className="hover:cursor-pointer" />
+        {/* <button onClick={() => disconnect()}>Disconnect</button> */}
       </div>
     );
+
   return (
-    <div className="flex flex-row gap-2 ">
+    // <div className="flex flex-row gap-2 ">
+    <div>
       {connectors.map((connector) => (
         <button
           disabled={!connector.ready}
           key={connector.id}
           onClick={() => connect({ connector })}
-          className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 "
+          className=" flex items-center justify-center gap-[6px] rounded-lg border-[0.5px] border-solid border-borderBottomConnectedCard bg-white p-2 hover:cursor-pointer"
         >
-          {connector.name}
+          {/* {connector.name}
           {!connector.ready && " (unsupported)"}
           {isLoading &&
             connector.id === pendingConnector?.id &&
-            " (connecting)"}
+            " (connecting)"} */}
+
+          <div className="relative mr-[6px]">
+            <Shield className="absolute right-[-6px] bottom-[-2px]" />
+            <Profile />
+          </div>
+
+          <Arrow className="" />
         </button>
       ))}
-
       {error && <div>{error.message}</div>}
     </div>
   );
