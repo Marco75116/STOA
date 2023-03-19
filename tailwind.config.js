@@ -10,6 +10,7 @@ module.exports = {
       white: "#FFFFFF",
       yellow: "#FFD12F1F",
       ethBalance: "#F5F5F5",
+      borderCardAbout: "#00000026",
     },
     extend: {},
   },

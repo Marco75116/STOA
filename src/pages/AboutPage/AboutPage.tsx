@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { ReactComponent as Loop } from "../../assets/icons/Loop.svg";
+import CardInfo from "./CardInfo/CardInfo";
+import CardPreview from "./CardPreview/CardPreview";
 
 const topics = [
   "Framework",
@@ -15,12 +17,28 @@ const topics = [
   "Terms & Conditions",
 ];
 
+const questions = [
+  "How to found your account?",
+  " How to deposit?",
+  "How to connect my wallet?",
+  "How to found your account?",
+  "How to found your account?",
+  " How to deposit?",
+  "How to connect my wallet?",
+  "How to found your account?",
+  " How to deposit?",
+  "How to connect my wallet?",
+  "How to found your account?",
+];
+
 const AboutPage = () => {
   const [selectedPart, setSelectedPart] = useState<number>(0);
+  const [showCard, setShowCard] = useState<boolean>(false);
+  const [currentTitle, setCurrentTitle] = useState<string>("");
 
   return (
-    <div className="flex h-[calc(100vh-64px)] flex-row items-center justify-center bg-bgCardNavbar">
-      <div className="flex w-[280px] flex-col gap-[6px] bg-white p-3">
+    <div className="flex h-[calc(100vh-64px)] flex-row items-center justify-center gap-[16px] bg-bgCardNavbar">
+      <div className="flex w-[280px] flex-col gap-[6px] rounded-2xl rounded-2xl bg-white p-3">
         <form>
           <label className="text-gray-900 sr-only mb-2 text-sm font-medium">
             Search
@@ -61,7 +79,23 @@ const AboutPage = () => {
           );
         })}
       </div>
-      <div>gridInfo</div>
+
+      {!showCard ? (
+        <div className="grid h-[664px] w-[904px] grid-cols-3 gap-[8px]">
+          {questions.map((question, index) => {
+            return (
+              <CardPreview
+                key={index}
+                question={question}
+                setShowCard={setShowCard}
+                setCurrentTitle={setCurrentTitle}
+              />
+            );
+          })}
+        </div>
+      ) : (
+        <CardInfo setShowCard={setShowCard} question={currentTitle} />
+      )}
     </div>
   );
 };
