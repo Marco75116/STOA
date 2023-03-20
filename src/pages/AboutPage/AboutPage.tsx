@@ -37,7 +37,7 @@ const AboutPage = () => {
   const [currentTitle, setCurrentTitle] = useState<string>("");
 
   return (
-    <div className="flex h-[calc(100vh-64px)] flex-row items-center justify-center gap-[16px] bg-bgCardNavbar">
+    <div className="flex h-[calc(100%-64px)] flex-row items-center justify-center gap-[16px] bg-bgCardNavbar">
       <div className="flex w-[280px] flex-col gap-[6px] rounded-2xl rounded-2xl bg-white p-3">
         <form>
           <label className="text-gray-900 sr-only mb-2 text-sm font-medium">
