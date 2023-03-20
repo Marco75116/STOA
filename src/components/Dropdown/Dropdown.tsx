@@ -1,5 +1,5 @@
 import { Popover, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import ConnectButton from "../ConnectButton/ConnectButton";
 import { ReactComponent as Explore } from "../../assets/icons/Explore.svg";
 import { ReactComponent as Warning } from "../../assets/icons/Warning.svg";
@@ -7,11 +7,41 @@ import { ReactComponent as Disconnect } from "../../assets/icons/Disconnect.svg"
 import { ReactComponent as Wallet } from "../../assets/icons/Wallet.svg";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { fetchBalance } from "@wagmi/core";
+import axios from "axios";
 
 export default function Dropdown() {
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { address, isConnected } = useAccount();
+  const [balance, setBalance] = useState<number>(0);
+  const [priceEth, setPriceEth] = useState<number>(0);
+  const getBalance = () => {
+    if (address) {
+      fetchBalance({
+        address: address,
+      }).then((balance) => {
+        setBalance(Number(balance.formatted));
+      });
+    } else {
+      setBalance(0);
+    }
+  };
+
+  const getConvertedPrice = () => {
+    axios
+      .get(
+        "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+      )
+      .then(function (response) {
+        setPriceEth(response.data.ethereum.usd);
+      });
+  };
+
+  useEffect(() => {
+    getBalance();
+    getConvertedPrice();
+  }, [isConnected]);
 
   const connector = new MetaMaskConnector();
 
@@ -89,8 +119,10 @@ export default function Dropdown() {
                         </div>
                         <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
                         <div className=" flex h-[88px] flex-col items-center justify-center">
-                          <div className="text-3xl font-bold">0.059 ETH</div>
-                          <div>$94.49</div>
+                          <div className="text-3xl font-bold">
+                            {balance.toFixed(3)} ETH
+                          </div>
+                          <div>${(balance * priceEth).toFixed(2)}</div>
                         </div>
                       </div>
                       <div className="flex h-[48px] items-center justify-between p-3 text-base font-normal">
@@ -106,7 +138,7 @@ export default function Dropdown() {
                           className="hover:cursor-pointer"
                           onClick={() =>
                             window.open(
-                              `https://mumbai.polygonscan.com/address/0x01738387092e007ccb8b5a73fac2a9ba23cf91d3`,
+                              `https://mumbai.polygonscan.com/address/${address}`,
                               "_blank"
                             )
                           }
