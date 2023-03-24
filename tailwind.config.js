@@ -12,6 +12,7 @@ module.exports = {
       ethBalance: "#F5F5F5",
       borderCardAbout: "#00000026",
       textGray: "#00000066",
+      textGrayFonce: "#000000B2",
     },
     extend: {},
   },

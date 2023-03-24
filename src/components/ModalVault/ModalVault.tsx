@@ -126,18 +126,14 @@ const ModalVault: FC<ModalVaultProps> = ({
                   </div>
                   <div className="p-[20px]">
                     <div
+                      onClick={() => {
+                        closeModal;
+                        setIsVaultOpen(true);
+                      }}
                       className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-3 text-base font-normal text-white hover:cursor-pointer
                       "
                     >
-                      <button
-                        type="button"
-                        onClick={() => {
-                          closeModal;
-                          setIsVaultOpen(true);
-                        }}
-                      >
-                        Open Vaults
-                      </button>
+                      <button type="button">Open Vaults</button>
                     </div>
                   </div>
                 </Dialog.Panel>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ModalVault from "../../components/ModalVault/ModalVault";
 import { ReactComponent as RedBulb } from "../../assets/icons/RedBulb.svg";
+import VaultOpenedPage from "./VaultOpenedPage/VaultOpenedPage";
 
 const VaultsPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -30,7 +31,7 @@ const VaultsPage = () => {
           </div>
         </div>
       ) : (
-        <div>vault </div>
+        <VaultOpenedPage />
       )}
     </>
   );
