@@ -3,21 +3,25 @@ import { ReactComponent as ArrowWhite } from "../../../assets/icons/ArrowWhite.s
 import { ReactComponent as Arrow } from "../../../assets/icons/Arrow.svg";
 import { ReactComponent as Bulb } from "../../../assets/icons/Bulb.svg";
 import { ReactComponent as LegendGraph } from "../../../assets/texts/StoaEarning.svg";
+import { ReactComponent as SamsVault } from "../../../assets/logos/SamsVault.svg";
 import Graph from "../../../components/Graph/Graph";
 
 const VaultOpenedPage = () => {
-  const [perriod, setPeriod] = useState<"days" | "months" | "years">("days");
+  const [period, setPeriod] = useState<"days" | "months" | "years">("days");
 
   return (
     <div className="flex h-[calc(100%-64px)] flex-col items-center justify-center gap-[15px] bg-ethBalance">
       <div className="h-[284px] w-[1200px] rounded-2xl border-[0.5px] border-solid border-borderCardAbout bg-white ">
         <div className="flex h-[92px] flex-row justify-between p-[20px]">
           <div className=" flex-rox flex h-[52px] w-[279px] items-center justify-between rounded-2xl bg-ethBalance p-[12px]">
-            {"Sam's Vault"} <Arrow />
+            <div className="flex flex-row items-center gap-[12px]">
+              <SamsVault /> {"Sam's Vault"}
+            </div>
+            <Arrow />
           </div>
           <div
             onClick={() => {}}
-            className="flex h-[32px] w-[99px]  flex-row items-center justify-center justify-between rounded-lg bg-pink p-2  text-xs font-normal text-white hover:cursor-pointer
+            className="flex h-[32px] w-[99px]  flex-row items-center justify-between rounded-lg bg-pink p-2  text-xs font-normal text-white hover:cursor-pointer
                       "
           >
             Take Action
@@ -63,7 +67,35 @@ const VaultOpenedPage = () => {
           </div>
         </div>
 
-        <div>bottom</div>
+        <div className="flex flex-row">
+          <div className="flex h-[96px] w-[208px] flex-col justify-between p-5 ">
+            <div className="flex flex-row items-center">
+              <SamsVault /> Stoa Credit
+            </div>
+            <div>
+              2500 <span className=" text-textGray">/2500 USDC</span>
+            </div>
+          </div>
+          <div className="flex w-[100%] flex-row justify-between p-5 pl-[72px]">
+            <div className="flex flex-col justify-between">
+              <div>Locked Amount </div>
+              <div>
+                0,00 <span className=" text-textGray">USDFI</span>
+              </div>
+            </div>
+            <div className="flex h-[28px] w-[173px] gap-[4px]">
+              <div className=" flex items-center rounded-lg border-[0.5px] border-solid border-borderCardAbout px-[8px] py-[4px] text-xs ">
+                Borrow
+              </div>
+              <div className=" flex items-center rounded-lg border-[0.5px] border-solid border-borderCardAbout px-[8px] py-[4px] text-xs">
+                Repay
+              </div>
+              <div className="flex items-center rounded-lg border-[0.5px] border-solid border-borderCardAbout px-[8px] py-[4px] text-xs">
+                Transfer
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-row gap-[16px]">
@@ -74,7 +106,7 @@ const VaultOpenedPage = () => {
               <div className="flex gap-[1px] rounded-lg border-[0.5px] border-solid border-borderCardNavbar bg-bgCardNavbar p-[2px]">
                 <div
                   className={` flex  items-center justify-center p-[6px] hover:cursor-pointer  ${
-                    perriod === "days" &&
+                    period === "days" &&
                     "rounded-[6px] border-[0.5px] border-solid border-borderCardNavbar bg-white"
                   } `}
                   onClick={() => {
@@ -85,7 +117,7 @@ const VaultOpenedPage = () => {
                 </div>
                 <div
                   className={` flex  items-center justify-center p-[6px] hover:cursor-pointer  ${
-                    perriod === "months" &&
+                    period === "months" &&
                     "rounded-[6px] border-[0.5px] border-solid border-borderCardNavbar bg-white   "
                   } `}
                   onClick={() => {
@@ -96,7 +128,7 @@ const VaultOpenedPage = () => {
                 </div>
                 <div
                   className={` flex  items-center justify-center p-[6px] hover:cursor-pointer  ${
-                    perriod === "years" &&
+                    period === "years" &&
                     "rounded-[6px] border-[0.5px] border-solid border-borderCardNavbar bg-white "
                   } `}
                   onClick={() => {
