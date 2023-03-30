@@ -30,7 +30,7 @@ const Header = () => {
           navigate("/Swap");
         }}
       >
-        <Logo className="" />
+        <Logo />
         <Stoa />
       </div>
 
