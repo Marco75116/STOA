@@ -12,7 +12,6 @@ const topics = [
   "Ethereum wallet",
   "Streaming",
   "Identity verification",
-  "Security information",
   "Licences & Registration",
   "Terms & Conditions",
 ];
@@ -26,9 +25,6 @@ const questions = [
   " How to deposit?",
   "How to connect my wallet?",
   "How to found your account?",
-  " How to deposit?",
-  "How to connect my wallet?",
-  "How to found your account?",
 ];
 
 const AboutPage = () => {
@@ -37,8 +33,8 @@ const AboutPage = () => {
   const [currentTitle, setCurrentTitle] = useState<string>("");
 
   return (
-    <div className="flex h-[calc(100%-64px)] flex-row items-center justify-center gap-[16px] bg-bgCardNavbar">
-      <div className="flex w-[280px] flex-col gap-[6px] rounded-2xl rounded-2xl bg-white p-3">
+    <div className="mt-[30px] flex h-[calc(100%-64px)] flex-row   justify-center gap-[16px] bg-bgCardNavbar">
+      <div className="flex w-[280px] flex-col gap-[6px] rounded-2xl bg-white p-3">
         <form>
           <label className="text-gray-900 sr-only mb-2 text-sm font-medium">
             Search
@@ -81,7 +77,7 @@ const AboutPage = () => {
       </div>
 
       {!showCard ? (
-        <div className="grid h-[664px] w-[904px] grid-cols-3 gap-[8px]">
+        <div className="grid max-h-[664px] w-[904px] grid-cols-3 gap-[8px]">
           {questions.map((question, index) => {
             return (
               <CardPreview

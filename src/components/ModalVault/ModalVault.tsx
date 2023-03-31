@@ -5,6 +5,7 @@ import { ReactComponent as DoubleArrow } from "../../assets/icons/DoubleArrow.sv
 import { ReactComponent as Info } from "../../assets/icons/Info.svg";
 import { ReactComponent as RoundCross } from "../../assets/icons/RoundCross.svg";
 import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";
+import { ReactComponent as NewVault } from "../../assets/icons/NewVault.svg";
 import { ReactComponent as VaultLogo } from "../../assets/logos/LogoVault.svg";
 import { ReactComponent as UsdcLogo } from "../../assets/logos/UsdcLogo.svg";
 
@@ -40,9 +41,10 @@ const ModalVault: FC<ModalVaultProps> = ({
             </div>
           </div>
           <div
-            className=" flex h-[160px] w-[160px] flex-col items-center justify-center rounded-2xl bg-[#EF2A891F] text-pink hover:cursor-pointer"
+            className=" flex h-[160px] w-[160px] flex-col items-center justify-center gap-4 rounded-2xl bg-[#EF2A891F] text-pink hover:cursor-pointer"
             onClick={openModal}
           >
+            <NewVault />
             New Vault
           </div>
         </div>
