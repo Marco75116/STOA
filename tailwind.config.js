@@ -13,6 +13,7 @@ module.exports = {
       borderCardAbout: "#00000026",
       textGray: "#00000066",
       textGrayFonce: "#000000B2",
+      gray800: "#1F2937",
     },
     extend: {},
   },

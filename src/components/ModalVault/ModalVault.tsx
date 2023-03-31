@@ -4,6 +4,9 @@ import { ReactComponent as Cross } from "../../assets/icons/Cross.svg";
 import { ReactComponent as DoubleArrow } from "../../assets/icons/DoubleArrow.svg";
 import { ReactComponent as Info } from "../../assets/icons/Info.svg";
 import { ReactComponent as RoundCross } from "../../assets/icons/RoundCross.svg";
+import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";
+import { ReactComponent as VaultLogo } from "../../assets/logos/LogoVault.svg";
+import { ReactComponent as UsdcLogo } from "../../assets/logos/UsdcLogo.svg";
 
 type ModalVaultProps = {
   isOpen: boolean;
@@ -59,7 +62,7 @@ const ModalVault: FC<ModalVaultProps> = ({
             <div className="bg-black fixed inset-0 bg-opacity-25" />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
+          <div className="fixed inset-0 overflow-y-auto bg-gray800 bg-opacity-30">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child
                 as={Fragment}
@@ -92,7 +95,9 @@ const ModalVault: FC<ModalVaultProps> = ({
                           <div className="text-textGray">$1,000.00</div>
                         </div>
                         <div>
-                          <div>{"USDC " + ">"}</div>
+                          <div className="flex items-center justify-end gap-2">
+                            <UsdcLogo /> USDC <Arrow />
+                          </div>
                           <div className="text-textGray">balance: 1,000</div>
                         </div>
                       </div>
@@ -105,20 +110,22 @@ const ModalVault: FC<ModalVaultProps> = ({
                           <div className="text-textGray">$995.80</div>
                         </div>
                         <div>
-                          <div>USDFI</div>
+                          <div className="flex items-center justify-end gap-1">
+                            <VaultLogo /> USDFI
+                          </div>
                           <div className="text-textGray">balance: 1,000</div>
                         </div>
                       </div>
                     </div>
                     <div className="flex flex-row justify-between rounded-xl bg-ethBalance p-2">
-                      <div className="flex flex-row items-center">
+                      <div className="flex flex-row items-center gap-1">
                         <Info />
-                        <div>
+                        <div className=" font-medium">
                           1 USDC = 1.0006 USDFI{" "}
                           <span className="text-textGray">{"($1.000)"}</span>
                         </div>
                       </div>
-                      <div className="flex flex-row items-center">
+                      <div className="flex flex-row items-center gap-1">
                         <RoundCross />
                         <div className="text-textGray">$6.20</div>
                       </div>

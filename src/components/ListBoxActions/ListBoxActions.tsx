@@ -8,7 +8,8 @@ import { Fragment, useState } from "react";
 import ModalTransfer from "../ModalTransfer/ModalTransfer";
 
 export default function Example() {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   return (
     <>
       <div className="">
