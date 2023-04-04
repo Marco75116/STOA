@@ -15,11 +15,13 @@ import { ReactComponent as Moon } from "../../assets/icons/Moon.svg";
 import { ReactComponent as Sun } from "../../assets/icons//Sun.svg";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../Dropdown/Dropdown";
+import ModalMagic from "../ModalMagic/ModalMagic";
 
 const Header = () => {
   const navigate = useNavigate();
   const [selectedPart, setSelectedPart] = useState<0 | 1 | 2 | 3>(0);
   const [theme, setTheme] = useState<boolean>(true);
+  const [openMagic, setOpenMagic] = useState<boolean>(false);
 
   return (
     <div className="grid h-16 grid-cols-3 border-b-[0.5px] border-b-borderBottomConnectedCard px-6">
@@ -118,8 +120,9 @@ const Header = () => {
         <div className="rounded-lg border-[0.5px] border-solid border-borderCardNavbar bg-bgCardNavbar p-2   ">
           <ETHLogo />
         </div>
-        <Dropdown />
+        <Dropdown setOpenMagic={setOpenMagic} />
       </div>
+      <ModalMagic isOpen={openMagic} setIsOpen={setOpenMagic} />
     </div>
   );
 };

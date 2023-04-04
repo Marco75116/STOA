@@ -40,9 +40,6 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
     hash: data?.hash,
   });
 
-  // eslint-disable-next-line no-console
-  console.log(isLoading, isSuccess);
-
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>

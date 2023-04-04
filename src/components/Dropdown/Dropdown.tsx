@@ -1,21 +1,30 @@
 import { Popover, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import { FC, Fragment, useContext, useEffect, useState } from "react";
 import ConnectButton from "../ConnectButton/ConnectButton";
 import { ReactComponent as Explore } from "../../assets/icons/Explore.svg";
 import { ReactComponent as Warning } from "../../assets/icons/Warning.svg";
 import { ReactComponent as Disconnect } from "../../assets/icons/Disconnect.svg";
 import { ReactComponent as Wallet } from "../../assets/icons/Wallet.svg";
+import { ReactComponent as Mail } from "../../assets/icons/Mail.svg";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { fetchBalance } from "@wagmi/core";
 import axios from "axios";
+import { WalletContext } from "../../context/Wallet.context";
 
-export default function Dropdown() {
+type DropdownProps = {
+  setOpenMagic: Function;
+};
+
+const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { address, isConnected } = useAccount();
   const [balance, setBalance] = useState<number>(0);
   const [priceEth, setPriceEth] = useState<number>(0);
+
+  const { email } = useContext(WalletContext);
+
   const getBalance = () => {
     if (address) {
       fetchBalance({
@@ -41,14 +50,14 @@ export default function Dropdown() {
   useEffect(() => {
     getBalance();
     getConvertedPrice();
-  }, [isConnected]);
+  }, [isConnected, address]);
 
   const connector = new MetaMaskConnector();
 
   return (
     <div className="">
       <Popover className="relative">
-        {({ open }) => (
+        {({ open, close }) => (
           <>
             <Popover.Button
               className={`
@@ -95,10 +104,22 @@ export default function Dropdown() {
                       </div>
                       <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
                       <div
+                        className="flex h-[48px] items-center justify-center rounded-lg  bg-magicWallet p-3 text-base font-normal text-white hover:cursor-pointer
+                      "
+                        onClick={() => {
+                          setOpenMagic(true);
+                          close();
+                        }}
+                      >
+                        Magic Wallet
+                      </div>
+                      <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
+                      <div
                         className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-3 text-base font-normal text-white hover:cursor-pointer
                       "
                         onClick={() => {
                           connect({ connector });
+                          close();
                         }}
                       >
                         Connect Wallet
@@ -117,6 +138,12 @@ export default function Dropdown() {
                             {address?.slice(0, 6) + "..." + address?.slice(38)}
                           </div>
                         </div>
+                        {email && (
+                          <div className="flex h-[52px] flex-row items-center justify-center gap-[12px]">
+                            <Mail />
+                            <div>{email}</div>
+                          </div>
+                        )}
                         <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
                         <div className=" flex h-[88px] flex-col items-center justify-center">
                           <div className="text-3xl font-bold">
@@ -162,4 +189,6 @@ export default function Dropdown() {
       </Popover>
     </div>
   );
-}
+};
+
+export default Dropdown;

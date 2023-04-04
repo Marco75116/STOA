@@ -2,9 +2,14 @@ import React, { createContext, ReactNode, useState } from "react";
 
 type WalletContextProps = {
   currentWalletAddress: string;
-  initWallet: () => void;
+  initMagicWallet: (email: string) => void;
   disconnect: () => void;
   isWalletConnected: boolean;
+  email: string;
+  setSigner: Function;
+  signer: any;
+  provider: any;
+  setProvider: Function;
 };
 
 type WalletProviderProps = {
@@ -16,8 +21,13 @@ export const WalletContext = createContext({} as WalletContextProps);
 const WalletProvider = ({ children }: WalletProviderProps) => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [currentWalletAddress, setCurrentWalletAddress] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [signer, setSigner] = useState();
+  const [provider, setProvider] = useState();
 
-  const initWallet = async () => {};
+  const initMagicWallet = async (email: string) => {
+    setEmail(email);
+  };
 
   const disconnect = async () => {
     setIsWalletConnected(false);
@@ -29,8 +39,13 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
       value={{
         isWalletConnected,
         currentWalletAddress,
-        initWallet,
+        initMagicWallet,
         disconnect,
+        email,
+        setSigner,
+        signer,
+        provider,
+        setProvider,
       }}
     >
       {children}
