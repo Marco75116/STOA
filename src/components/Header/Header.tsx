@@ -94,8 +94,7 @@ const Header = () => {
         <div className="flex gap-0.5 rounded-lg border-[0.5px] border-solid border-borderCardNavbar bg-bgCardNavbar p-[2px]">
           <div
             className={` flex h-8 w-8 items-center justify-center hover:cursor-pointer  ${
-              theme === true &&
-              "rounded-[6px] border-[0.5px] border-solid border-borderCardNavbar  bg-white"
+              theme === true && "borderToggle rounded-[6px] bg-white  shadow"
             } `}
             onClick={() => {
               setTheme(true);
@@ -105,8 +104,7 @@ const Header = () => {
           </div>
           <div
             className={` flex h-8 w-8 items-center justify-center hover:cursor-pointer  ${
-              theme === false &&
-              "rounded-[6px] border-[0.5px] border-solid border-borderCardNavbar  bg-white  "
+              theme === false && "borderToggle rounded-[6px] bg-white  shadow  "
             } `}
             onClick={() => {
               setTheme(false);
@@ -117,7 +115,7 @@ const Header = () => {
         </div>
 
         <Question />
-        <div className="rounded-lg border-[0.5px] border-solid border-borderCardNavbar bg-bgCardNavbar p-2   ">
+        <div className="rounded-lg border bg-bgCardNavbar p-2   ">
           <ETHLogo />
         </div>
         <Dropdown setOpenMagic={setOpenMagic} />

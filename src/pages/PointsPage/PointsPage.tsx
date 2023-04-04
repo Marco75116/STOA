@@ -88,7 +88,7 @@ const PointsPage = () => {
               <input
                 type="number"
                 placeholder="0,00"
-                className="h-[40px] w-[120px] rounded-xl border-[0.5px] border-solid border-borderCardAbout p-[10px] text-textGray"
+                className="h-[40px] w-[120px] rounded-xl border-[0.5px] border-solid border-borderCardAbout p-[10px]"
               ></input>
             </div>
 
@@ -98,15 +98,13 @@ const PointsPage = () => {
             </div>
           </div>
 
-          <div className="flex flex-col">
-            <div>
-              <button className=" h-[28px] rounded-lg  border-[0.5px] border-solid border-borderCardAbout px-[8px] py-[4px] text-xs font-semibold">
-                Withdraw
-              </button>
-              <button className="py-[4px]ont-semibold h-[28px]  rounded-lg bg-[#EF2A891F] px-[8px] text-xs text-[#EF2A89]">
-                Deposit
-              </button>
-            </div>
+          <div className="flex gap-1">
+            <button className=" h-[28px] rounded-lg  border-[0.5px] border-solid border-borderCardAbout px-[8px] py-[4px] text-xs font-semibold">
+              Withdraw
+            </button>
+            <button className="h-[28px]  rounded-lg bg-[#EF2A891F] px-[8px] text-xs text-[#EF2A89]">
+              Deposit
+            </button>
           </div>
         </div>
 

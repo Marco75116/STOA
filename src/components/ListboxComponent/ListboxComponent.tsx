@@ -12,13 +12,14 @@ type OptionVaults = {
 
 type ListboxComponentProps = {
   list: OptionVaults[];
+  width?: number;
 };
 
-const ListboxComponent: FC<ListboxComponentProps> = ({ list }) => {
+const ListboxComponent: FC<ListboxComponentProps> = ({ list, width }) => {
   const [selected, setSelected] = useState(list[0]);
 
   return (
-    <div className="w-[128px]">
+    <div className={`w-[${width ? width : "128"}px]`}>
       <Listbox value={selected} onChange={setSelected}>
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm">
