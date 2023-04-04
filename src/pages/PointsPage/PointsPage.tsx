@@ -22,7 +22,7 @@ const listFromFunds = [
 const PointsPage = () => {
   return (
     <div className=" flex h-[calc(100%-64px)] flex-col items-center justify-center gap-[16px]  bg-bgCardNavbar">
-      <div className=" grid h-[212px] w-[800px] grid-cols-2 rounded-2xl border-[0.5px] border-solid border-borderCardAbout bg-white">
+      <div className=" card grid h-[212px] w-[800px] grid-cols-2">
         <div className="col-span-2 flex-row border-b-[0.5px] border-solid border-borderCardAbout p-[20px]">
           <div className=" flex h-[100%] flex-col justify-between">
             <div className="flex flex-row justify-between">
@@ -61,7 +61,7 @@ const PointsPage = () => {
         </div>
       </div>
 
-      <div className=" flex h-[140px] w-[800px] flex-col justify-between  rounded-2xl border-[0.5px] border-solid border-borderCardAbout bg-white p-5">
+      <div className=" card flex h-[140px] w-[800px] flex-col justify-between p-5">
         <Bulb />
         <div className="gap-[4px]">
           <div className=" text-base font-semibold ">Stoa Tip</div>
@@ -71,7 +71,7 @@ const PointsPage = () => {
         </div>
       </div>
 
-      <div className=" grid h-[212px] w-[800px] grid-cols-2 rounded-2xl border-[0.5px] border-solid border-borderCardAbout bg-white">
+      <div className=" card grid h-[212px] w-[800px] grid-cols-2">
         <div className="col-span-2  flex flex-row justify-between border-b-[0.5px] border-solid border-borderCardAbout p-[20px]">
           <div className="flex flex-row gap-[16px]">
             <div className="flex flex-col">

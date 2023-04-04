@@ -14,7 +14,7 @@ const VaultOpenedPage = () => {
 
   return (
     <div className="flex h-[calc(100%-64px)] flex-col items-center justify-center gap-[15px] bg-ethBalance">
-      <div className="h-[284px] w-[1200px] rounded-2xl border-[0.5px] border-solid border-borderCardAbout bg-white ">
+      <div className="card h-[284px] w-[1200px] ">
         <div className="flex h-[92px] flex-row justify-between p-[20px]">
           <div className=" flex-rox flex h-[52px] w-[279px] items-center justify-between rounded-2xl bg-ethBalance p-[12px]">
             <div className="flex flex-row items-center gap-[12px]">
@@ -109,7 +109,7 @@ const VaultOpenedPage = () => {
       </div>
 
       <div className="flex flex-row gap-[16px]">
-        <div className="h-[260px] w-[912px] rounded-2xl border-[0.5px] border-t-[0.5px] border-solid border-borderCardAbout  bg-white p-[20px]">
+        <div className="card h-[260px] w-[912px] p-[20px]">
           <div className="grid grid-cols-3">
             <div className=" font-semibold">Overview</div>
             <div className=" flex items-center justify-center">
@@ -158,7 +158,7 @@ const VaultOpenedPage = () => {
           </div>
         </div>
 
-        <div className="r flex h-[260px] w-[272px] flex-col justify-end rounded-2xl border-[0.5px] border-t-[0.5px] border-solid border-borderCardAbout  bg-white p-[20px]">
+        <div className="r card flex h-[260px] w-[272px] flex-col justify-end p-[20px]">
           <Bulb />
           <div className="gap-[4px]">
             <div className=" text-base font-semibold ">Stoa Tip</div>

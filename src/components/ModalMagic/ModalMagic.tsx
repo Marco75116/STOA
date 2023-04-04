@@ -79,7 +79,7 @@ const ModalMagic: FC<ModalMagicProps> = ({ isOpen, setIsOpen }) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="max-h-[536px] w-full max-w-md transform overflow-hidden rounded-2xl border-[0.5px] border-solid border-borderCardAbout bg-white text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="card max-h-[536px] w-full max-w-md transform overflow-hidden text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
                     className="text-gray-900 flex flex-row items-center justify-between border-b-[0.5px] border-solid border-borderCardAbout  p-6 text-lg font-medium leading-6"

@@ -31,7 +31,7 @@ const ModalVault: FC<ModalVaultProps> = ({
   return (
     <>
       <div className="">
-        <div className=" flex h-[200px] w-[459px] flex-row justify-between  rounded-2xl border-[0.5px] border-solid border-borderCardAbout bg-white p-5">
+        <div className=" card flex h-[200px] w-[459px] flex-row justify-between p-5">
           <div className="flex w-[235px] flex-col self-center ">
             <div className="text-[20px] font-semibold">
               There are no vaults yet
@@ -75,7 +75,7 @@ const ModalVault: FC<ModalVaultProps> = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="h-[536px] w-full max-w-md transform overflow-hidden rounded-2xl border-[0.5px] border-solid border-borderCardAbout bg-white text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="card h-[536px] w-full max-w-md transform overflow-hidden text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
                     className="text-gray-900 flex flex-row items-center justify-between border-b-[0.5px] border-solid border-borderCardAbout  p-6 text-lg font-medium leading-6"

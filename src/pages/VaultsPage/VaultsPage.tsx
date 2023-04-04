@@ -10,13 +10,13 @@ const VaultsPage = () => {
   return (
     <>
       {!isVaultOpen ? (
-        <div className="flex h-[calc(100%-64px)] flex-col items-center justify-center gap-[15px]">
+        <div className="flex h-[calc(100%-64px)] flex-col items-center justify-center gap-[15px] bg-bgCardNavbar">
           <ModalVault
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             setIsVaultOpen={setIsVaultOpen}
           />
-          <div className=" flex h-[156px] w-[459px] flex-col justify-between  rounded-2xl border-[0.5px] border-solid border-borderCardAbout bg-white p-5">
+          <div className=" card flex h-[156px] w-[459px] flex-col  justify-between p-5">
             <RedBulb />
             <div className="gap-[8px]">
               <div className=" text-base font-semibold ">

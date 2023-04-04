@@ -13,7 +13,7 @@ const CardPreview: FC<CardPreviewProps> = ({
   question,
 }) => {
   return (
-    <div className="flex h-[160px] flex-col justify-between  rounded-2xl border-[0.5px] border-solid border-borderCardAbout bg-white p-[20px] ">
+    <div className="card flex max-h-[160px] flex-col justify-between p-[20px] ">
       <div>
         <div className="gap-[8px] text-base font-semibold">{question}</div>
         <div className="text-sm font-normal leading-[18px] text-[#000000B2]">
