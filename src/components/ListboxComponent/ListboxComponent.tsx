@@ -3,6 +3,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";
 import { ReactComponent as MetamaskLogo } from "../../assets/logos/MetamaskLogo.svg";
+import { ReactComponent as USDC } from "../../assets/logos/USDC.svg";
 import { ReactComponent as VaultLogo } from "../../assets/logos/LogoVault.svg";
 
 type OptionVaults = {
@@ -23,7 +24,15 @@ const ListboxComponent: FC<ListboxComponentProps> = ({ list, width }) => {
       <Listbox value={selected} onChange={setSelected}>
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm">
-            <span className="block truncate">{selected.name}</span>
+            <span className="block flex flex-row items-center gap-[6px] truncate">
+              {selected.name === "USDC" ? (
+                <>
+                  <USDC /> {selected.name}
+                </>
+              ) : (
+                selected.name
+              )}
+            </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <Arrow />
             </span>

@@ -3,7 +3,7 @@ import { FC, Fragment, useState } from "react";
 import { ReactComponent as Cross } from "../../assets/icons/Cross.svg";
 import { ReactComponent as ValidationTx } from "../../assets/icons/ValidationTx.svg";
 import { ReactComponent as VaultLogo } from "../../assets/logos/LogoVault.svg";
-import { ReactComponent as UsdcLogo } from "../../assets/logos/UsdcLogo.svg";
+import { ReactComponent as USDC } from "../../assets/logos/USDC.svg";
 import {
   usePrepareContractWrite,
   useContractWrite,
@@ -108,7 +108,7 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                           }`}
                         >
                           <div className="flex items-center gap-[10px]">
-                            <UsdcLogo />
+                            <USDC />
                             LINK
                           </div>
                           <input

@@ -7,7 +7,7 @@ import { ReactComponent as RoundCross } from "../../assets/icons/RoundCross.svg"
 import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";
 import { ReactComponent as NewVault } from "../../assets/icons/NewVault.svg";
 import { ReactComponent as VaultLogo } from "../../assets/logos/LogoVault.svg";
-import { ReactComponent as UsdcLogo } from "../../assets/logos/UsdcLogo.svg";
+import { ReactComponent as USDC } from "../../assets/logos/USDC.svg";
 
 type ModalVaultProps = {
   isOpen: boolean;
@@ -98,7 +98,7 @@ const ModalVault: FC<ModalVaultProps> = ({
                         </div>
                         <div>
                           <div className="flex items-center justify-end gap-2">
-                            <UsdcLogo /> USDC <Arrow />
+                            <USDC /> USDC <Arrow />
                           </div>
                           <div className="text-textGray">balance: 1,000</div>
                         </div>
