@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { ReactComponent as Logo } from "../../assets/logos/STOA_Blue_on_Transparent_Font_Logo 2.svg";
 import { ReactComponent as Stoa } from "../../assets/logos/STOA.svg";
 import { ReactComponent as Swap } from "../../assets/icons/Vector-2Black.svg";
@@ -16,12 +16,14 @@ import { ReactComponent as Sun } from "../../assets/icons//Sun.svg";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../Dropdown/Dropdown";
 import ModalMagic from "../ModalMagic/ModalMagic";
+import { WalletContext } from "../../context/Wallet.context";
 
 const Header = () => {
   const navigate = useNavigate();
   const [selectedPart, setSelectedPart] = useState<0 | 1 | 2 | 3>(0);
   const [theme, setTheme] = useState<boolean>(true);
   const [openMagic, setOpenMagic] = useState<boolean>(false);
+  const { isWalletConnected } = useContext(WalletContext);
 
   return (
     <div className="grid h-16 grid-cols-3 border-b-[0.5px] border-b-borderBottomConnectedCard px-6">
@@ -120,7 +122,9 @@ const Header = () => {
         </div>
         <Dropdown setOpenMagic={setOpenMagic} />
       </div>
-      <ModalMagic isOpen={openMagic} setIsOpen={setOpenMagic} />
+      {!isWalletConnected && (
+        <ModalMagic isOpen={openMagic} setIsOpen={setOpenMagic} />
+      )}
     </div>
   );
 };

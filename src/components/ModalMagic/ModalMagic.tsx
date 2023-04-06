@@ -5,6 +5,8 @@ import { FC, Fragment, useContext, useEffect, useState } from "react";
 import { ReactComponent as Cross } from "../../assets/icons/Cross.svg";
 import { m } from "../../plugins/magic";
 import { ethers } from "ethers";
+import { MagicSDKExtensionsOption } from "magic-sdk";
+import { InstanceWithExtensions, SDKBase } from "@magic-sdk/provider";
 
 type ModalMagicProps = {
   isOpen: boolean;
@@ -13,44 +15,47 @@ type ModalMagicProps = {
 
 const ModalMagic: FC<ModalMagicProps> = ({ isOpen, setIsOpen }) => {
   const [email, setEmail] = useState<string>("");
-  const { initMagicWallet, setSigner, setProvider } = useContext(WalletContext);
+  const { initMagicWallet, setSigner } = useContext(WalletContext);
 
   function closeModal() {
     setIsOpen(false);
   }
 
+  const magicConnected = async (
+    m: InstanceWithExtensions<SDKBase, MagicSDKExtensionsOption<string>>
+  ) => {
+    const isLoggedIn = await m.user.isLoggedIn();
+    if (isLoggedIn) {
+      const metadata = await m.user.getMetadata();
+      initMagicWallet(metadata.email || "", metadata.publicAddress || "");
+      const provider = new ethers.providers.Web3Provider(m.rpcProvider as any);
+      const signer = provider.getSigner();
+      setSigner(signer);
+      closeModal();
+    }
+  };
+
   useEffect(() => {
-    // m.user.logout();
+    magicConnected(m);
   }, []);
 
-  const ftcLog = async () => {
+  const authenticationMagic = async () => {
     await m.auth
       .loginWithEmailOTP({ email })
       .then(async () => {
         const metadata = await m.user.getMetadata();
-        initMagicWallet(metadata.email || "");
-        setProvider(m.rpcProvider);
+        initMagicWallet(metadata.email || "", metadata.publicAddress || "");
         const provider = new ethers.providers.Web3Provider(
           m.rpcProvider as any
         );
         const signer = provider.getSigner();
         setSigner(signer);
-        const amount = ethers.utils.parseEther("0.01");
-        if (signer) {
-          signer.sendTransaction({
-            to: "0xd5F8D8C328EBF8B41051526c8EaAcAfE7dae51F3",
-            value: amount,
-          });
-        }
         closeModal();
       })
       .catch((error: Error) => {
         throw new Error("MAGIC_AUTH_ERROR: " + error.message);
       });
   };
-  // const emailRegex = new RegExp(
-  //   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-  // );
 
   return (
     <>
@@ -102,10 +107,10 @@ const ModalMagic: FC<ModalMagicProps> = ({ isOpen, setIsOpen }) => {
                       }}
                     />
                   </div>
-                  <div className="flex items-center justify-center">
+                  <div className="flex items-center justify-center pb-5">
                     <button
                       onClick={() => {
-                        ftcLog();
+                        authenticationMagic();
                       }}
                       className="flex h-[48px]  items-center justify-center rounded-lg  bg-magicWallet py-3 px-6 text-base font-normal text-white hover:cursor-pointer"
                     >

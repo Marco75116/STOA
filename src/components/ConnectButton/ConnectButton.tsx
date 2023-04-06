@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { WalletContext } from "../../context/Wallet.context";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
@@ -15,8 +15,17 @@ const ConnectButton = () => {
   const { address, isConnected } = useAccount();
   const { connect, connectors, error } = useConnect();
   const { disconnect } = useDisconnect();
+  const [addressDisplayed, setAddressDisplayed] = useState<string>("");
 
-  if (isConnected)
+  useEffect(() => {
+    setAddressDisplayed(address || "");
+  }, [address]);
+
+  useEffect(() => {
+    setAddressDisplayed(currentWalletAddress);
+  }, [isWalletConnected]);
+
+  if (isConnected || isWalletConnected)
     return (
       <div
         className=" flex items-center justify-center gap-[6px] rounded-lg border-[0.5px] border-solid border-borderBottomConnectedCard bg-white p-2"
@@ -28,7 +37,7 @@ const ConnectButton = () => {
           <Validate className="absolute right-[-6px] bottom-[-2px] " />
           <Profile />
         </div>
-        {address?.slice(0, 6) + "..." + address?.slice(38)}
+        {addressDisplayed?.slice(0, 6) + "..." + addressDisplayed?.slice(38)}
         <Arrow
           className={` hover:cursor-pointer ${showPopup && "rotate-180"}`}
           onClick={() => {

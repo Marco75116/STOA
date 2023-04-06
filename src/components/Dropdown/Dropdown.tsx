@@ -22,8 +22,23 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
   const { address, isConnected } = useAccount();
   const [balance, setBalance] = useState<number>(0);
   const [priceEth, setPriceEth] = useState<number>(0);
+  const [addressDisplayed, setAddressDisplayed] = useState<string>("");
 
-  const { email } = useContext(WalletContext);
+  const {
+    email,
+    isWalletConnected,
+    currentWalletAddress,
+    disconnectMagic,
+    magicBalance,
+  } = useContext(WalletContext);
+
+  useEffect(() => {
+    setAddressDisplayed(address || "");
+  }, [address]);
+
+  useEffect(() => {
+    setAddressDisplayed(currentWalletAddress);
+  }, [isWalletConnected]);
 
   const getBalance = () => {
     if (address) {
@@ -47,8 +62,13 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
       });
   };
 
+  const disconnectWallet = () => {
+    disconnect();
+    disconnectMagic();
+  };
+
   useEffect(() => {
-    getBalance();
+    address ? getBalance() : setBalance(magicBalance);
     getConvertedPrice();
   }, [isConnected, address]);
 
@@ -75,7 +95,7 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              {!isConnected ? (
+              {!isConnected && !isWalletConnected ? (
                 <Popover.Panel className="absolute z-10 mt-3 h-[272px] w-[260px] translate-x-[-70%] transform px-4 sm:px-0 lg:max-w-3xl">
                   <div className="ring-black overflow-hidden rounded-lg shadow-lg ring-opacity-5">
                     <div className="relative flex grid  gap-[6px] bg-white p-3 lg:grid-cols-1">
@@ -135,7 +155,9 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                         <div className="flex h-[52px] flex-row items-center justify-center gap-[12px]">
                           <Wallet />
                           <div>
-                            {address?.slice(0, 6) + "..." + address?.slice(38)}
+                            {addressDisplayed?.slice(0, 6) +
+                              "..." +
+                              addressDisplayed?.slice(38)}
                           </div>
                         </div>
                         {email && (
@@ -165,7 +187,7 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                           className="hover:cursor-pointer"
                           onClick={() =>
                             window.open(
-                              `https://mumbai.polygonscan.com/address/${address}`,
+                              `https://mumbai.polygonscan.com/address/${addressDisplayed}`,
                               "_blank"
                             )
                           }
@@ -174,7 +196,9 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                       <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
                       <div
                         className="flex h-[48px] items-center justify-between p-3 text-base font-normal hover:cursor-pointer"
-                        onClick={() => disconnect()}
+                        onClick={() => {
+                          disconnectWallet();
+                        }}
                       >
                         Disconnect
                         <Disconnect />
