@@ -90,7 +90,7 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                         >
                           <div className="flex gap-[10px]">
                             <VaultLogo />
-                            USDFI
+                            fiUSD
                           </div>
                           <input
                             className="flex "

@@ -27,9 +27,8 @@ const Header = () => {
 
   return (
     <div className="grid h-16 grid-cols-3 border-b-[0.5px] border-b-borderBottomConnectedCard px-6">
-      {/* <Stoa /> */}
       <div
-        className="col-span-1 flex items-center hover:cursor-pointer"
+        className="col-span-1 flex items-center gap-2 hover:cursor-pointer"
         onClick={() => {
           navigate("/Swap");
         }}

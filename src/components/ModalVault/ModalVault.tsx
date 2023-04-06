@@ -87,7 +87,7 @@ const ModalVault: FC<ModalVaultProps> = ({
                     <div className="flex h-[68px] flex-col justify-between">
                       <div>Vault Name</div>
                       <div className="h-[40px] rounded-xl border-[0.5px] border-solid border-borderCardAbout p-[10px] text-textGray">
-                        USDFI Vault
+                        fiUSD Vault
                       </div>
                     </div>
                     <div className="grid grid-cols-1 rounded-xl border-[0.5px] border-solid border-borderCardAbout ">
@@ -113,7 +113,7 @@ const ModalVault: FC<ModalVaultProps> = ({
                         </div>
                         <div>
                           <div className="flex items-center justify-end gap-1">
-                            <VaultLogo /> USDFI
+                            <VaultLogo /> fiUSD
                           </div>
                           <div className="text-textGray">balance: 1,000</div>
                         </div>
@@ -123,7 +123,7 @@ const ModalVault: FC<ModalVaultProps> = ({
                       <div className="flex flex-row items-center gap-1">
                         <Info />
                         <div className=" font-medium">
-                          1 USDC = 1.0006 USDFI{" "}
+                          1 USDC = 1.0006 fiUSD{" "}
                           <span className="text-textGray">{"($1.000)"}</span>
                         </div>
                       </div>

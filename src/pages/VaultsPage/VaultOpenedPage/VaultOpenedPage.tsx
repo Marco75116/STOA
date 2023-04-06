@@ -32,7 +32,7 @@ const VaultOpenedPage = () => {
               <div className="text-textGray">balance</div>
               <div>
                 <span className="mr-[4px] text-2xl font-bold"> 10,000.00</span>
-                <span className=" text-textGray">USDFI</span>
+                <span className=" text-textGray">fiUSD</span>
               </div>
             </div>
           </div>
@@ -52,7 +52,7 @@ const VaultOpenedPage = () => {
               <div className="text-textGray">Yield Earned</div>
               <div>
                 <span className="mr-[4px] text-2xl font-bold"> 178</span>
-                <span className=" text-textGray">USDFI</span>
+                <span className=" text-textGray">fiUSD</span>
               </div>
             </div>
           </div>
@@ -90,7 +90,7 @@ const VaultOpenedPage = () => {
               </div>
               <div>
                 <span className="mr-[4px] text-2xl font-bold"> 0,00</span>
-                <span className="text-sm font-normal text-textGray">USDFI</span>
+                <span className="text-sm font-normal text-textGray">fiUSD</span>
               </div>
             </div>
             <div className="flex h-[28px] w-[173px] gap-[4px]">

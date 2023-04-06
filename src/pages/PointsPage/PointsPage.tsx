@@ -9,7 +9,7 @@ import ListboxComponent from "../../components/ListboxComponent/ListboxComponent
 const listStableCoins = [
   { name: "USDC" },
   { name: "USDT" },
-  { name: "USDFI" },
+  { name: "fiUSD" },
   { name: "USTT" },
 ];
 const listFromFunds = [

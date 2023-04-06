@@ -1,7 +1,7 @@
 import { FC, Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-import { CheckIcon } from "@heroicons/react/20/solid";
 import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";
+import { ReactComponent as CheckPink } from "../../assets/icons/CheckPink.svg";
 import { ReactComponent as MetamaskLogo } from "../../assets/logos/MetamaskLogo.svg";
 import { ReactComponent as USDC } from "../../assets/logos/USDC.svg";
 import { ReactComponent as VaultLogo } from "../../assets/logos/LogoVault.svg";
@@ -68,7 +68,7 @@ const ListboxComponent: FC<ListboxComponentProps> = ({ list, width }) => {
                           "flex flex-row justify-between "
                         }`}
                       >
-                        <div className="flex flex-row">
+                        <div className="flex flex-row gap-2">
                           {person.name === "Metamask" ? (
                             <MetamaskLogo />
                           ) : (
@@ -76,11 +76,13 @@ const ListboxComponent: FC<ListboxComponentProps> = ({ list, width }) => {
                           )}
                           {person.name}
                         </div>
-                        <div className=" text-textGray">${person.amount}</div>
+                        {person.amount && (
+                          <div className=" text-textGray">${person.amount}</div>
+                        )}
                       </span>
                       {selected ? (
                         <span className="text-amber-600 absolute inset-y-0 left-0 flex items-center pl-3">
-                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                          <CheckPink />
                         </span>
                       ) : null}
                     </>
