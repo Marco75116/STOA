@@ -58,7 +58,7 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
 
   useEffect(() => {
     getbalanceMagic();
-  }, [isWalletConnected]);
+  }, [isWalletConnected, signer]);
 
   return (
     <WalletContext.Provider

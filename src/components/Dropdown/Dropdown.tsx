@@ -70,7 +70,7 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
   useEffect(() => {
     address ? getBalance() : setBalance(magicBalance);
     getConvertedPrice();
-  }, [isConnected, address]);
+  }, [isConnected, address, magicBalance]);
 
   const connector = new MetaMaskConnector();
 
