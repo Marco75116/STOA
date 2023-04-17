@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Dialog, Transition } from "@headlessui/react";
 import { WalletContext } from "../../context/Wallet.context";
 import { FC, Fragment, useContext, useEffect, useState } from "react";
@@ -36,7 +35,7 @@ const ModalMagic: FC<ModalMagicProps> = ({ isOpen, setIsOpen }) => {
   };
 
   useEffect(() => {
-    magicConnected(m);
+    magicConnected(m as any);
   }, []);
 
   const authenticationMagic = async () => {
@@ -112,7 +111,7 @@ const ModalMagic: FC<ModalMagicProps> = ({ isOpen, setIsOpen }) => {
                       onClick={() => {
                         authenticationMagic();
                       }}
-                      className="flex h-[48px]  items-center justify-center rounded-lg  bg-magicWallet py-3 px-6 text-base font-normal text-white hover:cursor-pointer"
+                      className="flex h-[48px]  items-center justify-center rounded-lg  bg-magicWallet px-6 py-3 text-base font-normal text-white hover:cursor-pointer"
                     >
                       Log
                     </button>

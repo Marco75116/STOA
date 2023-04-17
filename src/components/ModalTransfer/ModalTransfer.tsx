@@ -146,7 +146,7 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                     </div>
                     <div className="p-[20px]">
                       <div
-                        className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-[10px]  p-5 text-base font-normal text-white hover:cursor-pointer
+                        className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-5  p-[10px] text-base font-normal text-white hover:cursor-pointer
                       "
                       >
                         <button disabled={!write} onClick={() => write?.()}>

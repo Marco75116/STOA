@@ -27,7 +27,7 @@ const PointsPage = () => {
           <div className=" flex h-[100%] flex-col justify-between">
             <div className="flex flex-row justify-between">
               <StoaPoints />
-              <div className=" flex h-[36px] items-center justify-center rounded-lg bg-pink py-[8px] px-[12px]  text-xs font-semibold font-normal text-white hover:cursor-pointer">
+              <div className=" flex h-[36px] items-center justify-center rounded-lg bg-pink px-[12px] py-[8px]  text-xs font-normal font-semibold text-white hover:cursor-pointer">
                 Claim Points
               </div>
             </div>

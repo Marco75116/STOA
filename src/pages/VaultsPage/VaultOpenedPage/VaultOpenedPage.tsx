@@ -27,7 +27,7 @@ const VaultOpenedPage = () => {
         </div>
 
         <div className="grid grid-cols-4 ">
-          <div className="border-b-[0.5px] border-t-[0.5px]  border-r-[0.5px] border-solid border-borderCardAbout p-[20px] ">
+          <div className="border-b-[0.5px] border-r-[0.5px]  border-t-[0.5px] border-solid border-borderCardAbout p-[20px] ">
             <div className="flex flex-col justify-between">
               <div className="text-textGray">balance</div>
               <div>
@@ -37,7 +37,7 @@ const VaultOpenedPage = () => {
             </div>
           </div>
 
-          <div className="border-b-[0.5px]  border-t-[0.5px] border-r-[0.5px] border-solid border-borderCardAbout p-[20px]">
+          <div className="border-b-[0.5px]  border-r-[0.5px] border-t-[0.5px] border-solid border-borderCardAbout p-[20px]">
             <div className="flex flex-col justify-between">
               <div className="text-textGray">APY</div>
               <div>
@@ -47,7 +47,7 @@ const VaultOpenedPage = () => {
             </div>
           </div>
 
-          <div className="border-b-[0.5px] border-t-[0.5px]  border-r-[0.5px] border-solid border-borderCardAbout p-[20px]">
+          <div className="border-b-[0.5px] border-r-[0.5px]  border-t-[0.5px] border-solid border-borderCardAbout p-[20px]">
             <div className="flex flex-col justify-between">
               <div className="text-textGray">Yield Earned</div>
               <div>

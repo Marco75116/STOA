@@ -34,7 +34,7 @@ const ConnectButton = () => {
         }}
       >
         <div className="relative mr-[6px]">
-          <Validate className="absolute right-[-6px] bottom-[-2px] " />
+          <Validate className="absolute bottom-[-2px] right-[-6px] " />
           <Profile />
         </div>
         {addressDisplayed?.slice(0, 6) + "..." + addressDisplayed?.slice(38)}
@@ -59,7 +59,7 @@ const ConnectButton = () => {
           className=" flex items-center justify-center gap-[6px] rounded-lg border-[0.5px] border-solid border-borderBottomConnectedCard bg-white p-2 hover:cursor-pointer"
         >
           <div className="relative mr-[6px]">
-            <Shield className="absolute right-[-6px] bottom-[-2px]" />
+            <Shield className="absolute bottom-[-2px] right-[-6px]" />
             <Profile />
           </div>
 
