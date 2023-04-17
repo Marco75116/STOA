@@ -61,7 +61,7 @@ const ModalVault: FC<ModalVaultProps> = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="bg-black fixed inset-0 bg-opacity-25" />
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto bg-gray800 bg-opacity-30">
@@ -78,7 +78,7 @@ const ModalVault: FC<ModalVaultProps> = ({
                 <Dialog.Panel className="card h-[536px] w-full max-w-md transform overflow-hidden text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-gray-900 flex flex-row items-center justify-between border-b-[0.5px] border-solid border-borderCardAbout  p-6 text-lg font-medium leading-6"
+                    className="flex flex-row items-center justify-between border-b-[0.5px] border-solid border-borderCardAbout p-6  text-lg font-medium leading-6 text-gray-900"
                   >
                     New Vault
                     <Cross />

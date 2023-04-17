@@ -44,7 +44,7 @@ const ListboxComponent: FC<ListboxComponentProps> = ({ list, width }) => {
             leaveTo="opacity-0"
           >
             <Listbox.Options
-              className={`ring-black absolute mt-1 max-h-60 ${
+              className={`absolute mt-1 max-h-60 ring-black ${
                 list[0].amount !== undefined ? "w-[220px]" : "w-[100%]"
               }  overflow-auto rounded-md bg-white text-base shadow-lg ring-opacity-5 focus:outline-none sm:text-sm`}
             >
@@ -53,7 +53,7 @@ const ListboxComponent: FC<ListboxComponentProps> = ({ list, width }) => {
                   key={personIdx}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? "text-amber-900 bg-[#E4E4E6]" : "text-gray-900"
+                      active ? "bg-[#E4E4E6] text-amber-900" : "text-gray-900"
                     }`
                   }
                   value={person}
@@ -81,7 +81,7 @@ const ListboxComponent: FC<ListboxComponentProps> = ({ list, width }) => {
                         )}
                       </span>
                       {selected ? (
-                        <span className="text-amber-600 absolute inset-y-0 left-0 flex items-center pl-3">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
                           <CheckPink />
                         </span>
                       ) : null}

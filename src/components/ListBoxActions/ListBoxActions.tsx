@@ -19,7 +19,7 @@ export default function Example() {
               <Popover.Button
                 className={`
               ${open ? "" : "text-opacity-90"}
-            text-black group inline-flex items-center rounded-md px-3 py-2 text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+            group inline-flex items-center rounded-md px-3 py-2 text-base font-medium text-black hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
               >
                 <div
                   onClick={() => {}}
@@ -40,7 +40,7 @@ export default function Example() {
                 leaveTo="opacity-0 translate-y-1"
               >
                 <Popover.Panel className="absolute z-10 mt-3  w-[260px] translate-x-[-50%] transform px-4 sm:px-0 lg:max-w-3xl">
-                  <div className="ring-black overflow-hidden rounded-lg border-[0.5px] border-solid border-[#00000033] shadow-lg ring-opacity-5">
+                  <div className="overflow-hidden rounded-lg border-[0.5px] border-solid border-[#00000033] shadow-lg ring-black ring-opacity-5">
                     <div className=" relative flex h-[248px] flex-col justify-between gap-2 bg-white p-3">
                       <div className="flex h-[48px] items-center gap-3 p-3 ">
                         <DepositIcon /> Deposit

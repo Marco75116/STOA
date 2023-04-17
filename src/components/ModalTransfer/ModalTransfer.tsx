@@ -53,7 +53,7 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="bg-black fixed inset-0 bg-opacity-25" />
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
           <div className=" fixed inset-0 overflow-y-auto bg-gray800 bg-opacity-30">
@@ -71,7 +71,7 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                   <Dialog.Panel className=" min-h-[444px] w-[500px] transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all">
                     <Dialog.Title
                       as="h3"
-                      className="text-gray-900 flex flex-col gap-6  border-b-[0.5px] border-[#00000033] p-5  text-base font-medium leading-6"
+                      className="flex flex-col gap-6 border-b-[0.5px]  border-[#00000033] p-5 text-base  font-medium leading-6 text-gray-900"
                     >
                       <div className="flex flex-row items-center justify-between">
                         Transfer
@@ -167,7 +167,7 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                       <div role="status">
                         <svg
                           aria-hidden="true"
-                          className="text-gray-200 dark:text-gray-600 mr-2 inline h-20 w-20 animate-spin fill-pink"
+                          className="mr-2 inline h-20 w-20 animate-spin fill-pink text-gray-200 dark:text-gray-600"
                           viewBox="0 0 100 101"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"

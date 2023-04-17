@@ -37,7 +37,7 @@ const AboutPage = () => {
       <div>
         <div className="card flex w-[280px] flex-col gap-[6px] p-3">
           <form>
-            <label className="text-gray-900 sr-only mb-2 text-sm font-medium">
+            <label className="sr-only mb-2 text-sm font-medium text-gray-900">
               Search
             </label>
             <div className="relative">
@@ -47,7 +47,7 @@ const AboutPage = () => {
               <input
                 type="search"
                 id="default-search"
-                className="text-gray-900 border-gray-300 bg-gray-50 block w-full rounded-lg border p-4 pl-10 text-sm"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-4 pl-10 text-sm text-gray-900"
                 placeholder="Search topic..."
                 required
               ></input>

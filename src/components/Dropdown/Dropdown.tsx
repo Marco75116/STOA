@@ -82,7 +82,7 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
             <Popover.Button
               className={`
                 ${open ? "" : "text-opacity-90"}
-              text-black group inline-flex items-center rounded-md px-3 py-2 text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+              group inline-flex items-center rounded-md px-3 py-2 text-base font-medium text-black hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
               <ConnectButton />
             </Popover.Button>
@@ -97,7 +97,7 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
             >
               {!isConnected && !isWalletConnected ? (
                 <Popover.Panel className="absolute z-10 mt-3 h-[272px] w-[260px] translate-x-[-70%] transform px-4 sm:px-0 lg:max-w-3xl">
-                  <div className="ring-black overflow-hidden rounded-lg shadow-lg ring-opacity-5">
+                  <div className="overflow-hidden rounded-lg shadow-lg ring-black ring-opacity-5">
                     <div className="relative flex grid  gap-[6px] bg-white p-3 lg:grid-cols-1">
                       <div className=" h-[48px] p-3 text-base font-normal">
                         My Profile
@@ -149,7 +149,7 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                 </Popover.Panel>
               ) : (
                 <Popover.Panel className="absolute z-10 mt-3 h-[272px] w-[260px]  translate-x-[-30%] transform px-4 sm:px-0 lg:max-w-3xl">
-                  <div className="ring-black overflow-hidden rounded-lg shadow-lg ring-opacity-5">
+                  <div className="overflow-hidden rounded-lg shadow-lg ring-black ring-opacity-5">
                     <div className="relative flex grid  gap-[6px] bg-white p-3 lg:grid-cols-1">
                       <div className="flex h-[140px] w-[236px] flex-col rounded-lg border-[0.5px] border-solid border-bgCardNavbar bg-ethBalance">
                         <div className="flex h-[52px] flex-row items-center justify-center gap-[12px]">
