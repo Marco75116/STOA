@@ -12,10 +12,7 @@ const TemplatePage = () => {
           <h1 className="p-10 text-center text-3xl">
             Tailwind Template test netlify{" "}
           </h1>
-          <div
-            onClick={() => setIsOpen(true)}
-            className="w-50 bg-pink-200 hover:bg-pink-300 animate-bounce cursor-pointer rounded-md p-4 shadow-lg"
-          >
+          <div onClick={() => setIsOpen(true)} className="w-50 bg-red-200">
             Open modal
           </div>
 
@@ -24,7 +21,7 @@ const TemplatePage = () => {
       </div>
 
       <Modal showModal={isOpen} closeFunction={() => setIsOpen(false)}>
-        <div className="text-black pt-6">Hello I am a modal</div>
+        <div className=" pt-6 text-black">Hello I am a modal</div>
       </Modal>
     </>
   );
