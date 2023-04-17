@@ -6,6 +6,7 @@ import { ReactComponent as STOALOGOBLACK } from "../../assets/logos/STOALOGOBLAC
 import { ReactComponent as SamsVault } from "../../assets/logos/SamsVault.svg";
 import { ReactComponent as DoubleArrowWithBar } from "../../assets/icons/dobleArrowWithBar.svg";
 import { Collapse } from "react-collapse";
+import Graph from "../../components/Graph/Graph";
 
 const listStableCoinsFrom = [
   { name: "USDC" },
@@ -24,7 +25,7 @@ const SwapPage = () => {
   const [collapseOneOpen, setCollapseOneOpen] = useState<boolean>(true);
 
   return (
-    <div className="center  h-[calc(100%-64px)] flex-col gap-3 bg-bgCardNavbar">
+    <div className="center flex-col gap-3 bg-bgCardNavbar p-16">
       <div className="card max-h-[200px] w-[912px]">
         <div className="borderBottom flex justify-between p-5">
           <div className="flex h-[32px] w-[158px] flex-row gap-[2px] rounded-lg bg-bgCardNavbar p-[2px]">
@@ -98,7 +99,7 @@ const SwapPage = () => {
         </div>
       </div>
 
-      <div className="card max-h-[446px] w-[912px]">
+      <div className="card w-[912px]">
         <div
           className="borderBottom flex justify-between p-5 hover:cursor-pointer"
           onClick={() => {
@@ -127,7 +128,7 @@ const SwapPage = () => {
           </div>
         </div>
         <Collapse isOpened={collapseOneOpen}>
-          <div className="flex flex-row">
+          <div className="borderBottom flex flex-row ">
             <div className="borderRight flex basis-[53%] flex-col gap-2 p-5">
               <div className=" text-base font-semibold">Description</div>
               <div className="text-sm font-normal leading-[16px] text-[#000000B2]">
@@ -170,10 +171,13 @@ const SwapPage = () => {
               </div>
             </div>
           </div>
+          <div className="p-5">
+            <Graph />
+          </div>
         </Collapse>
       </div>
 
-      <div className="card max-h-[446px] w-[912px]">
+      <div className="card w-[912px]">
         <div
           className="borderBottom flex justify-between p-5 hover:cursor-pointer"
           onClick={() => {
@@ -202,7 +206,7 @@ const SwapPage = () => {
           </div>
         </div>
         <Collapse isOpened={!collapseOneOpen}>
-          <div className="flex flex-row">
+          <div className="borderBottom flex flex-row">
             <div className="borderRight flex basis-[53%] flex-col gap-2 p-5">
               <div className=" text-base font-semibold">Description</div>
               <div className="text-sm font-normal leading-[16px] text-[#000000B2]">
@@ -244,6 +248,9 @@ const SwapPage = () => {
                 </div>
               </div>
             </div>
+          </div>
+          <div className="p-5">
+            <Graph />
           </div>
         </Collapse>
       </div>
