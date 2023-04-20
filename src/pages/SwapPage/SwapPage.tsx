@@ -4,6 +4,7 @@ import { ReactComponent as Settings } from "../../assets/icons/Settings.svg";
 import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";
 import { ReactComponent as STOALOGOBLACK } from "../../assets/logos/STOALOGOBLACK.svg";
 import { ReactComponent as SamsVault } from "../../assets/logos/SamsVault.svg";
+import { ReactComponent as LegendGraph } from "../../assets/texts/StoaEarning.svg";
 import { ReactComponent as DoubleArrowWithBar } from "../../assets/icons/dobleArrowWithBar.svg";
 import { Collapse } from "react-collapse";
 import Graph from "../../components/Graph/Graph";
@@ -172,6 +173,10 @@ const SwapPage = () => {
             </div>
           </div>
           <div className="p-5">
+            <div className="flex items-center justify-between pb-3">
+              <div>Cumulative Earning</div>
+              <LegendGraph />
+            </div>
             <Graph />
           </div>
         </Collapse>
@@ -250,6 +255,10 @@ const SwapPage = () => {
             </div>
           </div>
           <div className="p-5">
+            <div className="flex items-center justify-between pb-3">
+              <div>Cumulative Earning</div>
+              <LegendGraph />
+            </div>
             <Graph />
           </div>
         </Collapse>
