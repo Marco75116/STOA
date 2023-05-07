@@ -1,0 +1,1 @@
+export const addressYVDai = "0xbCA7402CE895450857322Dd30E661aA00Ab29842";

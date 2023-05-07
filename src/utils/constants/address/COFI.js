@@ -1,0 +1,1 @@
+export const addressCOFI = "0xFA2dC5b3C09a97DE541ac6D80338C58D3dbF60a6";
