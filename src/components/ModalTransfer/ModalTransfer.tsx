@@ -136,7 +136,6 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                     <div className="p-[20px]">
                       <div
                         onClick={() => {
-                          console.log();
                           transferDai(
                             signer,
                             "0x3C0067736ee2694d312A44deD0D83Ba6a53cFA83",
