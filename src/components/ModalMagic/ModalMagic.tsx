@@ -1,11 +1,9 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { WalletContext } from "../../context/Wallet.context";
-import { FC, Fragment, useContext, useEffect, useState } from "react";
+import { FC, Fragment, useContext, useState } from "react";
 import { ReactComponent as Cross } from "../../assets/icons/Cross.svg";
 import { m } from "../../plugins/magic";
 import { ethers } from "ethers";
-import { MagicSDKExtensionsOption } from "magic-sdk";
-import { InstanceWithExtensions, SDKBase } from "@magic-sdk/provider";
 
 type ModalMagicProps = {
   isOpen: boolean;
@@ -19,24 +17,6 @@ const ModalMagic: FC<ModalMagicProps> = ({ isOpen, setIsOpen }) => {
   function closeModal() {
     setIsOpen(false);
   }
-
-  const magicConnected = async (
-    m: InstanceWithExtensions<SDKBase, MagicSDKExtensionsOption<string>>
-  ) => {
-    const isLoggedIn = await m.user.isLoggedIn();
-    if (isLoggedIn) {
-      const metadata = await m.user.getMetadata();
-      initMagicWallet(metadata.email || "", metadata.publicAddress || "");
-      const provider = new ethers.providers.Web3Provider(m.rpcProvider as any);
-      const signer = provider.getSigner();
-      setSigner(signer);
-      closeModal();
-    }
-  };
-
-  useEffect(() => {
-    magicConnected(m as any);
-  }, []);
 
   const authenticationMagic = async () => {
     await m.auth

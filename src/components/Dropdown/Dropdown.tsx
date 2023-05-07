@@ -15,7 +15,6 @@ type DropdownProps = {
 };
 
 const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
-  const [balance, setBalance] = useState<number>(0);
   const [priceEth, setPriceEth] = useState<number>(0);
   const [addressDisplayed, setAddressDisplayed] = useState<string>("");
 
@@ -23,8 +22,10 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
     email,
     isWalletConnected,
     currentWalletAddress,
-    disconnectMagic,
+    disconnect,
     magicBalance,
+    balance,
+    getConnectedWalletMetamask,
   } = useContext(WalletContext);
 
   useEffect(() => {
@@ -41,8 +42,12 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
       });
   };
 
+  useEffect(() => {
+    getConvertedPrice();
+  }, []);
+
   const disconnectWallet = () => {
-    disconnectMagic();
+    disconnect();
   };
 
   return (
@@ -109,6 +114,7 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                         className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-3 text-base font-normal text-white hover:cursor-pointer
                       "
                         onClick={() => {
+                          getConnectedWalletMetamask();
                           close();
                         }}
                       >
