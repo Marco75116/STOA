@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Popover, Transition } from "@headlessui/react";
 import { FC, Fragment, useContext, useEffect, useState } from "react";
 import ConnectButton from "../ConnectButton/ConnectButton";
@@ -6,9 +7,6 @@ import { ReactComponent as Warning } from "../../assets/icons/Warning.svg";
 import { ReactComponent as Disconnect } from "../../assets/icons/Disconnect.svg";
 import { ReactComponent as Wallet } from "../../assets/icons/Wallet.svg";
 import { ReactComponent as Mail } from "../../assets/icons/Mail.svg";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { fetchBalance } from "@wagmi/core";
 import axios from "axios";
 import { WalletContext } from "../../context/Wallet.context";
 
@@ -17,9 +15,6 @@ type DropdownProps = {
 };
 
 const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
-  const { connect } = useConnect();
-  const { disconnect } = useDisconnect();
-  const { address, isConnected } = useAccount();
   const [balance, setBalance] = useState<number>(0);
   const [priceEth, setPriceEth] = useState<number>(0);
   const [addressDisplayed, setAddressDisplayed] = useState<string>("");
@@ -33,24 +28,8 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
   } = useContext(WalletContext);
 
   useEffect(() => {
-    setAddressDisplayed(address || "");
-  }, [address]);
-
-  useEffect(() => {
     setAddressDisplayed(currentWalletAddress);
   }, [isWalletConnected]);
-
-  const getBalance = () => {
-    if (address) {
-      fetchBalance({
-        address: address,
-      }).then((balance) => {
-        setBalance(Number(balance.formatted));
-      });
-    } else {
-      setBalance(0);
-    }
-  };
 
   const getConvertedPrice = () => {
     axios
@@ -63,16 +42,8 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
   };
 
   const disconnectWallet = () => {
-    disconnect();
     disconnectMagic();
   };
-
-  useEffect(() => {
-    address ? getBalance() : setBalance(magicBalance);
-    getConvertedPrice();
-  }, [isConnected, address, magicBalance]);
-
-  const connector = new MetaMaskConnector();
 
   return (
     <div className="">
@@ -95,7 +66,7 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              {!isConnected && !isWalletConnected ? (
+              {!isWalletConnected ? (
                 <Popover.Panel className="absolute z-10 mt-3 h-[272px] w-[260px] translate-x-[-70%] transform px-4 sm:px-0 lg:max-w-3xl">
                   <div className="overflow-hidden rounded-lg shadow-lg ring-black ring-opacity-5">
                     <div className="relative flex grid  gap-[6px] bg-white p-3 lg:grid-cols-1">
@@ -116,7 +87,7 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                           className="hover:cursor-pointer"
                           onClick={() =>
                             window.open(
-                              `https://mumbai.polygonscan.com/address/${address}`,
+                              `https://mumbai.polygonscan.com/address/${""}`,
                               "_blank"
                             )
                           }
@@ -138,7 +109,6 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                         className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-3 text-base font-normal text-white hover:cursor-pointer
                       "
                         onClick={() => {
-                          connect({ connector });
                           close();
                         }}
                       >

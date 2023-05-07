@@ -48,6 +48,7 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
       setMagicBalance(Number(balanceInEth));
     }
   };
+
   useEffect(() => {
     setProvider(
       new ethers.providers.JsonRpcProvider(

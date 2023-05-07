@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useEffect, useState } from "react";
 import { WalletContext } from "../../context/Wallet.context";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
 import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";
 import { ReactComponent as Profile } from "../../assets/icons/profile.svg";
 import { ReactComponent as Shield } from "../../assets/icons/Shield.svg";
@@ -12,20 +10,13 @@ const ConnectButton = () => {
   const { isWalletConnected, currentWalletAddress } = useContext(WalletContext);
 
   const [showPopup, setShowPopup] = useState<boolean>(false);
-  const { address, isConnected } = useAccount();
-  const { connect, connectors, error } = useConnect();
-  const { disconnect } = useDisconnect();
   const [addressDisplayed, setAddressDisplayed] = useState<string>("");
-
-  useEffect(() => {
-    setAddressDisplayed(address || "");
-  }, [address]);
 
   useEffect(() => {
     setAddressDisplayed(currentWalletAddress);
   }, [isWalletConnected]);
 
-  if (isConnected || isWalletConnected)
+  if (isWalletConnected)
     return (
       <div
         className=" flex items-center justify-center gap-[6px] rounded-lg border-[0.5px] border-solid border-borderBottomConnectedCard bg-white p-2"
@@ -49,10 +40,8 @@ const ConnectButton = () => {
 
   return (
     <div>
-      {connectors.map((connector) => (
+      {
         <button
-          disabled={!connector.ready}
-          key={connector.id}
           onClick={() => {
             showPopup ? setShowPopup(false) : setShowPopup(true);
           }}
@@ -65,7 +54,7 @@ const ConnectButton = () => {
 
           <Arrow className={`${showPopup && "rotate-180"}`} />
         </button>
-      ))}
+      }
     </div>
   );
 };

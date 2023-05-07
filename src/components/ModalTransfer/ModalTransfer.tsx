@@ -1,14 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Dialog, Transition } from "@headlessui/react";
 import { FC, Fragment, useState } from "react";
 import { ReactComponent as Cross } from "../../assets/icons/Cross.svg";
 import { ReactComponent as ValidationTx } from "../../assets/icons/ValidationTx.svg";
 import { ReactComponent as VaultLogo } from "../../assets/logos/LogoVault.svg";
 import { ReactComponent as USDC } from "../../assets/logos/USDC.svg";
-import {
-  usePrepareContractWrite,
-  useContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
+
 import { abiUSDC } from "../../utils/constants/abi/USDC";
 import { addressUSDC } from "../../utils/constants/address/USDC";
 import { ethers } from "ethers";
@@ -22,23 +19,12 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
   const [tokenSelected, setTokenSelected] = useState<number>(0);
   const [addressRecipient, setAddressRecipient] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const closeModal = () => {
     setIsOpen(false);
   };
-
-  const { config } = usePrepareContractWrite({
-    address: addressUSDC,
-    abi: abiUSDC,
-    functionName: "transfer",
-    args: [addressRecipient, ethers.utils.parseEther(amount.toString())],
-  });
-
-  const { data, write } = useContractWrite(config);
-
-  const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
-  });
 
   return (
     <>
@@ -149,9 +135,7 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                         className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-5  p-[10px] text-base font-normal text-white hover:cursor-pointer
                       "
                       >
-                        <button disabled={!write} onClick={() => write?.()}>
-                          Submit
-                        </button>
+                        <button>Submit</button>
                       </div>
                     </div>
                   </Dialog.Panel>
@@ -208,7 +192,7 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                         <div className="text-center">
                           You transaction{" "}
                           <a
-                            href={`https://mumbai.polygonscan.com/tx/${data?.hash}`}
+                            href={`https://mumbai.polygonscan.com/tx/${""}`}
                             className="text-[#345EEB]"
                           >
                             #331590

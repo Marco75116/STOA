@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Modal from "../../components/Modal/Modal";
-import MintButton from "../../components/MintButton/MintButton";
 import Graph from "../../components/Graph/Graph";
 
 const TemplatePage = () => {
@@ -20,7 +19,6 @@ const TemplatePage = () => {
             Open modal
           </div>
 
-          <MintButton />
           <br />
           <Graph />
         </div>
