@@ -178,7 +178,7 @@ const SwapPage = () => {
                           "ether"
                         ),
                         ethers.utils.parseUnits(
-                          depositAmount.toString(),
+                          Number(depositAmount * 0).toString(),
                           "ether"
                         ),
                         currentWalletAddress
@@ -190,7 +190,7 @@ const SwapPage = () => {
                           "ether"
                         ),
                         ethers.utils.parseUnits(
-                          depositAmount.toString(),
+                          Number(depositAmount * 0).toString(),
                           "ether"
                         ),
                         currentWalletAddress
