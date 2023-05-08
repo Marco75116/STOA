@@ -1,4 +1,4 @@
-import { FC, Fragment, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";
 import { ReactComponent as CheckPink } from "../../assets/icons/CheckPink.svg";
@@ -18,6 +18,10 @@ type ListboxComponentProps = {
 
 const ListboxComponent: FC<ListboxComponentProps> = ({ list, width }) => {
   const [selected, setSelected] = useState(list[0]);
+
+  useEffect(() => {
+    setSelected(list[0]);
+  }, [list]);
 
   return (
     <div className={`w-[${width ? width : "128"}px]`}>

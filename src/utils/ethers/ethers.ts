@@ -95,3 +95,24 @@ export const fiToUnderlyingDiamond = async (
     throw new Error("fiToUnderlying failed : " + error);
   }
 };
+
+export const getBalanceERC20 = async (
+  signer: ethers.providers.JsonRpcSigner,
+  currentWalletAddress: string,
+  erc20_address: string
+): Promise<ethers.BigNumber | undefined> => {
+  try {
+    if (currentWalletAddress !== "") {
+      const erc20_Contract = await new ethers.Contract(
+        erc20_address,
+        abiDiamond,
+        signer
+      );
+      const DaiBalance = await erc20_Contract.balanceOf(currentWalletAddress);
+
+      return DaiBalance;
+    }
+  } catch (error) {
+    throw new Error("getBalanceERC20 failed : " + error);
+  }
+};

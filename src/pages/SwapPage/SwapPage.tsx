@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import ListboxComponent from "../../components/ListboxComponent/ListboxComponent";
 import { ReactComponent as Settings } from "../../assets/icons/Settings.svg";
 import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";
@@ -8,22 +8,52 @@ import { ReactComponent as LegendGraph } from "../../assets/texts/StoaEarning.sv
 import { ReactComponent as DoubleArrowWithBar } from "../../assets/icons/dobleArrowWithBar.svg";
 import { Collapse } from "react-collapse";
 import Graph from "../../components/Graph/Graph";
+import {
+  fiToUnderlyingDiamond,
+  underlyingToFiDiamond,
+} from "../../utils/ethers/ethers";
+import { WalletContext } from "../../context/Wallet.context";
+import { ethers } from "ethers";
+import { CoinBalances, CoinPrices } from "../../utils/types/swap.types";
+import {
+  getBalances,
+  getPrices,
+  getReceiveAmount,
+} from "../../utils/helpers/swap.helpers";
 
-const listStableCoinsFrom = [
-  { name: "USDC" },
-  { name: "USDT" },
-  { name: "fiUSD" },
-  { name: "USTT" },
-];
-const listStableCoinsTo = [
-  { name: "fiUSD" },
-  { name: "USDT" },
-  { name: "USDC" },
-  { name: "USTT" },
-];
+const listStableCoinsFrom = [{ name: "DAI" }];
+const listStableCoinsTo = [{ name: "COFI" }];
+
 const SwapPage = () => {
-  const [action, setAction] = useState<0 | 1>(1);
+  const [action, setAction] = useState<0 | 1>(0);
   const [collapseOneOpen, setCollapseOneOpen] = useState<boolean>(true);
+  const [balanceCoins, setBalanceCoins] = useState<CoinBalances>({
+    DAI: 0,
+    COFI: 0,
+  });
+  const [depositAmount, setDepositAmount] = useState<number>(0);
+  const [pricesCoins, setPricesCoins] = useState<CoinPrices>({
+    DAI: 0,
+    COFI: 0,
+  });
+
+  const { signer, currentWalletAddress } = useContext(WalletContext);
+
+  const estimatedReceiving = useMemo(() => {
+    return getReceiveAmount(depositAmount);
+  }, [depositAmount]);
+
+  useEffect(() => {
+    getBalances(signer, currentWalletAddress).then((balances: CoinBalances) =>
+      setBalanceCoins(balances)
+    );
+    const prices = getPrices();
+    setPricesCoins(prices);
+  }, [signer, currentWalletAddress]);
+
+  useEffect(() => {
+    setDepositAmount(0);
+  }, [action]);
 
   return (
     <div className="center flex-col gap-3 bg-bgCardNavbar p-16">
@@ -60,41 +90,116 @@ const SwapPage = () => {
           <div className="flex flex-row items-center gap-3 px-5">
             <div className="flex flex-col gap-2">
               <div className="text-base font-medium">From Wallet</div>
-              <ListboxComponent width={160} list={listStableCoinsFrom} />
+              <ListboxComponent
+                width={160}
+                list={action === 0 ? listStableCoinsFrom : listStableCoinsTo}
+              />
               <div className="text-xs font-medium text-textGray">
-                Balance: 25.0 USDC
+                {` Balances :  ${
+                  action === 0
+                    ? balanceCoins.DAI + " Dai"
+                    : balanceCoins.COFI + " COFI"
+                }`}
               </div>
             </div>
             <div className="flex flex-col gap-2">
               <div className=" text-base font-medium">Amount</div>
               <div className="flex h-[40px] w-[160px]  items-center justify-between rounded-xl border-[0.5px] border-solid border-borderCardAbout p-[10px]">
-                <input type="number" placeholder="0,00" className="w-[80%]" />
-                <div className="center h-[28px] w-[40px]  rounded-md bg-ethBalance px-1 py-2 text-xs font-semibold  hover:cursor-pointer">
+                <input
+                  type="number"
+                  placeholder="0,00"
+                  className="w-[80%]"
+                  value={depositAmount}
+                  onChange={(event) => {
+                    setDepositAmount(Number(event.target.value));
+                  }}
+                />
+                <div
+                  onClick={() => {
+                    setDepositAmount(balanceCoins.DAI);
+                  }}
+                  className="center h-[28px] w-[40px]  rounded-md bg-ethBalance px-1 py-2 text-xs font-semibold  hover:cursor-pointer"
+                >
                   Max
                 </div>
               </div>
-              <div className="text-xs font-medium text-textGray">$0.00</div>
+              <div className="text-xs font-medium text-textGray">{`$${
+                Number(depositAmount) *
+                (action === 0 ? pricesCoins.DAI : pricesCoins.COFI)
+              }`}</div>
             </div>
           </div>
-          <DoubleArrowWithBar />
+          <DoubleArrowWithBar
+            className=" hover:cursor-pointer"
+            onClick={() => {
+              setAction((prev) => {
+                if (prev === 0) {
+                  return 1;
+                } else {
+                  return 0;
+                }
+              });
+            }}
+          />
           <div className="wit flex flex-row items-center gap-3 px-5">
             <div className="flex flex-col gap-2">
-              <div className="text-base font-medium">To Stoa stablecoin</div>
-              <ListboxComponent width={160} list={listStableCoinsTo} />
+              <div className="text-base font-medium">
+                To {action === 0 ? "Stoa" : ""} stablecoin
+              </div>
+              <ListboxComponent
+                width={160}
+                list={action !== 0 ? listStableCoinsFrom : listStableCoinsTo}
+              />
               <div className="text-xs font-medium text-textGray">2.93%</div>
             </div>
 
             <div className="flex flex-col gap-2 ">
-              <div className="text-base font-medium">You will recieve</div>
+              <div className="text-base font-medium">You will receive</div>
               <input
                 type="number"
                 placeholder="0,00"
+                value={estimatedReceiving}
+                disabled
                 className="flex h-[40px] w-[160px]  items-center justify-between rounded-xl border-[0.5px] border-solid border-borderCardAbout p-[10px]"
               />
-              <div className="text-xs font-medium text-textGray">$0.00</div>
+              <div className="text-xs font-medium text-textGray">{`$${
+                estimatedReceiving *
+                (action !== 0 ? pricesCoins.DAI : pricesCoins.COFI)
+              }`}</div>
             </div>
-            <div className="center h-[40px] w-[108px]  rounded-lg bg-pink p-3 text-base font-normal text-white hover:cursor-pointer ">
-              Swap
+            <div
+              onClick={() => {
+                {
+                  action === 0
+                    ? underlyingToFiDiamond(
+                        signer,
+                        ethers.utils.parseUnits(
+                          depositAmount.toString(),
+                          "ether"
+                        ),
+                        ethers.utils.parseUnits(
+                          depositAmount.toString(),
+                          "ether"
+                        ),
+                        currentWalletAddress
+                      )
+                    : fiToUnderlyingDiamond(
+                        signer,
+                        ethers.utils.parseUnits(
+                          depositAmount.toString(),
+                          "ether"
+                        ),
+                        ethers.utils.parseUnits(
+                          depositAmount.toString(),
+                          "ether"
+                        ),
+                        currentWalletAddress
+                      );
+                }
+              }}
+              className="center h-[40px] w-[108px]  rounded-lg bg-pink p-3 text-base font-normal text-white hover:cursor-pointer "
+            >
+              {action === 0 ? "Mint" : "Swap"}
             </div>
           </div>
         </div>
