@@ -38,7 +38,7 @@ export const getPrices = (): CoinPrices => {
 
 export const getReceiveAmount = (depositAmount: number): number => {
   try {
-    const fee = 0.01;
+    const fee = 0.001;
     return Number((depositAmount * (1 - fee)).toFixed(3));
   } catch (error) {
     throw new Error("Error : " + error);
