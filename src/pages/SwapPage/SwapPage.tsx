@@ -116,7 +116,9 @@ const SwapPage = () => {
                 />
                 <div
                   onClick={() => {
-                    setDepositAmount(balanceCoins.DAI);
+                    setDepositAmount(
+                      action === 0 ? balanceCoins.DAI : balanceCoins.COFI
+                    );
                   }}
                   className="center h-[28px] w-[40px]  rounded-md bg-ethBalance px-1 py-2 text-xs font-semibold  hover:cursor-pointer"
                 >
