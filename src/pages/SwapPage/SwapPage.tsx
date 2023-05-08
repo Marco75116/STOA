@@ -37,11 +37,23 @@ const SwapPage = () => {
     COFI: 0,
   });
 
-  const { signer, currentWalletAddress } = useContext(WalletContext);
+  const { signer, currentWalletAddress, constants } = useContext(WalletContext);
 
   const estimatedReceiving = useMemo(() => {
-    return getReceiveAmount(depositAmount);
-  }, [depositAmount]);
+    const fee = action === 0 ? constants.mintFee : constants.redeemFee;
+    return getReceiveAmount(depositAmount, fee);
+  }, [depositAmount, constants, action]);
+
+  const estimadedReceivingUSD = useMemo(() => {
+    if (estimatedReceiving !== undefined)
+      return (
+        estimatedReceiving * (action !== 0 ? pricesCoins.DAI : pricesCoins.COFI)
+      );
+  }, [estimatedReceiving, action, pricesCoins]);
+
+  const minAmountOut = useMemo(() => {
+    if (estimatedReceiving !== undefined) return estimatedReceiving * 0.9975;
+  }, [estimatedReceiving]);
 
   useEffect(() => {
     getBalances(signer, currentWalletAddress).then((balances: CoinBalances) =>
@@ -164,10 +176,7 @@ const SwapPage = () => {
                 disabled
                 className="flex h-[40px] w-[160px]  items-center justify-between rounded-xl border-[0.5px] border-solid border-borderCardAbout p-[10px]"
               />
-              <div className="text-xs font-medium text-textGray">{`$${
-                estimatedReceiving *
-                (action !== 0 ? pricesCoins.DAI : pricesCoins.COFI)
-              }`}</div>
+              <div className="text-xs font-medium text-textGray">{`$${estimadedReceivingUSD}`}</div>
             </div>
             <div
               onClick={() => {
@@ -180,7 +189,7 @@ const SwapPage = () => {
                           "ether"
                         ),
                         ethers.utils.parseUnits(
-                          Number(depositAmount * 0).toString(),
+                          Number(minAmountOut).toString(),
                           "ether"
                         ),
                         currentWalletAddress
@@ -192,7 +201,7 @@ const SwapPage = () => {
                           "ether"
                         ),
                         ethers.utils.parseUnits(
-                          Number(depositAmount * 0).toString(),
+                          Number(minAmountOut).toString(),
                           "ether"
                         ),
                         currentWalletAddress
