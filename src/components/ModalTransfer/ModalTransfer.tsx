@@ -9,7 +9,7 @@ import { ReactComponent as USDC } from "../../assets/logos/USDC.svg";
 import { abiUSDC } from "../../utils/constants/abi/USDC";
 import { addressUSDC } from "../../utils/constants/address/USDC";
 import { ethers } from "ethers";
-import { transferDai } from "../../utils/ethers/ethers";
+import { transferDai } from "../../utils/ethers/ethers.write";
 import { WalletContext } from "../../context/Wallet.context";
 
 type ModalTransferProps = {

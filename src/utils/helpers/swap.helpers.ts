@@ -1,6 +1,6 @@
 import { addressCOFI } from "../constants/address/COFI";
 import { addressDai } from "../constants/address/Dai";
-import { getBalanceERC20 } from "../ethers/ethers";
+import { getBalanceERC20 } from "../ethers/ethers.view";
 import { CoinBalances, CoinPrices } from "../types/swap.types";
 import { ethers } from "ethers";
 

@@ -11,7 +11,7 @@ import Graph from "../../components/Graph/Graph";
 import {
   fiToUnderlyingDiamond,
   underlyingToFiDiamond,
-} from "../../utils/ethers/ethers";
+} from "../../utils/ethers/ethers.write";
 import { WalletContext } from "../../context/Wallet.context";
 import { ethers } from "ethers";
 import { CoinBalances, CoinPrices } from "../../utils/types/swap.types";

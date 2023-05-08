@@ -1,6 +1,8 @@
 import { ethers } from "ethers";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { m } from "../plugins/magic";
+import { getConstants } from "../utils/helpers/constant.helper";
+import { GlobalConstants } from "../utils/types/global.types";
 
 type WalletContextProps = {
   currentWalletAddress: string;
@@ -15,6 +17,7 @@ type WalletContextProps = {
   magicBalance: number;
   balance: number;
   getConnectedWalletMetamask: () => void;
+  constants: GlobalConstants;
 };
 
 type WalletProviderProps = {
@@ -34,6 +37,16 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
   const [walletType, setWalletType] = useState<
     "Magic" | "Metamask" | undefined
   >();
+  const [constants, setConstants] = useState<GlobalConstants>({
+    feeCollectorStatus: undefined,
+    pointsRate: undefined,
+    redeemEnabled: undefined,
+    redeemFee: undefined,
+    mintEnabled: undefined,
+    mintFee: undefined,
+    minDeposit: undefined,
+    minWithdraw: undefined,
+  });
 
   const initMagicWallet = async (email: string, address: string) => {
     setWalletType("Magic");
@@ -91,6 +104,9 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
 
   useEffect(() => {
     getbalanceMagic();
+    getConstants(signer).then((gConstants) => {
+      setConstants(gConstants);
+    });
   }, [isWalletConnected, signer]);
 
   return (
@@ -108,6 +124,7 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
         magicBalance,
         balance,
         getConnectedWalletMetamask,
+        constants,
       }}
     >
       {children}
