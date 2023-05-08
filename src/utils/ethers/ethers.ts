@@ -116,3 +116,107 @@ export const getBalanceERC20 = async (
     throw new Error("getBalanceERC20 failed : " + error);
   }
 };
+
+export const getMinWithdraw = async (
+  signer: ethers.providers.JsonRpcSigner
+) => {
+  try {
+    const diamond_Contract = await new ethers.Contract(
+      addressDiamond,
+      abiDiamond,
+      signer
+    );
+    const minWithdraw = diamond_Contract.getMinWithdraw(addressCOFI);
+    return minWithdraw;
+  } catch (error) {
+    throw new Error("getMinWithdraw failed : " + error);
+  }
+};
+
+export const getMinDeposit = async (signer: ethers.providers.JsonRpcSigner) => {
+  try {
+    const diamond_Contract = await new ethers.Contract(
+      addressDiamond,
+      abiDiamond,
+      signer
+    );
+    const minDeposit = diamond_Contract.getMinDeposit(addressCOFI);
+    return minDeposit;
+  } catch (error) {
+    throw new Error("getMinDeposit failed : " + error);
+  }
+};
+
+export const getMintFee = async (signer: ethers.providers.JsonRpcSigner) => {
+  try {
+    const diamond_Contract = await new ethers.Contract(
+      addressDiamond,
+      abiDiamond,
+      signer
+    );
+    const mintFee = diamond_Contract.getMintFee(addressCOFI);
+    return mintFee;
+  } catch (error) {
+    throw new Error("getMintFee failed : " + error);
+  }
+};
+
+export const getMintEnabled = async (
+  signer: ethers.providers.JsonRpcSigner
+) => {
+  try {
+    const diamond_Contract = await new ethers.Contract(
+      addressDiamond,
+      abiDiamond,
+      signer
+    );
+    const mintEnabled = diamond_Contract.getMintEnabled(addressCOFI);
+    return mintEnabled;
+  } catch (error) {
+    throw new Error("getMintEnabled failed : " + error);
+  }
+};
+
+export const getRedeemFee = async (signer: ethers.providers.JsonRpcSigner) => {
+  try {
+    const diamond_Contract = await new ethers.Contract(
+      addressDiamond,
+      abiDiamond,
+      signer
+    );
+    const redeemFee = diamond_Contract.getRedeemFee(addressCOFI);
+    return redeemFee;
+  } catch (error) {
+    throw new Error("getRedeemFee failed : " + error);
+  }
+};
+
+export const getRedeemEnabled = async (
+  signer: ethers.providers.JsonRpcSigner
+) => {
+  try {
+    const diamond_Contract = await new ethers.Contract(
+      addressDiamond,
+      abiDiamond,
+      signer
+    );
+    const redeemEnabled = diamond_Contract.getRedeemEnabled(addressCOFI);
+    return redeemEnabled;
+  } catch (error) {
+    throw new Error("getRedeemEnabled failed : " + error);
+  }
+};
+
+export const getPointsRate = async (signer: ethers.providers.JsonRpcSigner) => {
+  try {
+    const diamond_Contract = await new ethers.Contract(
+      addressDiamond,
+      abiDiamond,
+      signer
+    );
+    const pointsRate = diamond_Contract.getPointsRate(addressCOFI);
+    return pointsRate;
+  } catch (error) {
+    throw new Error("getPointsRate failed : " + error);
+  }
+};
