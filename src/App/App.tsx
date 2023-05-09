@@ -7,6 +7,7 @@ import Providers from "./Providers";
 import Routes from "./Routes";
 
 import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
       <Router>
         <Header />
         <Routes />
+        <Footer />
       </Router>
     </Providers>
   );

@@ -61,6 +61,13 @@ input[type="number"] {
   border-style: solid;
   border-bottom-width: 0.5px;
 }
+
+.borderTop {
+  border-color: #ffffff33;
+  border-style: solid;
+  border-top-width: 0.5px;
+}
+
 .borderRight {
   border-color: #00000026;
   border-style: solid;

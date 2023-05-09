@@ -17,6 +17,7 @@ module.exports = {
       textGrayFonce: "#000000B2",
       gray800: "#1F2937",
       magicWallet: "#6851FF",
+      darkgreen: "#394A46",
     },
     extend: {},
   },
