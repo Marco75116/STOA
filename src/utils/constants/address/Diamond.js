@@ -1,1 +1,1 @@
-export const addressDiamond = "0x64Cab9754b96fB62F7A3eD04EECf93c59B5eaa67";
+export const addressDiamond = "0xEBdBbbeA597Ac421E9f0836d06f7AF0eF96e842d";
