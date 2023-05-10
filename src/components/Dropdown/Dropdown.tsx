@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Popover, Transition } from "@headlessui/react";
 import { FC, Fragment, useContext, useEffect, useState } from "react";
 import ConnectButton from "../ConnectButton/ConnectButton";
@@ -9,6 +8,7 @@ import { ReactComponent as Wallet } from "../../assets/icons/Wallet.svg";
 import { ReactComponent as Mail } from "../../assets/icons/Mail.svg";
 import axios from "axios";
 import { WalletContext } from "../../context/Wallet.context";
+import { useNavigate } from "react-router-dom";
 
 type DropdownProps = {
   setOpenMagic: Function;
@@ -23,10 +23,11 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
     isWalletConnected,
     currentWalletAddress,
     disconnect,
-    magicBalance,
     balance,
     getConnectedWalletMetamask,
   } = useContext(WalletContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setAddressDisplayed(currentWalletAddress);
@@ -155,6 +156,10 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                       </div>
                       <div className="flex h-[48px] items-center justify-between p-3 text-base font-normal">
                         Verification Center
+                        <Explore
+                          className="hover:cursor-pointer"
+                          onClick={() => navigate("/KYC")}
+                        />
                       </div>
                       <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
                       <div className="flex h-[48px] items-center justify-between p-3 text-base font-normal">
