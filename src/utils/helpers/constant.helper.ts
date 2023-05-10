@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ethers } from "ethers";
 import {
   getFeeCollectorStatus,
@@ -16,7 +17,7 @@ export const getConstants = async (
 ): Promise<GlobalConstants> => {
   try {
     if (signer) {
-      const feeCollectorStatus = await getFeeCollectorStatus(signer);
+      const feeCollectorStatus = undefined;
       const pointsRate = await getPointsRate(signer);
       const redeemEnabled = await getRedeemEnabled(signer);
       const redeemFee = await getRedeemFee(signer);

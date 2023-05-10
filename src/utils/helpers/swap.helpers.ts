@@ -41,7 +41,8 @@ export const getReceiveAmount = (
   fee: number | undefined
 ): number | undefined => {
   try {
-    if (fee) return Number((depositAmount * (1 - fee)).toFixed(3));
+    if (fee !== undefined)
+      return Number((depositAmount * (1 - fee)).toFixed(3));
   } catch (error) {
     throw new Error("Error : " + error);
   }
