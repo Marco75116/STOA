@@ -20,6 +20,9 @@ import {
   getPrices,
   getReceiveAmount,
 } from "../../utils/helpers/swap.helpers";
+import { getKycDone } from "../../utils/helpers/global.helper";
+import { ReactComponent as Warning } from "../../assets/icons/Warning.svg";
+import { useNavigate } from "react-router-dom";
 
 const listStableCoinsFrom = [{ name: "DAI" }];
 const listStableCoinsTo = [{ name: "COFI" }];
@@ -37,7 +40,8 @@ const SwapPage = () => {
     COFI: 0,
   });
 
-  const { signer, currentWalletAddress, constants } = useContext(WalletContext);
+  const { signer, currentWalletAddress, constants, review } =
+    useContext(WalletContext);
 
   const estimatedReceiving = useMemo(() => {
     const fee = action === 0 ? constants.mintFee : constants.redeemFee;
@@ -55,6 +59,8 @@ const SwapPage = () => {
     if (estimatedReceiving !== undefined) return estimatedReceiving * 0.9975;
   }, [estimatedReceiving]);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     getBalances(signer, currentWalletAddress).then((balances: CoinBalances) =>
       setBalanceCoins(balances)
@@ -63,12 +69,30 @@ const SwapPage = () => {
     setPricesCoins(prices);
   }, [signer, currentWalletAddress]);
 
+  const kycDone = useMemo(() => {
+    return getKycDone(review);
+  }, [review]);
+
   useEffect(() => {
     setDepositAmount(0);
   }, [action]);
 
   return (
     <div className="center flex-col gap-3 bg-bgCardNavbar p-16">
+      {!kycDone && (
+        <div className="center flex flex-row gap-2">
+          <Warning />
+          Your have to pass your KYC before minting.{" "}
+          <div
+            onClick={() => {
+              navigate("/KYC");
+            }}
+            className="  text-gray-500 hover:cursor-pointer hover:text-gray-400"
+          >
+            Let&apos;s go
+          </div>
+        </div>
+      )}
       <div className="card max-h-[200px] w-[912px]">
         <div className="borderBottom flex justify-between p-5">
           <div className="flex h-[32px] w-[158px] flex-row gap-[2px] rounded-lg bg-bgCardNavbar p-[2px]">
@@ -97,7 +121,6 @@ const SwapPage = () => {
             <Settings />
           </div>
         </div>
-
         <div className="flex h-[128px] flex-row ">
           <div className="flex flex-row items-center gap-3 px-5">
             <div className="flex flex-col gap-2">
@@ -181,31 +204,32 @@ const SwapPage = () => {
             <div
               onClick={() => {
                 {
-                  action === 0
-                    ? underlyingToFiDiamond(
-                        signer,
-                        ethers.utils.parseUnits(
-                          depositAmount.toString(),
-                          "ether"
-                        ),
-                        ethers.utils.parseUnits(
-                          Number(minAmountOut).toString(),
-                          "ether"
-                        ),
-                        currentWalletAddress
-                      )
-                    : fiToUnderlyingDiamond(
-                        signer,
-                        ethers.utils.parseUnits(
-                          depositAmount.toString(),
-                          "ether"
-                        ),
-                        ethers.utils.parseUnits(
-                          Number(minAmountOut).toString(),
-                          "ether"
-                        ),
-                        currentWalletAddress
-                      );
+                  kycDone === true &&
+                    (action === 0
+                      ? underlyingToFiDiamond(
+                          signer,
+                          ethers.utils.parseUnits(
+                            depositAmount.toString(),
+                            "ether"
+                          ),
+                          ethers.utils.parseUnits(
+                            Number(minAmountOut).toString(),
+                            "ether"
+                          ),
+                          currentWalletAddress
+                        )
+                      : fiToUnderlyingDiamond(
+                          signer,
+                          ethers.utils.parseUnits(
+                            depositAmount.toString(),
+                            "ether"
+                          ),
+                          ethers.utils.parseUnits(
+                            Number(minAmountOut).toString(),
+                            "ether"
+                          ),
+                          currentWalletAddress
+                        ));
                 }
               }}
               className="center h-[40px] w-[108px]  rounded-lg bg-pink p-3 text-base font-normal text-white hover:cursor-pointer "
@@ -215,7 +239,6 @@ const SwapPage = () => {
           </div>
         </div>
       </div>
-
       <div className="card w-[912px]">
         <div
           className="borderBottom flex justify-between p-5 hover:cursor-pointer"
@@ -297,7 +320,6 @@ const SwapPage = () => {
           </div>
         </Collapse>
       </div>
-
       <div className="card w-[912px]">
         <div
           className="borderBottom flex justify-between p-5 hover:cursor-pointer"

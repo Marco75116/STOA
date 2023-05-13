@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useEffect, useState } from "react";
 import { WalletContext } from "../../context/Wallet.context";
 import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";

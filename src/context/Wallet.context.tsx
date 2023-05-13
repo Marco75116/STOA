@@ -3,6 +3,12 @@ import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { m } from "../plugins/magic";
 import { getConstants } from "../utils/helpers/constant.helper";
 import { GlobalConstants } from "../utils/types/global.types";
+import api from "../utils/service/apiSumsub";
+import {
+  ApplicantData,
+  ApplicantDataApi,
+  Review,
+} from "../utils/types/sumsub.types";
 
 type WalletContextProps = {
   currentWalletAddress: string;
@@ -18,6 +24,11 @@ type WalletContextProps = {
   balance: number;
   getConnectedWalletMetamask: () => void;
   constants: GlobalConstants;
+  review: Review | undefined;
+  applicantExist: boolean | undefined;
+  applicantData: ApplicantData | undefined;
+  isOpenWallet: boolean;
+  setIsOpenWallet: Function;
 };
 
 type WalletProviderProps = {
@@ -37,6 +48,14 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
   const [walletType, setWalletType] = useState<
     "Magic" | "Metamask" | undefined
   >();
+  const [applicantData, setApplicationData] = useState<
+    ApplicantData | undefined
+  >();
+  const [review, setReview] = useState<Review | undefined>();
+  const [applicantExist, setApplicantExist] = useState<boolean | undefined>();
+
+  const [isOpenWallet, setIsOpenWallet] = useState<boolean>(false);
+
   const [constants, setConstants] = useState<GlobalConstants>({
     feeCollectorStatus: undefined,
     pointsRate: undefined,
@@ -109,6 +128,33 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
     });
   }, [isWalletConnected, signer]);
 
+  const getApplicantData = async () => {
+    const applicantData = await api.getApplicantData({
+      externalUserId: currentWalletAddress,
+    });
+
+    return applicantData.data;
+  };
+
+  const checkApplicant = (applicantData: ApplicantDataApi) => {
+    if (applicantData.code) {
+      if (applicantData.code === 400) {
+        setApplicantExist(false);
+      }
+    } else {
+      setApplicantExist(true);
+      setApplicationData(applicantData);
+      setReview(applicantData.review);
+    }
+  };
+  useEffect(() => {
+    if (currentWalletAddress !== "") {
+      getApplicantData().then((applicantData) => {
+        checkApplicant(applicantData);
+      });
+    }
+  }, [currentWalletAddress]);
+
   return (
     <WalletContext.Provider
       value={{
@@ -125,6 +171,11 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
         balance,
         getConnectedWalletMetamask,
         constants,
+        review,
+        applicantExist,
+        applicantData,
+        isOpenWallet,
+        setIsOpenWallet,
       }}
     >
       {children}

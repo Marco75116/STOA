@@ -1,5 +1,5 @@
 import axios from "axios";
-import { User, AccessToken } from "../types/sumsub.types";
+import { User, AccessToken, ApplicantDataApi } from "../types/sumsub.types";
 
 const instance = axios.create({
   baseURL: "https://stoa-kyc-api-back.up.railway.app/verify/",
@@ -8,13 +8,27 @@ const instance = axios.create({
 
 const apiService = {
   createApplicant: (externalUserId: User) =>
-    instance.post(`createApplicant/${externalUserId.externalUserId}`),
+    instance
+      .post(`createApplicant/${externalUserId.externalUserId}`)
+      .catch((error) => {
+        throw new Error("createApplicant call failed: " + error);
+      }),
+
   getApplicantData: (externalUserId: User) =>
-    instance.get(`/getApplicantData/${externalUserId.externalUserId}`),
+    instance
+      .get<ApplicantDataApi>(
+        `/getApplicantData/${externalUserId.externalUserId}`
+      )
+      .catch((error) => {
+        throw new Error("getApplicantData call failed: " + error);
+      }),
+
   createToken: (externalUserId: User) =>
-    instance.get<AccessToken>(
-      `getAccessToken/${externalUserId.externalUserId}`
-    ),
+    instance
+      .get<AccessToken>(`getAccessToken/${externalUserId.externalUserId}`)
+      .catch((error) => {
+        throw new Error("createToken call failed: " + error);
+      }),
 };
 
 export default apiService;
