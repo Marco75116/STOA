@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ethers } from "ethers";
 import {
-  getFeeCollectorStatus,
+  // getFeeCollectorStatus,
   getMinDeposit,
   getMinWithdraw,
   getMintEnabled,

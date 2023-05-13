@@ -68,7 +68,9 @@ const KYC = () => {
   }, [review]);
 
   useEffect(() => {
-    onClickVerify();
+    {
+      kycDone && onClickVerify();
+    }
   }, [kycDone]);
 
   return (
