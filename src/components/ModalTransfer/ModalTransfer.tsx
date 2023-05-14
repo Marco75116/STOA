@@ -136,11 +136,12 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                     <div className="p-[20px]">
                       <div
                         onClick={() => {
-                          transferDai(
-                            signer,
-                            "0x3C0067736ee2694d312A44deD0D83Ba6a53cFA83",
-                            100
-                          );
+                          signer &&
+                            transferDai(
+                              signer,
+                              "0x3C0067736ee2694d312A44deD0D83Ba6a53cFA83",
+                              100
+                            );
                         }}
                         className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-5  p-[10px] text-base font-normal text-white hover:cursor-pointer
                       "

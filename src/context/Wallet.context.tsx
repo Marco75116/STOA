@@ -17,7 +17,7 @@ type WalletContextProps = {
   isWalletConnected: boolean;
   email: string;
   setSigner: Function;
-  signer: any;
+  signer: ethers.providers.JsonRpcSigner | undefined;
   provider: any;
   setProvider: Function;
   magicBalance: number;
@@ -42,7 +42,9 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
   const [currentWalletAddress, setCurrentWalletAddress] = useState("");
   const [email, setEmail] = useState<string>("");
   const [provider, setProvider] = useState<ethers.providers.JsonRpcProvider>();
-  const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner>();
+  const [signer, setSigner] = useState<
+    ethers.providers.JsonRpcSigner | undefined
+  >();
   const [magicBalance, setMagicBalance] = useState<number>(0);
   const [balance, setBalance] = useState<number>(0);
   const [walletType, setWalletType] = useState<

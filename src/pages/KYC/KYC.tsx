@@ -5,8 +5,13 @@ import api from "../../utils/service/apiSumsub";
 import { getKycDone } from "../../utils/helpers/global.helper";
 
 const KYC = () => {
-  const { currentWalletAddress, applicantExist, setIsOpenWallet, review } =
-    useContext(WalletContext);
+  const {
+    currentWalletAddress,
+    applicantExist,
+    setIsOpenWallet,
+    review,
+    signer,
+  } = useContext(WalletContext);
   const [accessSDKToken, setAccessSDKToken] = useState<string>();
 
   const handler = () => Promise.resolve<string>("");
@@ -48,13 +53,15 @@ const KYC = () => {
   );
 
   const onClickVerify = async () => {
+    const signature = await signData();
+
     if (!applicantExist) {
       await api.createApplicant({
-        externalUserId: currentWalletAddress,
+        externalUserId: currentWalletAddress || "",
       });
     }
     const token = await api.createToken({
-      externalUserId: currentWalletAddress,
+      externalUserId: signature || "",
     });
     setAccessSDKToken(token.data.token);
   };
@@ -72,6 +79,14 @@ const KYC = () => {
       kycDone && onClickVerify();
     }
   }, [kycDone]);
+
+  const signData = async () => {
+    if (signer) {
+      let message = "Verify your account";
+      let signature = await signer.signMessage(message);
+      return signature;
+    }
+  };
 
   return (
     <div className=" flex min-h-[calc(100%-64px)] w-[100] flex-col justify-center gap-8  bg-bgCardNavbar">

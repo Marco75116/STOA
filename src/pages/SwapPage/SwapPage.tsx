@@ -62,9 +62,11 @@ const SwapPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getBalances(signer, currentWalletAddress).then((balances: CoinBalances) =>
-      setBalanceCoins(balances)
-    );
+    if (signer) {
+      getBalances(signer, currentWalletAddress).then((balances: CoinBalances) =>
+        setBalanceCoins(balances)
+      );
+    }
     const prices = getPrices();
     setPricesCoins(prices);
   }, [signer, currentWalletAddress]);
@@ -205,6 +207,7 @@ const SwapPage = () => {
               onClick={() => {
                 {
                   kycDone === true &&
+                    signer &&
                     (action === 0
                       ? underlyingToFiDiamond(
                           signer,
