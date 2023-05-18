@@ -1,14 +1,10 @@
 import React, { useContext, useState } from "react";
-import { ReactComponent as Logo } from "../../assets/logos/STOA_Blue_on_Transparent_Font_Logo 2.svg";
-import { ReactComponent as Stoa } from "../../assets/logos/STOA.svg";
-import { ReactComponent as Swap } from "../../assets/icons/Vector-2Black.svg";
-import { ReactComponent as SwapRed } from "../../assets/icons/Vector.svg";
-import { ReactComponent as VaultsLogo } from "../../assets/icons/Frame.svg";
-import { ReactComponent as VaultsLogoRed } from "../../assets/icons/FrameRed.svg";
+import { ReactComponent as COFILogo } from "../../assets/logos/COFILogo.svg";
+import { ReactComponent as Swap } from "../../assets/icons/swap.svg";
+// import { ReactComponent as VaultsLogo } from "../../assets/icons/Frame.svg";
+// import { ReactComponent as VaultsLogoRed } from "../../assets/icons/FrameRed.svg";
 import { ReactComponent as AboutLogo } from "../../assets/icons/Vector-2.svg";
-import { ReactComponent as PointsLogo } from "../../assets/icons/Union.svg";
-import { ReactComponent as PointsLogoRed } from "../../assets/icons/UnionRed.svg";
-import { ReactComponent as AboutLogoRed } from "../../assets/icons/AboutRed.svg";
+import { ReactComponent as COFIPointLogo } from "../../assets/logos/COFIPointLogo.svg";
 import { ReactComponent as Question } from "../../assets/icons/Question.svg";
 import { ReactComponent as ETHLogo } from "../../assets/icons/EthLogo.svg";
 import { ReactComponent as Moon } from "../../assets/icons/Moon.svg";
@@ -26,15 +22,14 @@ const Header = () => {
   const { isWalletConnected } = useContext(WalletContext);
 
   return (
-    <div className="grid h-16 grid-cols-3 border-b-[0.5px] border-b-borderBottomConnectedCard px-6">
+    <div className="grid h-16 grid-cols-3 border-b-[0.5px] border-b-borderBottomConnectedCard bg-darkgreen px-6">
       <div
         className="col-span-1 flex items-center gap-2 hover:cursor-pointer"
         onClick={() => {
           navigate("/Swap");
         }}
       >
-        <Logo />
-        <Stoa />
+        <COFILogo />
       </div>
 
       <div className="flex items-center justify-center gap-[12px] space-x-2">
@@ -47,11 +42,16 @@ const Header = () => {
             setSelectedPart(0);
           }}
         >
-          {selectedPart === 0 ? <SwapRed /> : <Swap />}
-          <div className={`${selectedPart === 0 && " text-pink"}`}>Swap</div>
+          <Swap stroke={selectedPart === 0 ? "#EF2A89" : "white"} />
+          <div
+            className={`${selectedPart === 0 ? " text-pink" : "text-white"}`}
+          >
+            Swap
+          </div>
         </div>
 
-        <div
+        {/* Hidden for now */}
+        {/* <div
           className={`flex h-[100%] items-center gap-[8px] hover:cursor-pointer ${
             selectedPart === 1 && "border-b-[3px] border-b-pink"
           }`}
@@ -62,7 +62,7 @@ const Header = () => {
         >
           {selectedPart === 1 ? <VaultsLogoRed /> : <VaultsLogo />}
           <div className={`${selectedPart === 1 && "text-pink"}`}>Vaults</div>
-        </div>
+        </div> */}
 
         <div
           className={`flex h-[100%] items-center gap-[8px] hover:cursor-pointer ${
@@ -73,8 +73,10 @@ const Header = () => {
             setSelectedPart(2);
           }}
         >
-          {selectedPart === 2 ? <PointsLogoRed /> : <PointsLogo />}
-          <div className={`${selectedPart === 2 && "text-pink"}`}>Points</div>
+          <COFIPointLogo stroke={selectedPart === 2 ? "#EF2A89" : "white"} />
+          <div className={`${selectedPart === 2 ? "text-pink" : "text-white"}`}>
+            Points
+          </div>
         </div>
 
         <div
@@ -86,8 +88,10 @@ const Header = () => {
             setSelectedPart(3);
           }}
         >
-          {selectedPart == 3 ? <AboutLogoRed /> : <AboutLogo />}
-          <div className={`${selectedPart == 3 && "text-pink"}`}>About</div>
+          <AboutLogo stroke={`${selectedPart == 3 ? "#EF2A89" : "white"}`} />
+          <div className={`${selectedPart == 3 ? "text-pink" : "text-white"}`}>
+            About
+          </div>
         </div>
       </div>
 
@@ -95,23 +99,25 @@ const Header = () => {
         <div className="flex gap-0.5 rounded-lg border-[0.5px] border-solid border-borderCardNavbar bg-bgCardNavbar p-[2px]">
           <div
             className={` flex h-8 w-8 items-center justify-center hover:cursor-pointer  ${
-              theme === true && "borderToggle rounded-[6px] bg-white  shadow"
+              theme === true &&
+              "borderToggle rounded-[6px] bg-darkgreen  shadow"
             } `}
             onClick={() => {
               setTheme(true);
             }}
           >
-            <Sun />
+            <Sun stroke={`${theme === true ? "white" : "#394A46"}`} />
           </div>
           <div
             className={` flex h-8 w-8 items-center justify-center hover:cursor-pointer  ${
-              theme === false && "borderToggle rounded-[6px] bg-white  shadow  "
+              theme === false &&
+              "borderToggle rounded-[6px] bg-darkgreen  shadow  "
             } `}
             onClick={() => {
               setTheme(false);
             }}
           >
-            <Moon />
+            <Moon stroke={`${theme === false ? "white" : "#394A46"}`} />
           </div>
         </div>
 

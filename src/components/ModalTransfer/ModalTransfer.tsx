@@ -122,12 +122,12 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                         }}
                       />
                     </div>
-                    <div className="flex  flex-col gap-2 border-b-[0.5px]  border-[#00000033]  p-5">
+                    <div className="flex  flex-col   border-[#00000033]  p-5">
                       <div>Amount</div>
                       <input
                         placeholder="1,000"
                         type="text"
-                        className="h-[40px] w-[100%] rounded-lg border-[0.5px] border-solid border-[#00000033]  p-[10px]"
+                        className="h-[40px] w-[100%]  rounded-lg border-[0.5px] border-solid border-[#00000033]  p-[10px]"
                         onChange={(e) => {
                           setAmount(Number(e.target.value));
                         }}

@@ -18,7 +18,7 @@ const ConnectButton = () => {
   if (isWalletConnected)
     return (
       <div
-        className=" flex items-center justify-center gap-[6px] rounded-lg border-[0.5px] border-solid border-borderBottomConnectedCard bg-white p-2"
+        className=" flex items-center justify-center gap-[6px] rounded-lg border-[0.5px] border-solid border-white bg-darkgreen p-2"
         onClick={() => {
           showPopup ? setShowPopup(false) : setShowPopup(true);
         }}
@@ -27,7 +27,9 @@ const ConnectButton = () => {
           <Validate className="absolute bottom-[-2px] right-[-6px] " />
           <Profile />
         </div>
-        {addressDisplayed?.slice(0, 6) + "..." + addressDisplayed?.slice(38)}
+        <span className="text-white">
+          {addressDisplayed?.slice(0, 6) + "..." + addressDisplayed?.slice(38)}
+        </span>
         <Arrow
           className={` hover:cursor-pointer ${showPopup && "rotate-180"}`}
           onClick={() => {
