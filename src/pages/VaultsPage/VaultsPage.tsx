@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ModalVault from "../../components/ModalVault/ModalVault";
+import ModalVault from "../../components/Modals/ModalVault/ModalVault";
 import { ReactComponent as RedBulb } from "../../assets/icons/RedBulb.svg";
 import VaultOpenedPage from "./VaultOpenedPage/VaultOpenedPage";
 

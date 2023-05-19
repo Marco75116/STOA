@@ -1,83 +1,21 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import ListboxComponent from "../../components/ListboxComponent/ListboxComponent";
+import React, { useContext, useState } from "react";
 import { ReactComponent as Settings } from "../../assets/icons/Settings.svg";
-import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";
-import { ReactComponent as STOALOGOBLACK } from "../../assets/logos/STOALOGOBLACK.svg";
-import { ReactComponent as SamsVault } from "../../assets/logos/SamsVault.svg";
-import { ReactComponent as LegendGraph } from "../../assets/texts/StoaEarning.svg";
-import { ReactComponent as DoubleArrowWithBar } from "../../assets/icons/dobleArrowWithBar.svg";
-import { Collapse } from "react-collapse";
-import Graph from "../../components/Graph/Graph";
-import {
-  fiToUnderlyingDiamond,
-  underlyingToFiDiamond,
-} from "../../utils/ethers/ethers.write";
+import { ReactComponent as USDFI } from "../../assets/logos/USDCFILogo.svg";
+import { ReactComponent as DepositIllustration } from "../../assets/illustrations/DepositIllustration.svg";
+import { ReactComponent as DepositCards } from "../../assets/illustrations/DepositCards.svg";
 import { WalletContext } from "../../context/Wallet.context";
-import { ethers } from "ethers";
-import { CoinBalances, CoinPrices } from "../../utils/types/swap.types";
-import {
-  getBalances,
-  getPrices,
-  getReceiveAmount,
-} from "../../utils/helpers/swap.helpers";
-import { getKycDone } from "../../utils/helpers/global.helper";
 import { ReactComponent as Warning } from "../../assets/icons/Warning.svg";
 import { useNavigate } from "react-router-dom";
-
-const listStableCoinsFrom = [{ name: "DAI" }];
-const listStableCoinsTo = [{ name: "COFI" }];
+import TokenInfos from "./TokenInfos/TokenInfos";
+import { ReactComponent as ETHFI } from "../../assets/logos/ETHFILogo.svg";
+import ModalSwap from "../../components/Modals/ModalSwap/ModalSwap";
 
 const SwapPage = () => {
   const [action, setAction] = useState<0 | 1>(0);
   const [collapseOneOpen, setCollapseOneOpen] = useState<boolean>(true);
-  const [balanceCoins, setBalanceCoins] = useState<CoinBalances>({
-    DAI: 0,
-    COFI: 0,
-  });
-  const [depositAmount, setDepositAmount] = useState<number>(0);
-  const [pricesCoins, setPricesCoins] = useState<CoinPrices>({
-    DAI: 0,
-    COFI: 0,
-  });
-
-  const { signer, currentWalletAddress, constants, review } =
-    useContext(WalletContext);
-
-  const estimatedReceiving = useMemo(() => {
-    const fee = action === 0 ? constants.mintFee : constants.redeemFee;
-    return getReceiveAmount(depositAmount, fee);
-  }, [depositAmount, constants, action]);
-
-  const estimadedReceivingUSD = useMemo(() => {
-    if (estimatedReceiving !== undefined)
-      return (
-        estimatedReceiving * (action !== 0 ? pricesCoins.DAI : pricesCoins.COFI)
-      );
-  }, [estimatedReceiving, action, pricesCoins]);
-
-  const minAmountOut = useMemo(() => {
-    if (estimatedReceiving !== undefined) return estimatedReceiving * 0.9975;
-  }, [estimatedReceiving]);
-
+  const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
+  const { kycDone } = useContext(WalletContext);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (signer) {
-      getBalances(signer, currentWalletAddress).then((balances: CoinBalances) =>
-        setBalanceCoins(balances)
-      );
-    }
-    const prices = getPrices();
-    setPricesCoins(prices);
-  }, [signer, currentWalletAddress]);
-
-  const kycDone = useMemo(() => {
-    return getKycDone(review);
-  }, [review]);
-
-  useEffect(() => {
-    setDepositAmount(0);
-  }, [action]);
 
   return (
     <div className="center flex-col gap-3 bg-bgCardNavbar p-16">
@@ -95,7 +33,8 @@ const SwapPage = () => {
           </div>
         </div>
       )}
-      <div className="card max-h-[200px] w-[912px]">
+
+      <div className="card min-h-[200px] w-[912px]">
         <div className="borderBottom flex justify-between p-5">
           <div className="flex h-[32px] w-[158px] flex-row gap-[2px] rounded-lg bg-bgCardNavbar p-[2px]">
             <div
@@ -123,287 +62,62 @@ const SwapPage = () => {
             <Settings />
           </div>
         </div>
-        <div className="flex h-[128px] flex-row ">
-          <div className="flex flex-row items-center gap-3 px-5">
-            <div className="flex flex-col gap-2">
-              <div className="text-base font-medium">From Wallet</div>
-              <ListboxComponent
-                width={160}
-                list={action === 0 ? listStableCoinsFrom : listStableCoinsTo}
-              />
-              <div className="text-xs font-medium text-textGray">
-                {` Balances :  ${
-                  action === 0
-                    ? balanceCoins.DAI + " Dai"
-                    : balanceCoins.COFI + " COFI"
-                }`}
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className=" text-base font-medium">Amount</div>
-              <div className="flex h-[40px] w-[160px]  items-center justify-between rounded-xl border-[0.5px] border-solid border-borderCardAbout p-[10px]">
-                <input
-                  type="number"
-                  placeholder="0,00"
-                  className="w-[80%]"
-                  value={depositAmount}
-                  onChange={(event) => {
-                    setDepositAmount(Number(event.target.value));
-                  }}
-                />
-                <div
-                  onClick={() => {
-                    setDepositAmount(
-                      action === 0 ? balanceCoins.DAI : balanceCoins.COFI
-                    );
-                  }}
-                  className="center h-[28px] w-[40px]  rounded-md bg-ethBalance px-1 py-2 text-xs font-semibold  hover:cursor-pointer"
-                >
-                  Max
+        <div className="flex flex-row gap-3 p-5">
+          <div className="flex h-[156px] w-full flex-row justify-between rounded-xl bg-[#F5F5F5] ">
+            <div className="flex flex-col justify-between p-4">
+              <div className="flex h-[68px] w-[200px] flex-col justify-between">
+                <div className="text-sm font-medium">Deposit with Wallet</div>
+                <div className="text-sm font-normal">
+                  The purple elephant rode a unicycle through the park.
                 </div>
               </div>
-              <div className="text-xs font-medium text-textGray">{`$${
-                Number(depositAmount) *
-                (action === 0 ? pricesCoins.DAI : pricesCoins.COFI)
-              }`}</div>
-            </div>
-          </div>
-          <DoubleArrowWithBar
-            className=" hover:cursor-pointer"
-            onClick={() => {
-              setAction((prev) => {
-                if (prev === 0) {
-                  return 1;
-                } else {
-                  return 0;
-                }
-              });
-            }}
-          />
-          <div className="wit flex flex-row items-center gap-3 px-5">
-            <div className="flex flex-col gap-2">
-              <div className="text-base font-medium">
-                To {action === 0 ? "Stoa" : ""} stablecoin
+              <div
+                className="center h-[40px] w-[108px] rounded-lg border-[1px] border-[#FF87B2] text-[#FF87B2] hover:cursor-pointer"
+                onClick={() => {
+                  setIsOpenPopup(true);
+                }}
+              >
+                Proceed
               </div>
-              <ListboxComponent
-                width={160}
-                list={action !== 0 ? listStableCoinsFrom : listStableCoinsTo}
-              />
-              <div className="text-xs font-medium text-textGray">2.93%</div>
             </div>
-
-            <div className="flex flex-col gap-2 ">
-              <div className="text-base font-medium">You will receive</div>
-              <input
-                type="number"
-                placeholder="0,00"
-                value={estimatedReceiving}
-                disabled
-                className="flex h-[40px] w-[160px]  items-center justify-between rounded-xl border-[0.5px] border-solid border-borderCardAbout p-[10px]"
-              />
-              <div className="text-xs font-medium text-textGray">{`$${estimadedReceivingUSD}`}</div>
+            <DepositIllustration />
+          </div>
+          <div className="flex h-[156px] w-full flex-row justify-between rounded-xl bg-[#F5F5F5] ">
+            <div className="flex flex-col justify-between p-4">
+              <div className="flex h-[68px] w-[200px] flex-col justify-between">
+                <div className="text-sm font-medium">
+                  Deposit with Credit Card
+                </div>
+                <div className="text-sm font-normal">
+                  The purple elephant rode a unicycle through the park.
+                </div>
+              </div>
+              <div className="center h-[40px] w-[108px] rounded-lg border-[1px] border-[#FF87B2] text-[#FF87B2] hover:cursor-pointer">
+                Proceed
+              </div>
             </div>
-            <div
-              onClick={() => {
-                {
-                  kycDone === true &&
-                    signer &&
-                    (action === 0
-                      ? underlyingToFiDiamond(
-                          signer,
-                          ethers.utils.parseUnits(
-                            depositAmount.toString(),
-                            "ether"
-                          ),
-                          ethers.utils.parseUnits(
-                            Number(minAmountOut).toString(),
-                            "ether"
-                          ),
-                          currentWalletAddress
-                        )
-                      : fiToUnderlyingDiamond(
-                          signer,
-                          ethers.utils.parseUnits(
-                            depositAmount.toString(),
-                            "ether"
-                          ),
-                          ethers.utils.parseUnits(
-                            Number(minAmountOut).toString(),
-                            "ether"
-                          ),
-                          currentWalletAddress
-                        ));
-                }
-              }}
-              className="center h-[40px] w-[108px]  rounded-lg bg-pink p-3 text-base font-normal text-white hover:cursor-pointer "
-            >
-              {action === 0 ? "Mint" : "Swap"}
-            </div>
+            <DepositCards />
           </div>
         </div>
       </div>
-      <div className="card w-[912px]">
-        <div
-          className="borderBottom flex justify-between p-5 hover:cursor-pointer"
-          onClick={() => {
-            setCollapseOneOpen((prev) => !prev);
-          }}
-        >
-          <div className="flex gap-2 ">
-            <SamsVault />
-            fiUSD
-          </div>
-          <div className="flex flex-row items-center gap-[6px] ">
-            <span className="text-xs font-medium text-textGray">
-              Points rate
-            </span>
-            <STOALOGOBLACK />
-            <span>100/$ earned</span>
-          </div>
-          <div className="center flex-row  gap-[6px] ">
-            <span className="flex  items-stretch text-xs font-medium text-textGray">
-              APY
-            </span>
-            <span>3.5%</span>
-          </div>
-          <div className="center h-[32px] w-[32px] rounded-lg  hover:cursor-pointer">
-            <Arrow />
-          </div>
-        </div>
-        <Collapse isOpened={collapseOneOpen}>
-          <div className="borderBottom flex flex-row ">
-            <div className="borderRight flex basis-[53%] flex-col gap-2 p-5">
-              <div className=" text-base font-semibold">Description</div>
-              <div className="text-sm font-normal leading-[16px] text-[#000000B2]">
-                USD Coin is a stablecoin that is pegged to the U.S. dollar on a
-                1:1 basis. Every unit of this cryptocurrency in circulation is
-                backed up by S1 that is held in reserve, in a mix of cash and
-                short-term U.S. Treasury bonds. The Centre consortium, which is
-                behind this asset, says USDC is issued by regulated financial
-                institutions.
-              </div>
-            </div>
-
-            <div className="flex basis-[47%] flex-col gap-2 p-5">
-              <div>Summary</div>
-              <div className="flex flex-row gap-2">
-                <div className="center h-[90px] w-[90px] flex-col  rounded-lg border">
-                  <div className=" text-base font-semibold">1.7%</div>
-                  <div className="text-xs font-normal text-textGray">
-                    Weekly APY
-                  </div>
-                </div>
-                <div className="center h-[90px] w-[90px] flex-col  rounded-lg border ">
-                  <div className=" text-base font-semibold">2.33%</div>
-                  <div className="text-xs font-normal text-textGray">
-                    Inception APY
-                  </div>
-                </div>
-                <div className="center h-[90px] w-[90px] flex-col  rounded-lg border">
-                  <div className=" text-base font-semibold">2.93%</div>
-                  <div className="text-xs font-normal text-textGray">
-                    Monthly APY
-                  </div>
-                </div>
-                <div className="center h-[90px] w-[90px] flex-col rounded-lg border ">
-                  <div className=" text-base font-semibold">7500</div>
-                  <div className="text-xs font-normal text-textGray">
-                    Stoa rewarded
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="p-5">
-            <div className="flex items-center justify-between pb-3">
-              <div>Cumulative Earning</div>
-              <LegendGraph />
-            </div>
-            <Graph />
-          </div>
-        </Collapse>
-      </div>
-      <div className="card w-[912px]">
-        <div
-          className="borderBottom flex justify-between p-5 hover:cursor-pointer"
-          onClick={() => {
-            setCollapseOneOpen((prev) => !prev);
-          }}
-        >
-          <div className="flex gap-2 ">
-            <SamsVault />
-            fiETH
-          </div>
-          <div className="flex flex-row items-center gap-[6px] ">
-            <span className="text-xs font-medium text-textGray">
-              Points rate
-            </span>
-            <STOALOGOBLACK />
-            <span>100/$ earned</span>
-          </div>
-          <div className="center flex-row  gap-[6px] ">
-            <span className="flex  items-stretch text-xs font-medium text-textGray">
-              APY
-            </span>
-            <span>3.5%</span>
-          </div>
-          <div className="center h-[32px] w-[32px] rounded-lg  hover:cursor-pointer">
-            <Arrow />
-          </div>
-        </div>
-        <Collapse isOpened={!collapseOneOpen}>
-          <div className="borderBottom flex flex-row">
-            <div className="borderRight flex basis-[53%] flex-col gap-2 p-5">
-              <div className=" text-base font-semibold">Description</div>
-              <div className="text-sm font-normal leading-[16px] text-[#000000B2]">
-                USD Coin is a stablecoin that is pegged to the U.S. dollar on a
-                1:1 basis. Every unit of this cryptocurrency in circulation is
-                backed up by S1 that is held in reserve, in a mix of cash and
-                short-term U.S. Treasury bonds. The Centre consortium, which is
-                behind this asset, says USDC is issued by regulated financial
-                institutions.
-              </div>
-            </div>
-
-            <div className="flex basis-[47%] flex-col gap-2 p-5">
-              <div>Summary</div>
-              <div className="flex flex-row gap-2">
-                <div className="center h-[90px] w-[90px] flex-col  rounded-lg border">
-                  <div className=" text-base font-semibold">1.7%</div>
-                  <div className="text-xs font-normal text-textGray">
-                    Weekly APY
-                  </div>
-                </div>
-                <div className="center h-[90px] w-[90px] flex-col  rounded-lg border ">
-                  <div className=" text-base font-semibold">2.33%</div>
-                  <div className="text-xs font-normal text-textGray">
-                    Inception APY
-                  </div>
-                </div>
-                <div className="center h-[90px] w-[90px] flex-col  rounded-lg border">
-                  <div className=" text-base font-semibold">2.93%</div>
-                  <div className="text-xs font-normal text-textGray">
-                    Monthly APY
-                  </div>
-                </div>
-                <div className="center h-[90px] w-[90px] flex-col rounded-lg border ">
-                  <div className=" text-base font-semibold">7500</div>
-                  <div className="text-xs font-normal text-textGray">
-                    Stoa rewarded
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="p-5">
-            <div className="flex items-center justify-between pb-3">
-              <div>Cumulative Earning</div>
-              <LegendGraph />
-            </div>
-            <Graph />
-          </div>
-        </Collapse>
-      </div>
+      <TokenInfos
+        collapseOneOpen={collapseOneOpen}
+        setCollapseOneOpen={setCollapseOneOpen}
+        SVGLogo={USDFI}
+        TokenName={"USDFI"}
+      />
+      <TokenInfos
+        collapseOneOpen={!collapseOneOpen}
+        setCollapseOneOpen={setCollapseOneOpen}
+        SVGLogo={ETHFI}
+        TokenName={"ETHFI"}
+      />
+      <ModalSwap
+        isOpen={isOpenPopup}
+        setIsOpen={setIsOpenPopup}
+        action={action}
+        setAction={setAction}
+      />
     </div>
   );
 };

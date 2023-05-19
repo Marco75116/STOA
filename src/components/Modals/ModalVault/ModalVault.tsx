@@ -1,13 +1,13 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { FC, Fragment } from "react";
-import { ReactComponent as Cross } from "../../assets/icons/Cross.svg";
-import { ReactComponent as DoubleArrow } from "../../assets/icons/DoubleArrow.svg";
-import { ReactComponent as Info } from "../../assets/icons/Info.svg";
-import { ReactComponent as RoundCross } from "../../assets/icons/RoundCross.svg";
-import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";
-import { ReactComponent as NewVault } from "../../assets/icons/NewVault.svg";
-import { ReactComponent as VaultLogo } from "../../assets/logos/LogoVault.svg";
-import { ReactComponent as USDC } from "../../assets/logos/USDC.svg";
+import { ReactComponent as Cross } from "../../../assets/icons/Cross.svg";
+import { ReactComponent as DoubleArrow } from "../../../assets/icons/DoubleArrow.svg";
+import { ReactComponent as Info } from "../../../assets/icons/Info.svg";
+import { ReactComponent as RoundCross } from "../../../assets/icons/RoundCross.svg";
+import { ReactComponent as Arrow } from "../../../assets/icons/ArrowBlack.svg";
+import { ReactComponent as NewVault } from "../../../assets/icons/NewVault.svg";
+import { ReactComponent as VaultLogo } from "../../../assets/logos/LogoVault.svg";
+import { ReactComponent as USDC } from "../../../assets/logos/tokens/USDC.svg";
 
 type ModalVaultProps = {
   isOpen: boolean;

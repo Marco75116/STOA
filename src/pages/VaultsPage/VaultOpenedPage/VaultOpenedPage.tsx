@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ReactComponent as Arrow } from "../../../assets/icons/Arrow.svg";
+import { ReactComponent as Arrow } from "../../../assets/icons/ArrowBlack.svg";
 import { ReactComponent as Bulb } from "../../../assets/icons/Bulb.svg";
 import { ReactComponent as Cadena } from "../../../assets/icons/Cadena.svg";
 import { ReactComponent as LegendGraph } from "../../../assets/texts/StoaEarning.svg";

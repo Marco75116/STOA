@@ -1,5 +1,11 @@
 import { ethers } from "ethers";
-import React, { createContext, ReactNode, useEffect, useState } from "react";
+import React, {
+  createContext,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { m } from "../plugins/magic";
 import { getConstants } from "../utils/helpers/constant.helper";
 import { GlobalConstants } from "../utils/types/global.types";
@@ -9,6 +15,7 @@ import {
   ApplicantDataApi,
   Review,
 } from "../utils/types/sumsub.types";
+import { getKycDone } from "../utils/helpers/global.helper";
 
 type WalletContextProps = {
   currentWalletAddress: string;
@@ -29,6 +36,7 @@ type WalletContextProps = {
   applicantData: ApplicantData | undefined;
   isOpenWallet: boolean;
   setIsOpenWallet: Function;
+  kycDone: boolean;
 };
 
 type WalletProviderProps = {
@@ -157,6 +165,10 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
     }
   }, [currentWalletAddress]);
 
+  const kycDone = useMemo(() => {
+    return getKycDone(review);
+  }, [review, currentWalletAddress]);
+
   return (
     <WalletContext.Provider
       value={{
@@ -178,6 +190,7 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
         applicantData,
         isOpenWallet,
         setIsOpenWallet,
+        kycDone,
       }}
     >
       {children}

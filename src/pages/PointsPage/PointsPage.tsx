@@ -4,20 +4,6 @@ import { ReactComponent as TotalEarned } from "../../assets/texts/TotalEarned.sv
 import { ReactComponent as Claimed } from "../../assets/texts/Claimed.svg";
 import { ReactComponent as StoaPoints } from "../../assets/texts/StoaPoints.svg";
 import { ReactComponent as Claimable } from "../../assets/texts/Claimable.svg";
-import ListboxComponent from "../../components/ListboxComponent/ListboxComponent";
-
-const listStableCoins = [
-  { name: "USDC" },
-  { name: "USDT" },
-  { name: "fiUSD" },
-  { name: "USTT" },
-];
-const listFromFunds = [
-  { name: "Metamask", amount: 12222 },
-  { name: "Sam's Vault", amount: 12222 },
-  { name: "ETHFI Vault", amount: 12222 },
-  { name: "My Vault", amount: 12222 },
-];
 
 const PointsPage = () => {
   return (
@@ -76,11 +62,9 @@ const PointsPage = () => {
           <div className="flex flex-row gap-[16px]">
             <div className="flex flex-col">
               <div className="pl-[4px]">Supply Assets</div>
-              <ListboxComponent list={listStableCoins} />
             </div>
             <div className="flex flex-col">
               <div className="pl-[4px]">Supply</div>
-              <ListboxComponent list={listStableCoins} />
             </div>
 
             <div>
@@ -94,7 +78,6 @@ const PointsPage = () => {
 
             <div className="flex flex-col">
               <div className="pl-[4px]">From</div>
-              <ListboxComponent list={listFromFunds} />
             </div>
           </div>
 

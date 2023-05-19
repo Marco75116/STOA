@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Dialog, Transition } from "@headlessui/react";
 import { FC, Fragment, useContext, useState } from "react";
-import { ReactComponent as Cross } from "../../assets/icons/Cross.svg";
-import { ReactComponent as ValidationTx } from "../../assets/icons/ValidationTx.svg";
-import { ReactComponent as VaultLogo } from "../../assets/logos/LogoVault.svg";
-import { ReactComponent as USDC } from "../../assets/logos/USDC.svg";
+import { ReactComponent as Cross } from "../../../assets/icons/Cross.svg";
+import { ReactComponent as ValidationTx } from "../../../assets/icons/ValidationTx.svg";
+import { ReactComponent as VaultLogo } from "../../../assets/logos/LogoVault.svg";
+import { ReactComponent as USDC } from "../../../assets/logos/tokens/USDC.svg";
 
-import { abiUSDC } from "../../utils/constants/abi/USDC";
-import { addressUSDC } from "../../utils/constants/address/USDC";
+import { abiUSDC } from "../../../utils/constants/abi/USDC";
+import { addressUSDC } from "../../../utils/constants/address/USDC";
 import { ethers } from "ethers";
-import { transferDai } from "../../utils/ethers/ethers.write";
-import { WalletContext } from "../../context/Wallet.context";
+import { transferDai } from "../../../utils/ethers/ethers.write";
+import { WalletContext } from "../../../context/Wallet.context";
 
 type ModalTransferProps = {
   isOpen: boolean;

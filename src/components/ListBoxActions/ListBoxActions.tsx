@@ -5,7 +5,7 @@ import { ReactComponent as TransferIcon } from "../../assets/icons/TransferIcon.
 import { ReactComponent as WithdrawIcon } from "../../assets/icons/WithdrawIcon.svg";
 import { ReactComponent as LiquidateIcon } from "../../assets/icons/LiquidateIcon.svg";
 import { Fragment, useState } from "react";
-import ModalTransfer from "../ModalTransfer/ModalTransfer";
+import ModalTransfer from "../Modals/ModalTransfer/ModalTransfer";
 
 export default function Example() {
   const [isOpen, setIsOpen] = useState<boolean>(false);

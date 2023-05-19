@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { WalletContext } from "../../context/Wallet.context";
-import { ReactComponent as Arrow } from "../../assets/icons/Arrow.svg";
+import { ReactComponent as Arrow } from "../../assets/icons/ArrowWhiteAccount.svg";
 import { ReactComponent as Profile } from "../../assets/icons/profile.svg";
 import { ReactComponent as Shield } from "../../assets/icons/Shield.svg";
 import { ReactComponent as Validate } from "../../assets/icons/Validate.svg";
@@ -18,7 +18,7 @@ const ConnectButton = () => {
   if (isWalletConnected)
     return (
       <div
-        className=" flex items-center justify-center gap-[6px] rounded-lg border-[0.5px] border-solid border-white bg-darkgreen p-2"
+        className="center gap-[6px] rounded-lg border-[0.5px] border-solid border-white bg-darkgreen p-2"
         onClick={() => {
           showPopup ? setShowPopup(false) : setShowPopup(true);
         }}
@@ -46,7 +46,7 @@ const ConnectButton = () => {
           onClick={() => {
             showPopup ? setShowPopup(false) : setShowPopup(true);
           }}
-          className=" flex items-center justify-center gap-[6px] rounded-lg border-[0.5px] border-solid border-borderBottomConnectedCard bg-white p-2 hover:cursor-pointer"
+          className="center gap-[6px] rounded-lg border-[0.5px] border-solid border-borderBottomConnectedCard border-white bg-darkgreen p-2 hover:cursor-pointer"
         >
           <div className="relative mr-[6px]">
             <Shield className="absolute bottom-[-2px] right-[-6px]" />
