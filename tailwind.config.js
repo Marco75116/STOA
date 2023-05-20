@@ -19,7 +19,11 @@ module.exports = {
       magicWallet: "#6851FF",
       darkgreen: "#394A46",
     },
-    extend: {},
+    extend: {
+      backgroundImage: {
+        bgFriends: "url('/src/assets/images/BgFriends.png')",
+      },
+    },
   },
   plugins: [],
 };
