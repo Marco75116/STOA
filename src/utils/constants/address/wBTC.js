@@ -1,0 +1,1 @@
+export const addresswBTC = "0x5b6643F3315E53a3463F11897c48491eFAaa5072";

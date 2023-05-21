@@ -1,27 +1,35 @@
-import { addressCOFI } from "../constants/address/COFI";
-import { addressDai } from "../constants/address/Dai";
+import { addressUSDCOFI } from "../constants/address/addressesCOFI/USDCOFI";
+// import { addressDai } from "../constants/address/Dai";
 import { getBalanceERC20 } from "../ethers/ethers.view";
 import { CoinBalances, CoinPrices } from "../types/swap.types";
 import { ethers } from "ethers";
+import { addressUSDC } from "../constants/address/USDC";
 
 export const getBalances = async (
   signer: ethers.providers.JsonRpcSigner,
   currentWalletAddress: string
 ): Promise<CoinBalances> => {
   try {
-    const daiBalance = await getBalanceERC20(
-      signer,
-      currentWalletAddress,
-      addressDai
-    );
+    // const daiBalance = await getBalanceERC20(
+    //   signer,
+    //   currentWalletAddress,
+    //   addressDai
+    // );
     const cofiBalance = await getBalanceERC20(
       signer,
       currentWalletAddress,
-      addressCOFI
+      addressUSDCOFI
+    );
+
+    const usdcBalance = await getBalanceERC20(
+      signer,
+      currentWalletAddress,
+      addressUSDC
     );
 
     return {
-      DAI: Number(ethers.utils.formatUnits(daiBalance || 0)),
+      USDC: Number(ethers.utils.formatUnits(usdcBalance || 0)),
+      DAI: 0,
       COFI: Number(ethers.utils.formatUnits(cofiBalance || 0)),
     };
   } catch (error) {
@@ -31,6 +39,7 @@ export const getBalances = async (
 
 export const getPrices = (): CoinPrices => {
   return {
+    USDC: 1,
     DAI: 1,
     COFI: 1,
   };

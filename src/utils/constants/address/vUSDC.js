@@ -1,0 +1,1 @@
+export const addressvUSDC = "0xBC181CF9f609b2F81561380B1A9F7669DFd4F4Ee";

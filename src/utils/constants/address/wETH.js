@@ -1,0 +1,1 @@
+export const addresswETH = "0x95418000B418b9f30b1CC1fB73D99F3326c2D1dF";

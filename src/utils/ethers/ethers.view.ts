@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { abiDiamond } from "../constants/abi/Diamond";
 import { addressDiamond } from "../constants/address/Diamond";
-import { addressCOFI } from "../constants/address/COFI";
+import { addressUSDCOFI } from "../constants/address/addressesCOFI/USDCOFI";
 
 export const getBalanceERC20 = async (
   signer: ethers.providers.JsonRpcSigner,
@@ -33,7 +33,7 @@ export const getMinWithdraw = async (
       abiDiamond,
       signer
     );
-    const minWithdraw = await diamond_Contract.getMinWithdraw(addressCOFI);
+    const minWithdraw = await diamond_Contract.getMinWithdraw(addressUSDCOFI);
     return minWithdraw;
   } catch (error) {
     throw new Error("getMinWithdraw failed : " + error);
@@ -49,7 +49,7 @@ export const getMinDeposit = async (
       abiDiamond,
       signer
     );
-    const minDeposit = await diamond_Contract.getMinDeposit(addressCOFI);
+    const minDeposit = await diamond_Contract.getMinDeposit(addressUSDCOFI);
     return minDeposit;
   } catch (error) {
     throw new Error("getMinDeposit failed : " + error);
@@ -65,7 +65,7 @@ export const getMintFee = async (
       abiDiamond,
       signer
     );
-    const mintFee = await diamond_Contract.getMintFee(addressCOFI);
+    const mintFee = await diamond_Contract.getMintFee(addressUSDCOFI);
     return mintFee;
   } catch (error) {
     throw new Error("getMintFee failed : " + error);
@@ -81,7 +81,7 @@ export const getMintEnabled = async (
       abiDiamond,
       signer
     );
-    const mintEnabled = await diamond_Contract.getMintEnabled(addressCOFI);
+    const mintEnabled = await diamond_Contract.getMintEnabled(addressUSDCOFI);
     return mintEnabled;
   } catch (error) {
     throw new Error("getMintEnabled failed : " + error);
@@ -97,7 +97,7 @@ export const getRedeemFee = async (
       abiDiamond,
       signer
     );
-    const redeemFee = await diamond_Contract.getRedeemFee(addressCOFI);
+    const redeemFee = await diamond_Contract.getRedeemFee(addressUSDCOFI);
     return redeemFee;
   } catch (error) {
     throw new Error("getRedeemFee failed : " + error);
@@ -113,7 +113,9 @@ export const getRedeemEnabled = async (
       abiDiamond,
       signer
     );
-    const redeemEnabled = await diamond_Contract.getRedeemEnabled(addressCOFI);
+    const redeemEnabled = await diamond_Contract.getRedeemEnabled(
+      addressUSDCOFI
+    );
     return redeemEnabled;
   } catch (error) {
     throw new Error("getRedeemEnabled failed : " + error);
@@ -129,7 +131,7 @@ export const getPointsRate = async (
       abiDiamond,
       signer
     );
-    const pointsRate = await diamond_Contract.getPointsRate(addressCOFI);
+    const pointsRate = await diamond_Contract.getPointsRate(addressUSDCOFI);
     return pointsRate;
   } catch (error) {
     throw new Error("getPointsRate failed : " + error);

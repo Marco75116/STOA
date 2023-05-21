@@ -24,8 +24,8 @@ import { ReactComponent as USDFI } from "../../../assets/logos/USDCFILogo.svg";
 import { ReactComponent as USDC } from "../../../assets/logos/tokens/USDC.svg";
 
 const listStableCoinsFrom: Token[] = [
-  { name: "DAI", svgLogo: DAILogo },
   { name: "USDC", svgLogo: USDC },
+  { name: "DAI", svgLogo: DAILogo },
 ];
 const listStableCoinsTo: Token[] = [{ name: "USDFI", svgLogo: USDFI }];
 
@@ -45,11 +45,13 @@ const ModalSwap: FC<ModalSwapProps> = ({
   const [balanceCoins, setBalanceCoins] = useState<CoinBalances>({
     DAI: 0,
     COFI: 0,
+    USDC: 0,
   });
   const [depositAmount, setDepositAmount] = useState<number>(0);
   const [pricesCoins, setPricesCoins] = useState<CoinPrices>({
     DAI: 0,
     COFI: 0,
+    USDC: 0,
   });
   const { signer, currentWalletAddress, constants, kycDone } =
     useContext(WalletContext);
@@ -64,7 +66,8 @@ const ModalSwap: FC<ModalSwapProps> = ({
   const estimadedReceivingUSD = useMemo(() => {
     if (estimatedReceiving !== undefined)
       return (
-        estimatedReceiving * (action !== 0 ? pricesCoins.DAI : pricesCoins.COFI)
+        estimatedReceiving *
+        (action !== 0 ? pricesCoins.USDC : pricesCoins.COFI)
       );
   }, [estimatedReceiving, action, pricesCoins]);
 
@@ -141,7 +144,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
                       <div className="text-xs font-medium text-textGray">
                         {` Balances :  ${
                           action === 0
-                            ? balanceCoins.DAI + " Dai"
+                            ? balanceCoins.USDC + " USDC"
                             : balanceCoins.COFI + " COFI"
                         }`}
                       </div>
@@ -162,7 +165,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
                           onClick={() => {
                             setDepositAmount(
                               action === 0
-                                ? balanceCoins.DAI
+                                ? balanceCoins.USDC
                                 : balanceCoins.COFI
                             );
                           }}
@@ -173,7 +176,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
                       </div>
                       <div className="text-xs font-medium text-textGray">{`$${
                         Number(depositAmount) *
-                        (action === 0 ? pricesCoins.DAI : pricesCoins.COFI)
+                        (action === 0 ? pricesCoins.USDC : pricesCoins.COFI)
                       }`}</div>
                     </div>
                   </div>

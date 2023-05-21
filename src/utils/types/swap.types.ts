@@ -1,10 +1,12 @@
 import React from "react";
 
 export type CoinBalances = {
+  USDC: number;
   DAI: number;
   COFI: number;
 };
 export type CoinPrices = {
+  USDC: number;
   DAI: number;
   COFI: number;
 };
