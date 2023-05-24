@@ -19,7 +19,7 @@ const SwapPage = () => {
 
   return (
     <div className="center flex-col gap-3 bg-bgCardNavbar p-16">
-      {!kycDone && (
+      {kycDone === false && (
         <div className="center flex flex-row gap-2">
           <Warning />
           Your have to pass your KYC before minting.{" "}
