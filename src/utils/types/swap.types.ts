@@ -18,3 +18,9 @@ export type Token = {
     }
   >;
 };
+
+export type HistoryYield = {
+  id: number;
+  day: number;
+  amount: number;
+};

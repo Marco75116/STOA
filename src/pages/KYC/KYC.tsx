@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useEffect, useState } from "react";
 import SumsubWebSdk from "@sumsub/websdk-react";
 import { WalletContext } from "../../context/Wallet.context";
-import api from "../../utils/service/apiSumsub";
+import apiKYC from "../../utils/services/apiSumsub";
 import { getKycDone } from "../../utils/helpers/global.helper";
 
 const KYC = () => {
@@ -56,11 +56,11 @@ const KYC = () => {
     const signature = await signData();
 
     if (!applicantExist) {
-      await api.createApplicant({
+      await apiKYC.createApplicant({
         externalUserId: currentWalletAddress || "",
       });
     }
-    const token = await api.createToken({
+    const token = await apiKYC.createToken({
       externalUserId: signature || "",
     });
     setAccessSDKToken(token.data.token);

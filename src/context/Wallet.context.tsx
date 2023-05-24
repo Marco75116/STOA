@@ -9,7 +9,7 @@ import React, {
 import { m } from "../plugins/magic";
 import { getConstants } from "../utils/helpers/constant.helper";
 import { GlobalConstants } from "../utils/types/global.types";
-import api from "../utils/service/apiSumsub";
+import apiKYC from "../utils/services/apiSumsub";
 import {
   ApplicantData,
   ApplicantDataApi,
@@ -36,7 +36,7 @@ type WalletContextProps = {
   applicantData: ApplicantData | undefined;
   isOpenWallet: boolean;
   setIsOpenWallet: Function;
-  kycDone: boolean;
+  kycDone: boolean | undefined;
 };
 
 type WalletProviderProps = {
@@ -139,7 +139,7 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
   }, [isWalletConnected, signer]);
 
   const getApplicantData = async () => {
-    const applicantData = await api.getApplicantData({
+    const applicantData = await apiKYC.getApplicantData({
       externalUserId: currentWalletAddress,
     });
 
@@ -165,7 +165,7 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
     }
   }, [currentWalletAddress]);
 
-  const kycDone = useMemo(() => {
+  const kycDone: boolean | undefined = useMemo(() => {
     return getKycDone(review);
   }, [review, currentWalletAddress]);
 
