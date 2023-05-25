@@ -8,7 +8,7 @@ const instance = axios.create({
 
 const apiService = {
   getHistoryYield: () =>
-    instance.get<HistoryYield>(`historyYield/`).catch((error) => {
+    instance.get<HistoryYield[]>(`historyYield/`).catch((error) => {
       throw new Error("getHistoryYield call failed: " + error);
     }),
 };

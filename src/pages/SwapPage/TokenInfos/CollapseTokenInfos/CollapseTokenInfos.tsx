@@ -1,9 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Graph from "../../../../components/Graph/Graph";
 import { ReactComponent as LegendGraph } from "../../../../assets/texts/StoaEarning.svg";
 import { ReactComponent as ArrowSwap } from "../../../../assets/icons/arrowSwap.svg";
+import apiIndexer from "../../../../utils/services/apiDapp";
+import { HistoryYield } from "../../../../utils/types/swap.types";
 
 const CollapseTokenInfos = () => {
+  const [historyData, setHistoryData] = useState<HistoryYield[]>();
+  const getHistoryYield = async () => {
+    const applicantData = await apiIndexer.getHistoryYield();
+
+    return applicantData.data;
+  };
+
+  useEffect(() => {
+    getHistoryYield().then((history) => {
+      setHistoryData(history);
+    });
+  }, []);
+
   return (
     <>
       <div className="borderBottom flex flex-row ">
@@ -42,7 +57,7 @@ const CollapseTokenInfos = () => {
           <div>Cumulative Earning</div>
           <LegendGraph />
         </div>
-        <Graph />
+        <Graph historyData={historyData} />
       </div>
     </>
   );

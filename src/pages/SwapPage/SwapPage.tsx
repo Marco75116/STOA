@@ -12,7 +12,7 @@ import ModalSwap from "../../components/Modals/ModalSwap/ModalSwap";
 
 const SwapPage = () => {
   const [action, setAction] = useState<0 | 1>(0);
-  const [collapseOneOpen, setCollapseOneOpen] = useState<boolean>(true);
+  const [collapseOneOpen, setCollapseOneOpen] = useState<boolean>(false);
   const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
   const { kycDone } = useContext(WalletContext);
   const navigate = useNavigate();
