@@ -1,7 +1,12 @@
 import { addressUSDCOFI } from "../constants/address/addressesCOFI/USDCOFI";
 // import { addressDai } from "../constants/address/Dai";
 import { getBalanceERC20 } from "../ethers/ethers.view";
-import { CoinBalances, CoinPrices } from "../types/swap.types";
+import {
+  CoinBalances,
+  CoinPrices,
+  HistoryYield,
+  TokenName,
+} from "../types/swap.types";
 import { ethers } from "ethers";
 import { addressUSDC } from "../constants/address/USDC";
 
@@ -55,4 +60,27 @@ export const getReceiveAmount = (
   } catch (error) {
     throw new Error("Error : " + error);
   }
+};
+
+export const getHistoryYieldArray = (
+  historyYieldArray: HistoryYield[],
+  tokenName: TokenName
+) => {
+  const historyYieldArrayAsset = historyYieldArray.map(
+    (historyYiel: HistoryYield) => {
+      const { day, amountUSDFI, amountETHFI, amountBTCFI, id } = historyYiel;
+      return {
+        id,
+        day,
+        amount:
+          tokenName === "USDFI"
+            ? amountUSDFI
+            : tokenName === "ETHFI"
+            ? amountETHFI
+            : amountBTCFI,
+      };
+    }
+  );
+
+  return historyYieldArrayAsset;
 };

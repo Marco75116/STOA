@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC } from "react";
 import {
   Area,
@@ -9,10 +8,10 @@ import {
   AreaChart,
   ResponsiveContainer,
 } from "recharts";
-import { HistoryYield } from "../../utils/types/swap.types";
+import { HistoryYiedAsset } from "../../utils/types/swap.types";
 
 type GraphProps = {
-  historyData?: HistoryYield[];
+  historyData?: HistoryYiedAsset[];
 };
 
 const GraphTooltip = ({ active, payload }: any) => {

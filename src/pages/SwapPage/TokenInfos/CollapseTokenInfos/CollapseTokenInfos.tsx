@@ -1,12 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Graph from "../../../../components/Graph/Graph";
 import { ReactComponent as LegendGraph } from "../../../../assets/texts/StoaEarning.svg";
 import { ReactComponent as ArrowSwap } from "../../../../assets/icons/arrowSwap.svg";
 import apiIndexer from "../../../../utils/services/apiDapp";
-import { HistoryYield } from "../../../../utils/types/swap.types";
+import {
+  HistoryYiedAsset,
+  TokenName,
+} from "../../../../utils/types/swap.types";
+import { getHistoryYieldArray } from "../../../../utils/helpers/swap.helpers";
 
-const CollapseTokenInfos = () => {
-  const [historyData, setHistoryData] = useState<HistoryYield[]>();
+type CollapseTokenInfosProps = {
+  tokenName: TokenName;
+};
+
+const CollapseTokenInfos: FC<CollapseTokenInfosProps> = ({ tokenName }) => {
+  const [historyData, setHistoryData] = useState<HistoryYiedAsset[]>();
   const getHistoryYield = async () => {
     const applicantData = await apiIndexer.getHistoryYield();
 
@@ -14,8 +22,8 @@ const CollapseTokenInfos = () => {
   };
 
   useEffect(() => {
-    getHistoryYield().then((history) => {
-      setHistoryData(history);
+    getHistoryYield().then((historyYieldArray) => {
+      setHistoryData(getHistoryYieldArray(historyYieldArray, tokenName));
     });
   }, []);
 

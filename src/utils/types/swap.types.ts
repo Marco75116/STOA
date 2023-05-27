@@ -22,5 +22,15 @@ export type Token = {
 export type HistoryYield = {
   id: number;
   day: number;
+  amountUSDFI: number;
+  amountBTCFI: number;
+  amountETHFI: number;
+};
+
+export type HistoryYiedAsset = {
+  id: number;
+  day: number;
   amount: number;
 };
+
+export type TokenName = "USDFI" | "ETHFI" | "BTCFI";

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { ReactComponent as Settings } from "../../assets/icons/Settings.svg";
 import { ReactComponent as USDFI } from "../../assets/logos/USDCFILogo.svg";
+import { ReactComponent as BTCFI } from "../../assets/logos/tokens/BTCFILogo.svg";
 import { ReactComponent as DepositIllustration } from "../../assets/illustrations/DepositIllustration.svg";
 import { ReactComponent as DepositCards } from "../../assets/illustrations/DepositCards.svg";
 import { WalletContext } from "../../context/Wallet.context";
@@ -12,7 +13,7 @@ import ModalSwap from "../../components/Modals/ModalSwap/ModalSwap";
 
 const SwapPage = () => {
   const [action, setAction] = useState<0 | 1>(0);
-  const [collapseOneOpen, setCollapseOneOpen] = useState<boolean>(false);
+  const [collapseOpen, setCollapseOpen] = useState<1 | 2 | 3 | undefined>(1);
   const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
   const { kycDone } = useContext(WalletContext);
   const navigate = useNavigate();
@@ -101,16 +102,28 @@ const SwapPage = () => {
         </div>
       </div>
       <TokenInfos
-        collapseOneOpen={collapseOneOpen}
-        setCollapseOneOpen={setCollapseOneOpen}
+        collapseOpen={collapseOpen === 1}
+        setCollapseOpen={() => {
+          collapseOpen === 1 ? setCollapseOpen(undefined) : setCollapseOpen(1);
+        }}
         SVGLogo={USDFI}
-        TokenName={"USDFI"}
+        tokenName={"USDFI"}
       />
       <TokenInfos
-        collapseOneOpen={!collapseOneOpen}
-        setCollapseOneOpen={setCollapseOneOpen}
+        collapseOpen={collapseOpen === 2}
+        setCollapseOpen={() => {
+          collapseOpen === 2 ? setCollapseOpen(undefined) : setCollapseOpen(2);
+        }}
         SVGLogo={ETHFI}
-        TokenName={"ETHFI"}
+        tokenName={"ETHFI"}
+      />
+      <TokenInfos
+        collapseOpen={collapseOpen === 3}
+        setCollapseOpen={() => {
+          collapseOpen === 3 ? setCollapseOpen(undefined) : setCollapseOpen(3);
+        }}
+        SVGLogo={BTCFI}
+        tokenName={"BTCFI"}
       />
       <ModalSwap
         isOpen={isOpenPopup}
