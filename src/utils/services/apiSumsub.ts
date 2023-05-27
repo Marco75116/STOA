@@ -2,7 +2,7 @@ import axios from "axios";
 import { User, AccessToken, ApplicantDataApi } from "../types/sumsub.types";
 
 const instance = axios.create({
-  baseURL: "https://stoa-kyc-api-back.up.railway.app/verify/",
+  baseURL: process.env.REACT_APP_API_BASE_URL + "verify/",
   timeout: 30000,
 });
 

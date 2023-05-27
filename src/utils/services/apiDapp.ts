@@ -2,7 +2,7 @@ import axios from "axios";
 import { HistoryYield } from "../types/swap.types";
 
 const instance = axios.create({
-  baseURL: "https://stoa-kyc-api-back.up.railway.app/defi/",
+  baseURL: process.env.REACT_APP_API_BASE_URL + "defi/",
   timeout: 30000,
 });
 
