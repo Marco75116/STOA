@@ -22,6 +22,7 @@ import { ReactComponent as DoubleArrowWithBar } from "../../../assets/icons/Arro
 import { ReactComponent as DAILogo } from "../../../assets/logos/tokens/DAILogo.svg";
 import { ReactComponent as USDFI } from "../../../assets/logos/USDCFILogo.svg";
 import { ReactComponent as USDC } from "../../../assets/logos/tokens/USDC.svg";
+import { decimalUSDC } from "../../../utils/constants/address/USDC";
 
 const listStableCoinsFrom: Token[] = [
   { name: "USDC", svgLogo: USDC },
@@ -56,7 +57,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
   const { signer, currentWalletAddress, constants, kycDone } =
     useContext(WalletContext);
 
-  const [addressRecipient, setAddressRecipient] = useState<string>("");
+  const [addressReferral, setAddressReferral] = useState<string>("");
 
   const estimatedReceiving = useMemo(() => {
     const fee = action === 0 ? constants.mintFee : constants.redeemFee;
@@ -83,7 +84,6 @@ const ModalSwap: FC<ModalSwapProps> = ({
     }
     const prices = getPrices();
     setPricesCoins(prices);
-    setAddressRecipient(currentWalletAddress);
   }, [signer, currentWalletAddress]);
 
   useEffect(() => {
@@ -120,7 +120,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="card min-h-[568px] w-[500px]  transform overflow-hidden text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="card max-h-[600px] w-[500px]  transform overflow-hidden text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
                   className="flex flex-row items-center justify-between border-b-[0.5px] border-solid border-borderCardAbout p-6  text-lg font-medium leading-6 text-gray-900"
@@ -225,18 +225,22 @@ const ModalSwap: FC<ModalSwapProps> = ({
                   </div>
                 </div>
 
-                <div className="flex flex-col  gap-2   p-5">
-                  <div className=" text-sm  font-medium">Referral address</div>
-                  <input
-                    placeholder="Enter address..."
-                    type="text"
-                    className="h-[40px] w-[100%] rounded-lg border-[0.5px] border-solid border-[#00000033]  p-[10px]"
-                    value={addressRecipient}
-                    onChange={(e) => {
-                      setAddressRecipient(e.target.value);
-                    }}
-                  />
-                </div>
+                {action === 0 && (
+                  <div className="flex flex-col  gap-2   p-5">
+                    <div className=" text-sm  font-medium">
+                      Referral address
+                    </div>
+                    <input
+                      placeholder="Enter address..."
+                      type="text"
+                      className="h-[40px] w-[100%] rounded-lg border-[0.5px] border-solid border-[#00000033]  p-[10px]"
+                      value={addressReferral}
+                      onChange={(e) => {
+                        setAddressReferral(e.target.value);
+                      }}
+                    />
+                  </div>
+                )}
 
                 <div className="p-5">
                   <div
@@ -250,13 +254,16 @@ const ModalSwap: FC<ModalSwapProps> = ({
                                 signer,
                                 ethers.utils.parseUnits(
                                   depositAmount.toString(),
-                                  "ether"
+                                  decimalUSDC
                                 ),
                                 ethers.utils.parseUnits(
                                   Number(minAmountOut).toString(),
                                   "ether"
                                 ),
-                                addressRecipient
+                                currentWalletAddress,
+                                addressReferral === ""
+                                  ? ethers.constants.AddressZero
+                                  : addressReferral
                               )
                             : fiToUnderlyingDiamond(
                                 signer,
@@ -266,9 +273,9 @@ const ModalSwap: FC<ModalSwapProps> = ({
                                 ),
                                 ethers.utils.parseUnits(
                                   Number(minAmountOut).toString(),
-                                  "ether"
+                                  decimalUSDC
                                 ),
-                                addressRecipient
+                                currentWalletAddress
                               ));
                       }
                     }}

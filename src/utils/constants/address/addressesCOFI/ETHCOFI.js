@@ -1,1 +1,1 @@
-export const addressETHCOFI = "0xd75F5608f4a38A75F2435f652164c138B2eb9A29";
+export const addressETHCOFI = "0x65F29A21a05f4B282Baf8BCcA223a9a3B4d6a4Ad";

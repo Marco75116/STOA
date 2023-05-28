@@ -8,7 +8,7 @@ import {
   TokenName,
 } from "../types/swap.types";
 import { ethers } from "ethers";
-import { addressUSDC } from "../constants/address/USDC";
+import { addressUSDC, decimalUSDC } from "../constants/address/USDC";
 
 export const getBalances = async (
   signer: ethers.providers.JsonRpcSigner,
@@ -33,7 +33,7 @@ export const getBalances = async (
     );
 
     return {
-      USDC: Number(ethers.utils.formatUnits(usdcBalance || 0)),
+      USDC: Number(ethers.utils.formatUnits(usdcBalance || 0, decimalUSDC)),
       DAI: 0,
       COFI: Number(ethers.utils.formatUnits(cofiBalance || 0)),
     };

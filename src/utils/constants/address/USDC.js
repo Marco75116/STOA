@@ -1,1 +1,2 @@
-export const addressUSDC = "0xEc2dBB23D0B8bD800569Ca36EFD141B67D707b03";
+export const addressUSDC = "0xa619957234B95fc266EDcA6EAec06b23dff1F5A2";
+export const decimalUSDC = 6;

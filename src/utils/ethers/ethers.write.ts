@@ -3,7 +3,6 @@ import { abiDiamond } from "../constants/abi/Diamond";
 import { addressDai } from "../constants/address/Dai";
 import { addressDiamond } from "../constants/address/Diamond";
 import { addressUSDCOFI } from "../constants/address/addressesCOFI/USDCOFI";
-import { addressvUSDC } from "../constants/address/vUSDC";
 import { addressUSDC } from "../constants/address/USDC";
 
 export const transferDai = async (
@@ -44,7 +43,8 @@ export const underlyingToFiDiamond = async (
   signer: ethers.providers.JsonRpcSigner,
   depositAmount: ethers.BigNumber,
   minAmountOut: ethers.BigNumber,
-  currentWalletAddress: string
+  currentWalletAddress: string,
+  referral: string
 ) => {
   try {
     const diamond_Contract = await new ethers.Contract(
@@ -58,7 +58,10 @@ export const underlyingToFiDiamond = async (
       abiDiamond,
       signer
     );
-    const approveTX = await usdc_Contract.approve(addressvUSDC, depositAmount);
+    const approveTX = await usdc_Contract.approve(
+      addressDiamond,
+      depositAmount
+    );
     await approveTX.wait();
 
     // const dai_Contract = await new ethers.Contract(
@@ -75,7 +78,7 @@ export const underlyingToFiDiamond = async (
       addressUSDCOFI,
       currentWalletAddress,
       currentWalletAddress,
-      ethers.constants.AddressZero
+      referral
     );
   } catch (error) {
     throw new Error("underlyingToFi failed : " + error);

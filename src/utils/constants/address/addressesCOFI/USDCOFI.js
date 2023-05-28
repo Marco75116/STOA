@@ -1,1 +1,1 @@
-export const addressUSDCOFI = "0x09a52a1c6093E61fEB5AB9E1597BbAfE72cC5992";
+export const addressUSDCOFI = "0x9A57B7A9f3Eb9578728113d965b48c525fCb4e20";
