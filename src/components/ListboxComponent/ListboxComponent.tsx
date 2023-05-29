@@ -1,24 +1,50 @@
-import { FC, Fragment, useEffect, useState } from "react";
+import { FC, Fragment, useContext, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { ReactComponent as Arrow } from "../../assets/icons/ArrowBlack.svg";
 import { ReactComponent as CheckPink } from "../../assets/icons/CheckPink.svg";
-import { Token } from "../../utils/types/swap.types";
+import { AllTokens, Token } from "../../utils/types/swap.types";
+import { SwapContext } from "../../context/Swap.context";
 
 type ListboxComponentProps = {
   list: Token[];
   width?: number;
+  fromListBox?: boolean;
+  disabled?: boolean;
 };
 
-const ListboxComponent: FC<ListboxComponentProps> = ({ list, width }) => {
-  const [selectedToken, setSelectedToken] = useState(list[0]);
+const ListboxComponent: FC<ListboxComponentProps> = ({
+  list,
+  width,
+  fromListBox,
+  disabled,
+}) => {
+  const [selectedToken, setSelectedToken] = useState<Token>(list[0]);
+  const { tokenSelected, setTokenSelected, convertTokenList } =
+    useContext(SwapContext);
 
   useEffect(() => {
     setSelectedToken(list[0]);
   }, [list]);
 
+  useEffect(() => {
+    fromListBox && setTokenSelected(selectedToken.name);
+    if (fromListBox === false) {
+      const listTo = list.find((token: Token) => {
+        return (
+          token.name === convertTokenList[tokenSelected as keyof AllTokens]
+        );
+      });
+      listTo && setSelectedToken(listTo);
+    }
+  }, [selectedToken, tokenSelected]);
+
   return (
     <div className={`w-[${width ? width : "128"}px]`}>
-      <Listbox value={selectedToken} onChange={setSelectedToken}>
+      <Listbox
+        value={selectedToken}
+        onChange={setSelectedToken}
+        disabled={disabled}
+      >
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-default rounded-lg border bg-white py-2 pl-3 pr-10 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm">
             <span className="block flex flex-row items-center gap-[6px] truncate">

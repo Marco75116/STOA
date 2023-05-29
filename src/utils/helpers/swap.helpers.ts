@@ -9,6 +9,11 @@ import {
 } from "../types/swap.types";
 import { ethers } from "ethers";
 import { addressUSDC, decimalUSDC } from "../constants/address/USDC";
+import { addresswETH } from "../constants/address/wETH";
+import { addresswBTC, decimalBTC } from "../constants/address/wBTC";
+import { addressETHCOFI } from "../constants/address/addressesCOFI/ETHCOFI";
+import { addressBTCCOFI } from "../constants/address/addressesCOFI/BTCCOFI";
+import axios from "axios";
 
 export const getBalances = async (
   signer: ethers.providers.JsonRpcSigner,
@@ -32,21 +37,86 @@ export const getBalances = async (
       addressUSDC
     );
 
+    const ethBalance = await getBalanceERC20(
+      signer,
+      currentWalletAddress,
+      addresswETH
+    );
+
+    const btcBalance = await getBalanceERC20(
+      signer,
+      currentWalletAddress,
+      addresswBTC
+    );
+
+    const ethFIBalance = await getBalanceERC20(
+      signer,
+      currentWalletAddress,
+      addressETHCOFI
+    );
+
+    const btcFIBalance = await getBalanceERC20(
+      signer,
+      currentWalletAddress,
+      addressBTCCOFI
+    );
+
     return {
       USDC: Number(ethers.utils.formatUnits(usdcBalance || 0, decimalUSDC)),
       DAI: 0,
-      COFI: Number(ethers.utils.formatUnits(cofiBalance || 0)),
+      USDFI: Number(ethers.utils.formatUnits(cofiBalance || 0)),
+      ETH: Number(ethers.utils.formatUnits(ethBalance || 0)),
+      BTC: Number(ethers.utils.formatUnits(btcBalance || 0, decimalBTC)),
+      ETHFI: Number(ethers.utils.formatUnits(ethFIBalance || 0)),
+      BTCFI: Number(ethers.utils.formatUnits(btcFIBalance || 0)),
     };
   } catch (error) {
     throw new Error("getBalances : " + error);
   }
 };
 
-export const getPrices = (): CoinPrices => {
+export const getPrices = async (): Promise<CoinPrices> => {
+  const usdcPrice = await axios
+    .get(
+      "https://api.coingecko.com/api/v3/simple/price?ids=usd-coin&vs_currencies=usd"
+    )
+    .then((response) => {
+      return response.data["usd-coin"].usd;
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  const ethPrice = await axios
+    .get(
+      "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+    )
+    .then((response) => {
+      return response.data.ethereum.usd;
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  const btcPrice = await axios
+    .get(
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
+    )
+    .then((response) => {
+      return response.data.bitcoin.usd;
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+
   return {
-    USDC: 1,
+    USDC: usdcPrice,
     DAI: 1,
-    COFI: 1,
+    USDFI: usdcPrice,
+    ETH: ethPrice,
+    BTC: btcPrice,
+    ETHFI: ethPrice,
+    BTCFI: btcPrice,
   };
 };
 

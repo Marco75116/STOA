@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import WalletProvider from "../context/Wallet.context";
 import MainProvider from "../context/Main.context";
+import SwapProvider from "../context/Swap.context";
 
 type ProvidersProps = {
   children: React.ReactNode;
@@ -13,7 +14,9 @@ const Providers: FC<ProvidersProps> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <MainProvider>
-        <WalletProvider>{children}</WalletProvider>
+        <WalletProvider>
+          <SwapProvider>{children}</SwapProvider>
+        </WalletProvider>
       </MainProvider>
     </QueryClientProvider>
   );

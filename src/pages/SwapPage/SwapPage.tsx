@@ -8,7 +8,7 @@ import { WalletContext } from "../../context/Wallet.context";
 import { ReactComponent as Warning } from "../../assets/icons/Warning.svg";
 import { useNavigate } from "react-router-dom";
 import TokenInfos from "./TokenInfos/TokenInfos";
-import { ReactComponent as ETHFI } from "../../assets/logos/ETHFILogo.svg";
+import { ReactComponent as ETHFI } from "../../assets/logos/tokens/ETHFILogo.svg";
 import ModalSwap from "../../components/Modals/ModalSwap/ModalSwap";
 
 const SwapPage = () => {

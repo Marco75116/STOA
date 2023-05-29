@@ -2,8 +2,6 @@ import { ethers } from "ethers";
 import { abiDiamond } from "../constants/abi/Diamond";
 import { addressDai } from "../constants/address/Dai";
 import { addressDiamond } from "../constants/address/Diamond";
-import { addressUSDCOFI } from "../constants/address/addressesCOFI/USDCOFI";
-import { addressUSDC } from "../constants/address/USDC";
 
 export const transferDai = async (
   signer: ethers.providers.JsonRpcSigner,
@@ -40,6 +38,8 @@ export const approveDai = async (
 };
 
 export const underlyingToFiDiamond = async (
+  erc20address: string,
+  fiAssetAddress: string,
   signer: ethers.providers.JsonRpcSigner,
   depositAmount: ethers.BigNumber,
   minAmountOut: ethers.BigNumber,
@@ -53,29 +53,21 @@ export const underlyingToFiDiamond = async (
       signer
     );
 
-    const usdc_Contract = await new ethers.Contract(
-      addressUSDC,
+    const erc20_Contract = await new ethers.Contract(
+      erc20address,
       abiDiamond,
       signer
     );
-    const approveTX = await usdc_Contract.approve(
+    const approveTX = await erc20_Contract.approve(
       addressDiamond,
       depositAmount
     );
     await approveTX.wait();
 
-    // const dai_Contract = await new ethers.Contract(
-    //   addressDai,
-    //   abiDiamond,
-    //   signer
-    // );
-    // const approveTX = await dai_Contract.approve(addressYVDai, depositAmount);
-    // await approveTX.wait();
-
     return diamond_Contract.underlyingToFi(
       depositAmount,
       minAmountOut,
-      addressUSDCOFI,
+      fiAssetAddress,
       currentWalletAddress,
       currentWalletAddress,
       referral
@@ -89,6 +81,7 @@ export const fiToUnderlyingDiamond = async (
   signer: ethers.providers.JsonRpcSigner,
   depositAmount: ethers.BigNumber,
   minAmountOut: ethers.BigNumber,
+  fiAssetAddress: string,
   currentWalletAddress: string
 ) => {
   try {
@@ -100,7 +93,7 @@ export const fiToUnderlyingDiamond = async (
     return diamond_Contract.fiToUnderlying(
       depositAmount,
       minAmountOut,
-      addressUSDCOFI,
+      fiAssetAddress,
       currentWalletAddress,
       currentWalletAddress
     );
