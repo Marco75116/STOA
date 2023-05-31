@@ -4,6 +4,7 @@ import { ReactComponent as LegendGraph } from "../../../../assets/texts/StoaEarn
 import { ReactComponent as ArrowSwap } from "../../../../assets/icons/arrowSwap.svg";
 import apiIndexer from "../../../../utils/services/apiDapp";
 import {
+  FITokensAPY,
   HistoryYiedAsset,
   TokenName,
 } from "../../../../utils/types/swap.types";
@@ -15,8 +16,18 @@ type CollapseTokenInfosProps = {
 
 const CollapseTokenInfos: FC<CollapseTokenInfosProps> = ({ tokenName }) => {
   const [historyData, setHistoryData] = useState<HistoryYiedAsset[]>();
+  const [apyData, setapyData] = useState<FITokensAPY>({
+    USDFI: 0,
+    ETHFI: 0,
+    BTCFI: 0,
+  });
   const getHistoryYield = async () => {
     const applicantData = await apiIndexer.getHistoryYield();
+
+    return applicantData.data;
+  };
+  const getApy = async () => {
+    const applicantData = await apiIndexer.getApy(3);
 
     return applicantData.data;
   };
@@ -24,6 +35,9 @@ const CollapseTokenInfos: FC<CollapseTokenInfosProps> = ({ tokenName }) => {
   useEffect(() => {
     getHistoryYield().then((historyYieldArray) => {
       setHistoryData(getHistoryYieldArray(historyYieldArray, tokenName));
+    });
+    getApy().then((FiTokensApy) => {
+      setapyData(FiTokensApy);
     });
   }, []);
 
@@ -45,9 +59,11 @@ const CollapseTokenInfos: FC<CollapseTokenInfosProps> = ({ tokenName }) => {
           <div>Summary</div>
           <div className="flex flex-row gap-2">
             <div className="center h-[90px] w-full flex-col  rounded-lg border">
-              <div className=" text-base font-semibold">1.7%</div>
+              <div className=" text-base font-semibold">
+                {apyData[tokenName as keyof FITokensAPY].toPercentageFormat(2)}
+              </div>
               <div className="center flex-row gap-1 text-xs  font-normal text-textGray">
-                30 day APY <ArrowSwap />
+                4 days APY <ArrowSwap />
               </div>
             </div>
 

@@ -84,3 +84,9 @@ export type AllTokens = {
   ETHFI: string;
   BTCFI: string;
 };
+
+export type FITokensAPY = {
+  USDFI: number;
+  ETHFI: number;
+  BTCFI: number;
+};

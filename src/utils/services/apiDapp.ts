@@ -1,5 +1,5 @@
 import axios from "axios";
-import { HistoryYield } from "../types/swap.types";
+import { FITokensAPY, HistoryYield } from "../types/swap.types";
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL + "defi/",
@@ -11,6 +11,16 @@ const apiService = {
     instance.get<HistoryYield[]>(`historyYield/`).catch((error) => {
       throw new Error("getHistoryYield call failed: " + error);
     }),
+  getApy: (period: number) =>
+    instance
+      .get<FITokensAPY>("apy", {
+        params: {
+          period: period,
+        },
+      })
+      .catch((error) => {
+        throw new Error("getApy call failed: " + error);
+      }),
 };
 
 export default apiService;

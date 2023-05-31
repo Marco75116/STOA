@@ -1,8 +1,9 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { ReactComponent as Arrow } from "../../../assets/icons/ArrowBlack.svg";
 import { Collapse } from "react-collapse";
 import CollapseTokenInfos from "./CollapseTokenInfos/CollapseTokenInfos";
-import { TokenName } from "../../../utils/types/swap.types";
+import { FITokensAPY, TokenName } from "../../../utils/types/swap.types";
+import apiIndexer from "../../../utils/services/apiDapp";
 
 type TokenInfosProps = {
   collapseOpen: boolean;
@@ -21,6 +22,24 @@ const TokenInfos: FC<TokenInfosProps> = ({
   SVGLogo,
   tokenName,
 }) => {
+  const [currentApy, setCurrentApy] = useState<FITokensAPY>({
+    USDFI: 0,
+    ETHFI: 0,
+    BTCFI: 0,
+  });
+
+  useEffect(() => {
+    const getApy = async () => {
+      const applicantData = await apiIndexer.getApy(1);
+
+      return applicantData.data;
+    };
+
+    getApy().then((FiTokensApy) => {
+      setCurrentApy(FiTokensApy);
+    });
+  }, []);
+
   return (
     <div className="card w-[912px]">
       <div
@@ -42,7 +61,9 @@ const TokenInfos: FC<TokenInfosProps> = ({
           <span className="flex  items-stretch text-xs font-medium text-textGray">
             APY
           </span>
-          <span>3.5%</span>
+          <span>
+            {currentApy[tokenName as keyof FITokensAPY].toPercentageFormat(1)}
+          </span>
           <div className="center h-[32px] w-[32px] rounded-lg  hover:cursor-pointer">
             <Arrow className={`${collapseOpen && "rotate-180"}`} />
           </div>
