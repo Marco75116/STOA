@@ -79,7 +79,8 @@ const ModalSwap: FC<ModalSwapProps> = ({
   }, [estimatedReceiving, action, pricesCoins, tokenSelected]);
 
   const minAmountOut = useMemo(() => {
-    if (estimatedReceiving !== undefined) return estimatedReceiving * 0.9975;
+    if (estimatedReceiving !== undefined)
+      return Math.floor(estimatedReceiving * 0.9975 * 10 ** 6) / 10 ** 6;
   }, [estimatedReceiving]);
 
   useEffect(() => {
@@ -299,7 +300,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
                     }}
                   >
                     <button type="button">
-                      {action === 0 ? "Mint" : "Swap"}
+                      {action === 0 ? "Mint" : "Redeem"}
                     </button>
                   </div>
                 </div>

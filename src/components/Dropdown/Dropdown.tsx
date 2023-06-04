@@ -18,6 +18,7 @@ import axios from "axios";
 import { WalletContext } from "../../context/Wallet.context";
 import { useNavigate } from "react-router-dom";
 import { getKycDone } from "../../utils/helpers/global.helper";
+import { addressDiamond } from "../../utils/constants/address/Diamond";
 
 type DropdownProps = {
   setOpenMagic: Function;
@@ -117,7 +118,7 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                               className="hover:cursor-pointer"
                               onClick={() =>
                                 window.open(
-                                  `https://mumbai.polygonscan.com/address/${""}`,
+                                  `https://optimistic.etherscan.io/address/${addressDiamond}`,
                                   "_blank"
                                 )
                               }
@@ -207,7 +208,7 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                               className="hover:cursor-pointer"
                               onClick={() =>
                                 window.open(
-                                  `https://mumbai.polygonscan.com/address/${addressDisplayed}`,
+                                  `https://optimistic.etherscan.io/address/${addressDisplayed}`,
                                   "_blank"
                                 )
                               }

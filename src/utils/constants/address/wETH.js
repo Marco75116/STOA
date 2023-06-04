@@ -1,2 +1,2 @@
-export const addresswETH = "0xc395A6DcACF97920811A69e05e45c01593B0041E";
+export const addresswETH = "0x4200000000000000000000000000000000000006";
 export const decimalETH = 18;

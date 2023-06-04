@@ -27,7 +27,7 @@ const CollapseTokenInfos: FC<CollapseTokenInfosProps> = ({ tokenName }) => {
     return applicantData.data;
   };
   const getApy = async () => {
-    const applicantData = await apiIndexer.getApy(3);
+    const applicantData = await apiIndexer.getApy(1);
 
     return applicantData.data;
   };
@@ -63,7 +63,7 @@ const CollapseTokenInfos: FC<CollapseTokenInfosProps> = ({ tokenName }) => {
                 {apyData[tokenName as keyof FITokensAPY].toPercentageFormat(2)}
               </div>
               <div className="center flex-row gap-1 text-xs  font-normal text-textGray">
-                4 days APY <ArrowSwap />
+                1 days APY <ArrowSwap />
               </div>
             </div>
 
