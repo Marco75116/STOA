@@ -7,6 +7,8 @@ export const getKycDone = (review: Review | undefined) => {
         review.reviewStatus === "completed"
         ? true
         : false;
+    } else if (review && review.reviewStatus === "init") {
+      return false;
     } else {
       return undefined;
     }
