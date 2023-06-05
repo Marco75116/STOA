@@ -22,7 +22,7 @@ const GraphTooltip = ({ active, payload }: any) => {
   return (
     <div className=" rounded bg-bgCardNavbar p-2 text-black">
       <div>Day : {payload[0].payload.day}</div>
-      <div>Amount : {Number(payload[0].payload.amount).toFixed(3)}</div>
+      <div>Amount : {Number(payload[0].payload.amount).toFixed(9)}</div>
     </div>
   );
 };

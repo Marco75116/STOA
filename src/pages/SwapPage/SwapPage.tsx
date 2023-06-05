@@ -10,11 +10,13 @@ import { useNavigate } from "react-router-dom";
 import TokenInfos from "./TokenInfos/TokenInfos";
 import { ReactComponent as ETHFI } from "../../assets/logos/tokens/ETHFILogo.svg";
 import ModalSwap from "../../components/Modals/ModalSwap/ModalSwap";
+import ModalTransak from "../../components/Modals/ModalTransak/ModalTransak";
 
 const SwapPage = () => {
   const [action, setAction] = useState<0 | 1>(0);
   const [collapseOpen, setCollapseOpen] = useState<1 | 2 | 3 | undefined>(1);
   const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
+  const [showTransak, setShowTransak] = useState<boolean>(false);
   const { kycDone } = useContext(WalletContext);
   const navigate = useNavigate();
 
@@ -93,7 +95,12 @@ const SwapPage = () => {
                   The purple elephant rode a unicycle through the park.
                 </div>
               </div>
-              <div className="center h-[40px] w-[108px] rounded-lg border-[1px] border-[#FF87B2] text-[#FF87B2] hover:cursor-pointer">
+              <div
+                onClick={() => {
+                  setShowTransak(true);
+                }}
+                className="center h-[40px] w-[108px] rounded-lg border-[1px] border-[#FF87B2] text-[#FF87B2] hover:cursor-pointer"
+              >
                 Proceed
               </div>
             </div>
@@ -131,6 +138,7 @@ const SwapPage = () => {
         action={action}
         setAction={setAction}
       />
+      <ModalTransak showTransak={showTransak} setShowTransak={setShowTransak} />
     </div>
   );
 };

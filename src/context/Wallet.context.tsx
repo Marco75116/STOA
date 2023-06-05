@@ -98,6 +98,7 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
     if (provider) {
       const balance = await provider.getBalance(currentWalletAddress);
       const balanceInEth = ethers.utils.formatEther(balance);
+      setBalance(Number(balanceInEth));
       setMagicBalance(Number(balanceInEth));
     }
   };
