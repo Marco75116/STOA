@@ -35,8 +35,13 @@ const TokenInfos: FC<TokenInfosProps> = ({
       return applicantData.data;
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getApy().then((FiTokensApy) => {
-      setCurrentApy(FiTokensApy);
+      setCurrentApy({
+        USDFI: 0.078,
+        ETHFI: 0.084,
+        BTCFI: 0.012,
+      });
     });
   }, []);
 

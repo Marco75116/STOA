@@ -36,8 +36,13 @@ const CollapseTokenInfos: FC<CollapseTokenInfosProps> = ({ tokenName }) => {
     getHistoryYield().then((historyYieldArray) => {
       setHistoryData(getHistoryYieldArray(historyYieldArray, tokenName));
     });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getApy().then((FiTokensApy) => {
-      setapyData(FiTokensApy);
+      setapyData({
+        USDFI: 0.076,
+        ETHFI: 0.086,
+        BTCFI: 0.011,
+      });
     });
   }, []);
 
@@ -63,7 +68,7 @@ const CollapseTokenInfos: FC<CollapseTokenInfosProps> = ({ tokenName }) => {
                 {apyData[tokenName as keyof FITokensAPY].toPercentageFormat(2)}
               </div>
               <div className="center flex-row gap-1 text-xs  font-normal text-textGray">
-                1 days APY <ArrowSwap />
+                3 days APY <ArrowSwap />
               </div>
             </div>
 

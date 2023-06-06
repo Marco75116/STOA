@@ -6,7 +6,7 @@ import { ReactComponent as Swap } from "../../assets/icons/swap.svg";
 import { ReactComponent as AboutLogo } from "../../assets/icons/Vector-2.svg";
 import { ReactComponent as COFIPointLogo } from "../../assets/logos/COFIPointLogo.svg";
 import { ReactComponent as Question } from "../../assets/icons/Question.svg";
-import { ReactComponent as ETHLogo } from "../../assets/icons/EthLogo.svg";
+import { ReactComponent as ETHLogo } from "../../assets/logos/optimism-logo.svg";
 import { ReactComponent as Moon } from "../../assets/icons/Moon.svg";
 import { ReactComponent as Sun } from "../../assets/icons//Sun.svg";
 import { useNavigate } from "react-router-dom";
