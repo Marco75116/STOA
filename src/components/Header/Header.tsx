@@ -5,10 +5,7 @@ import { ReactComponent as Swap } from "../../assets/icons/swap.svg";
 // import { ReactComponent as VaultsLogoRed } from "../../assets/icons/FrameRed.svg";
 import { ReactComponent as AboutLogo } from "../../assets/icons/Vector-2.svg";
 import { ReactComponent as COFIPointLogo } from "../../assets/logos/COFIPointLogo.svg";
-import { ReactComponent as Question } from "../../assets/icons/Question.svg";
 import { ReactComponent as ETHLogo } from "../../assets/logos/optimism-logo.svg";
-import { ReactComponent as Moon } from "../../assets/icons/Moon.svg";
-import { ReactComponent as Sun } from "../../assets/icons//Sun.svg";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../Dropdown/Dropdown";
 import ModalMagic from "../ModalMagic/ModalMagic";
@@ -17,7 +14,6 @@ import { WalletContext } from "../../context/Wallet.context";
 const Header = () => {
   const navigate = useNavigate();
   const [selectedPart, setSelectedPart] = useState<0 | 1 | 2 | 3>(0);
-  const [theme, setTheme] = useState<boolean>(true);
   const [openMagic, setOpenMagic] = useState<boolean>(false);
   const { isWalletConnected } = useContext(WalletContext);
 
@@ -96,32 +92,6 @@ const Header = () => {
       </div>
 
       <div className="col-span-1 flex items-center justify-end gap-[8px]  ">
-        <div className="flex gap-0.5 rounded-lg border-[0.5px] border-solid border-borderCardNavbar bg-bgCardNavbar p-[2px]">
-          <div
-            className={` flex h-8 w-8 items-center justify-center hover:cursor-pointer  ${
-              theme === true &&
-              "borderToggle rounded-[6px] bg-darkgreen  shadow"
-            } `}
-            onClick={() => {
-              setTheme(true);
-            }}
-          >
-            <Sun stroke={`${theme === true ? "white" : "#394A46"}`} />
-          </div>
-          <div
-            className={` flex h-8 w-8 items-center justify-center hover:cursor-pointer  ${
-              theme === false &&
-              "borderToggle rounded-[6px] bg-darkgreen  shadow  "
-            } `}
-            onClick={() => {
-              setTheme(false);
-            }}
-          >
-            <Moon stroke={`${theme === false ? "white" : "#394A46"}`} />
-          </div>
-        </div>
-
-        <Question />
         <div className="rounded-lg border bg-bgCardNavbar p-2   ">
           <ETHLogo />
         </div>

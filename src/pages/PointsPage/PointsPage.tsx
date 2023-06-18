@@ -2,8 +2,6 @@ import React from "react";
 import { ReactComponent as Bulb } from "../../assets/icons/PinkBulb.svg";
 import { ReactComponent as PointMainIllustration } from "../../assets/illustrations/PointMainIllustration.svg";
 import { ReactComponent as InviteFriendsBtn } from "../../assets/texts/InviteFriendsBtn.svg";
-import { ReactComponent as PlusFriends } from "../../assets/icons/PlusFriends.svg";
-
 const PointsPage = () => {
   return (
     <div className=" flex min-h-[calc(100%-64px)] flex-col items-center justify-center gap-[16px] bg-bgCardNavbar  py-16">
@@ -47,64 +45,6 @@ const PointsPage = () => {
             </div>
           </div>
           <InviteFriendsBtn className=" hover:cursor-pointer" />
-        </div>
-      </div>
-
-      <div className=" card w-[800px] space-y-5 p-5">
-        <div className="flex flex-row justify-between">
-          <div>My Referrals</div>
-          <div className="center flex-row gap-2 rounded-lg border p-[6px]">
-            <PlusFriends /> Invite Friends
-          </div>
-        </div>
-        <div>
-          <div className="relative overflow-x-auto">
-            <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-              <thead className=" border-b text-xs uppercase text-[#00000066]">
-                <tr>
-                  <th scope="col" className="w-[310px] py-4 text-xs">
-                    Address
-                  </th>
-                  <th scope="col" className="w-[310px] py-4 text-xs">
-                    Date
-                  </th>
-                  <th scope="col" className="py-4 text-xs">
-                    Point
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="">
-                <tr className="border-b bg-white text-base font-normal  dark:border-gray-700 dark:bg-gray-800">
-                  <th scope="row" className="   py-4">
-                    0xB7d2...2845
-                  </th>
-                  <td className=" py-4">05.05.2023</td>
-                  <td className=" py-4">-</td>
-                </tr>
-                <tr className="border-b bg-white text-base font-normal  dark:border-gray-700 dark:bg-gray-800">
-                  <th scope="row" className="   py-4">
-                    0xB7d2...2845
-                  </th>
-                  <td className=" py-4">05.05.2023</td>
-                  <td className=" py-4">100</td>
-                </tr>
-                <tr className="border-b bg-white text-base  dark:border-gray-700 dark:bg-gray-800">
-                  <th scope="row" className="   py-4">
-                    0xB7d2...2845
-                  </th>
-                  <td className=" py-4">05.05.2023</td>
-                  <td className=" py-4">100</td>
-                </tr>
-                <tr className="bg-white text-base font-normal  dark:border-gray-700 dark:bg-gray-800">
-                  <th scope="row" className="   py-4">
-                    0xB7d2...2845
-                  </th>
-                  <td className=" py-4">05.05.2023</td>
-                  <td className=" ">100</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
       </div>
     </div>
