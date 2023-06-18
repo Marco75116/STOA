@@ -6,11 +6,13 @@ import { WalletContext } from "../../../context/Wallet.context";
 type ModalTransakProps = {
   showTransak: boolean;
   setShowTransak: Function;
+  productsAvailed: string;
 };
 
 const ModalTransak: FC<ModalTransakProps> = ({
   showTransak,
   setShowTransak,
+  productsAvailed,
 }) => {
   const { currentWalletAddress, email } = useContext(WalletContext);
 
@@ -24,6 +26,7 @@ const ModalTransak: FC<ModalTransakProps> = ({
         email: email,
         widgetHeight: "605px",
         widgetWidth: "500px",
+        productsAvailed: productsAvailed,
       });
       transak.init();
 

@@ -69,7 +69,9 @@ const SwapPage = () => {
           <div className="flex h-[156px] w-full flex-row justify-between rounded-xl bg-[#F5F5F5] ">
             <div className="flex flex-col justify-between p-4">
               <div className="flex h-[68px] w-[200px] flex-col justify-between">
-                <div className="text-sm font-medium">Deposit with Wallet</div>
+                <div className="text-sm font-medium">
+                  {action === 0 ? "Deposit" : "Redeem"} with Wallet
+                </div>
                 <div className="text-sm font-normal">
                   The purple elephant rode a unicycle through the park.
                 </div>
@@ -89,7 +91,7 @@ const SwapPage = () => {
             <div className="flex flex-col justify-between p-4">
               <div className="flex h-[68px] w-[200px] flex-col justify-between">
                 <div className="text-sm font-medium">
-                  Deposit with Credit Card
+                  {action === 0 ? "Deposit with Credit Card" : "Redeem to Bank"}
                 </div>
                 <div className="text-sm font-normal">
                   The purple elephant rode a unicycle through the park.
@@ -138,7 +140,11 @@ const SwapPage = () => {
         action={action}
         setAction={setAction}
       />
-      <ModalTransak showTransak={showTransak} setShowTransak={setShowTransak} />
+      <ModalTransak
+        showTransak={showTransak}
+        setShowTransak={setShowTransak}
+        productsAvailed={action === 0 ? "BUY" : "SELL"}
+      />
     </div>
   );
 };
