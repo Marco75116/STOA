@@ -8,7 +8,12 @@ import apiIndexer from "../../../utils/services/apiDapp";
 type TokenInfosProps = {
   collapseOpen: boolean;
   setCollapseOpen: () => void;
-  SVGLogo: React.FunctionComponent<
+  TokenLogo: React.FunctionComponent<
+    React.SVGProps<SVGSVGElement> & {
+      title?: string | undefined;
+    }
+  >;
+  FiLogo: React.FunctionComponent<
     React.SVGProps<SVGSVGElement> & {
       title?: string | undefined;
     }
@@ -19,7 +24,8 @@ type TokenInfosProps = {
 const TokenInfos: FC<TokenInfosProps> = ({
   collapseOpen,
   setCollapseOpen,
-  SVGLogo,
+  TokenLogo,
+  FiLogo,
   tokenName,
 }) => {
   const [currentApy, setCurrentApy] = useState<FITokensAPY>({
@@ -48,27 +54,21 @@ const TokenInfos: FC<TokenInfosProps> = ({
   return (
     <div className="card w-[912px]">
       <div
-        className="borderBottom flex justify-between p-5 hover:cursor-pointer"
+        className="borderBottom flex justify-between p-5 px-7 hover:cursor-pointer"
         onClick={setCollapseOpen}
       >
-        <div className="flex gap-2 ">
-          <SVGLogo />
-          {tokenName}
-        </div>
-        {/* <div className="flex flex-row items-center gap-[6px] ">
-      <span className="text-xs font-medium text-textGray">
-        Points rate
-      </span>
-      <STOALOGOBLACK />
-      <span>100/$ earned</span>
-    </div> */}
-        <div className="center flex-row  gap-[6px] ">
-          <span className="flex  items-stretch text-xs font-medium text-textGray">
+        <div className="center gap-2 ">
+          <TokenLogo />
+          <span>
+            deposit and earn{" "}
+            {currentApy[tokenName as keyof FITokensAPY].toPercentageFormat(1)}{" "}
             APY
           </span>
-          <span>
-            {currentApy[tokenName as keyof FITokensAPY].toPercentageFormat(1)}
-          </span>
+        </div>
+        <div className="center flex-row  gap-[6px] ">
+          <span className="mr-3">reveive</span>
+          <FiLogo />
+          {tokenName}
           <div className="center h-[32px] w-[32px] rounded-lg  hover:cursor-pointer">
             <Arrow className={`${collapseOpen && "rotate-180"}`} />
           </div>

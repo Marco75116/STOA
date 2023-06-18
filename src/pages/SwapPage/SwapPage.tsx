@@ -11,6 +11,9 @@ import TokenInfos from "./TokenInfos/TokenInfos";
 import { ReactComponent as ETHFI } from "../../assets/logos/tokens/ETHFILogo.svg";
 import ModalSwap from "../../components/Modals/ModalSwap/ModalSwap";
 import ModalTransak from "../../components/Modals/ModalTransak/ModalTransak";
+import { ReactComponent as USDC } from "../../assets/logos/tokens/USDC.svg";
+import { ReactComponent as BTCLogo } from "../../assets/logos/tokens/BTCLogo.svg";
+import { ReactComponent as ETHLogo } from "../../assets/logos/tokens/ETHLogo.svg";
 
 const SwapPage = () => {
   const [action, setAction] = useState<0 | 1>(0);
@@ -115,7 +118,8 @@ const SwapPage = () => {
         setCollapseOpen={() => {
           collapseOpen === 1 ? setCollapseOpen(undefined) : setCollapseOpen(1);
         }}
-        SVGLogo={USDFI}
+        TokenLogo={USDC}
+        FiLogo={USDFI}
         tokenName={"USDFI"}
       />
       <TokenInfos
@@ -123,7 +127,8 @@ const SwapPage = () => {
         setCollapseOpen={() => {
           collapseOpen === 2 ? setCollapseOpen(undefined) : setCollapseOpen(2);
         }}
-        SVGLogo={ETHFI}
+        TokenLogo={ETHLogo}
+        FiLogo={ETHFI}
         tokenName={"ETHFI"}
       />
       <TokenInfos
@@ -131,7 +136,8 @@ const SwapPage = () => {
         setCollapseOpen={() => {
           collapseOpen === 3 ? setCollapseOpen(undefined) : setCollapseOpen(3);
         }}
-        SVGLogo={BTCFI}
+        TokenLogo={BTCLogo}
+        FiLogo={BTCFI}
         tokenName={"BTCFI"}
       />
       <ModalSwap
