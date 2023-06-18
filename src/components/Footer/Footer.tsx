@@ -14,8 +14,10 @@ const Footer = () => {
             <div className="flex flex-col gap-4">
               <CofiFooter />
               <div className=" text-sm font-normal text-white">
-                Our community is building a comprehensive decentralized trading
-                platform for the future of finance. Join us!
+                COFI is a low-risk yield-generation platform powered by our 1:1
+                backed stablecoins. We believe in helping our costumers make
+                their crypto work harder for them in a compliant safe
+                environment. Join us!
               </div>
             </div>
             <div className="flex flex-row items-center  gap-4">
@@ -26,27 +28,26 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex gap-16 text-base font-medium text-[#FFFFFFB2]">
+          <div className="flex flex-col text-base font-medium text-[#FFFFFFB2]">
             <div>
-              <div className="cursor-pointer">Analytics</div>
-              <div className="cursor-pointer">User Docs</div>
-              <div className="cursor-pointer">Technical Docs</div>
-              <div className="cursor-pointer">Github</div>
+              <div className=" p-2 opacity-20">Ressources:</div>
+              <div className="cursor-pointer  p-2">Tech Docs</div>
+              <div className="cursor-pointer p-2">KYC Policy</div>
+              <div className="cursor-pointer p-2">About Us</div>
             </div>
             <div>
-              <div className="cursor-pointer">About Us</div>
-              <div className="cursor-pointer">Partners</div>
-              <div className="cursor-pointer">Yield Finance</div>
-              <div className="cursor-pointer">Ethereum</div>
+              <div className=" p-2 opacity-20">Contact us on</div>
+              <div className="cursor-pointer p-2">mike@stoa.money</div>
+              <div className="cursor-pointer p-2">sam@stoa.money</div>
             </div>
           </div>
         </div>
 
         <div className="borderTop flex h-[44px] items-end justify-between text-sm font-normal ">
-          <div className="text-[#FFFFFF66]">
-            Copyright © 2023 Stoa. All right reserved.
+          <div className="text-[#667085]">
+            © 2023, The Stoa Corporation Ltd. All rights reserved.
           </div>
-          <div className="text-[#FFFFFFB2]">Term of Use</div>
+          <div className="text-[#667085]">Term of Use</div>
         </div>
       </div>
     </div>
