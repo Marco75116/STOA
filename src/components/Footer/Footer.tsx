@@ -4,6 +4,7 @@ import { ReactComponent as TelegramLogo } from "../../assets/logos/TelegramLogo.
 import { ReactComponent as YoutubeLogo } from "../../assets/logos/YoutubeLogo.svg";
 import { ReactComponent as TiktokLogo } from "../../assets/logos/TiktokLogo.svg";
 import { ReactComponent as TwiterLogo } from "../../assets/logos/TwiterLogo.svg";
+import { copyToClipboard } from "../../utils/helpers/global.helper";
 
 const Footer = () => {
   return (
@@ -37,8 +38,18 @@ const Footer = () => {
             </div>
             <div>
               <div className=" p-2 opacity-20">Contact us on</div>
-              <div className="cursor-pointer p-2">mike@stoa.money</div>
-              <div className="cursor-pointer p-2">sam@stoa.money</div>
+              <div
+                className="cursor-pointer p-2"
+                onClick={() => copyToClipboard("mike@stoa.money")}
+              >
+                mike@stoa.money
+              </div>
+              <div
+                className="cursor-pointer p-2"
+                onClick={() => copyToClipboard("sam@stoa.money")}
+              >
+                sam@stoa.money
+              </div>
             </div>
           </div>
         </div>

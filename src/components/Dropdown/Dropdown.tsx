@@ -17,7 +17,7 @@ import { ReactComponent as Mail } from "../../assets/icons/Mail.svg";
 import axios from "axios";
 import { WalletContext } from "../../context/Wallet.context";
 import { useNavigate } from "react-router-dom";
-import { getKycDone } from "../../utils/helpers/global.helper";
+import { copyToClipboard, getKycDone } from "../../utils/helpers/global.helper";
 import { addressDiamond } from "../../utils/constants/address/Diamond";
 
 type DropdownProps = {
@@ -159,7 +159,12 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                           <div className="flex h-[140px] w-[236px] flex-col rounded-lg border-[0.5px] border-solid border-bgCardNavbar bg-ethBalance">
                             <div className="flex h-[52px] flex-row items-center justify-center gap-[12px]">
                               <Wallet />
-                              <div>
+                              <div
+                                className=" cursor-pointer"
+                                onClick={() =>
+                                  copyToClipboard("currentWalletAddress")
+                                }
+                              >
                                 {addressDisplayed?.slice(0, 6) +
                                   "..." +
                                   addressDisplayed?.slice(38)}
