@@ -156,7 +156,7 @@ export const getFeeCollectorStatus = async (
   }
 };
 
-export const getYieldPoints = async (
+export const getPoints = async (
   signer: ethers.providers.JsonRpcSigner | undefined,
   address: string
 ): Promise<ethers.BigNumber | undefined> => {
@@ -171,7 +171,9 @@ export const getYieldPoints = async (
       addressBTCCOFI,
       addressETHCOFI,
     ];
-    const amountPoints = await diamond_Contract.getYieldPoints(
+
+    console.log(addressUSDCOFI, addressBTCCOFI, addressETHCOFI);
+    const amountPoints = await diamond_Contract.getPoints(
       address,
       arrayAddressFiTokens
     );

@@ -3,15 +3,14 @@ import { ReactComponent as Bulb } from "../../assets/icons/PinkBulb.svg";
 import { ReactComponent as PointMainIllustration } from "../../assets/illustrations/PointMainIllustration.svg";
 import { ReactComponent as InviteFriendsBtn } from "../../assets/texts/InviteFriendsBtn.svg";
 import { WalletContext } from "../../context/Wallet.context";
-import { getYieldPoints } from "../../utils/ethers/ethers.view";
+import { getPoints } from "../../utils/ethers/ethers.view";
 import { ethers } from "ethers";
 const PointsPage = () => {
   const [points, setPoints] = useState<number>(0);
   const { signer, currentWalletAddress } = useContext(WalletContext);
 
   useEffect(() => {
-    getYieldPoints(signer, currentWalletAddress).then((points) => {
-      console.log(points);
+    getPoints(signer, currentWalletAddress).then((points) => {
       setPoints(Number(ethers.utils.formatEther(points || 0)));
     });
   }, [currentWalletAddress]);
