@@ -32,9 +32,30 @@ const Footer = () => {
           <div className="flex flex-col text-base font-medium text-[#FFFFFFB2]">
             <div>
               <div className=" p-2 opacity-20">Ressources:</div>
-              <div className="cursor-pointer  p-2">Tech Docs</div>
-              <div className="cursor-pointer p-2">KYC Policy</div>
-              <div className="cursor-pointer p-2">About Us</div>
+              <div
+                className="cursor-pointer  p-2"
+                onClick={() =>
+                  window.open(`https://docs.cofi.money/`, "_blank")
+                }
+              >
+                Tech Docs
+              </div>
+              <div
+                className="cursor-pointer p-2"
+                onClick={() =>
+                  window.open(`https://www.cofi.money/kyc-policy`, "_blank")
+                }
+              >
+                KYC Policy
+              </div>
+              <div
+                className="cursor-pointer p-2"
+                onClick={() =>
+                  window.open(`https://www.cofi.money/about-us`, "_blank")
+                }
+              >
+                About Us
+              </div>
             </div>
             <div>
               <div className=" p-2 opacity-20">Contact us on</div>
