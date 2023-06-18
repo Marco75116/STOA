@@ -1,6 +1,6 @@
 import React from "react";
 
-export type CoinBalances = {
+export type Coins = {
   USDC: number;
   DAI: number;
   USDFI: number;
@@ -10,27 +10,7 @@ export type CoinBalances = {
   BTCFI: number;
 };
 
-export type CoinPrices = {
-  USDC: number;
-  DAI: number;
-  USDFI: number;
-  ETH: number;
-  BTC: number;
-  ETHFI: number;
-  BTCFI: number;
-};
-
-export type CoinDecimals = {
-  USDC: number;
-  DAI: number;
-  USDFI: number;
-  ETH: number;
-  BTC: number;
-  ETHFI: number;
-  BTCFI: number;
-};
-
-export type AddressesTokens = {
+export type CoinsString = {
   USDC: string;
   DAI: string;
   ETH: string;
@@ -74,16 +54,6 @@ export type TokenSelected =
   | "USDFI"
   | "ETHFI"
   | "BTCFI";
-
-export type AllTokens = {
-  USDC: string;
-  DAI: string;
-  USDFI: string;
-  ETH: string;
-  BTC: string;
-  ETHFI: string;
-  BTCFI: string;
-};
 
 export type FITokensAPY = {
   USDFI: number;

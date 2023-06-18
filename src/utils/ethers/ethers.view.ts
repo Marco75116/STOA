@@ -172,7 +172,6 @@ export const getPoints = async (
       addressETHCOFI,
     ];
 
-    console.log(addressUSDCOFI, addressBTCCOFI, addressETHCOFI);
     const amountPoints = await diamond_Contract.getPoints(
       address,
       arrayAddressFiTokens

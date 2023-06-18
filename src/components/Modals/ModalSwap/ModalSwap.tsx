@@ -2,14 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { FC, Fragment, useContext, useEffect, useMemo, useState } from "react";
 import { ReactComponent as Cross } from "../../../assets/icons/Cross.svg";
 import ListboxComponent from "../../../components/ListboxComponent/ListboxComponent";
-import {
-  AddressesTokens,
-  AllTokens,
-  CoinBalances,
-  CoinDecimals,
-  CoinPrices,
-  Token,
-} from "../../../utils/types/swap.types";
+import { CoinsString, Coins, Token } from "../../../utils/types/swap.types";
 import { getReceiveAmount } from "../../../utils/helpers/swap.helpers";
 import { WalletContext } from "../../../context/Wallet.context";
 import { ethers } from "ethers";
@@ -73,9 +66,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
 
   const estimadedReceivingUSD = useMemo(() => {
     if (estimatedReceiving !== undefined)
-      return (
-        estimatedReceiving * pricesCoins[tokenSelected as keyof CoinPrices]
-      );
+      return estimatedReceiving * pricesCoins[tokenSelected as keyof Coins];
   }, [estimatedReceiving, action, pricesCoins, tokenSelected]);
 
   const minAmountOut = useMemo(() => {
@@ -141,9 +132,9 @@ const ModalSwap: FC<ModalSwapProps> = ({
                       />
                       <div className="text-xs font-medium text-textGray">
                         {` Balances :  ${
-                          balanceCoins[
-                            tokenSelected as keyof CoinBalances
-                          ].toFixed(6) +
+                          balanceCoins[tokenSelected as keyof Coins].toFixed(
+                            6
+                          ) +
                           " " +
                           tokenSelected
                         }`}
@@ -164,7 +155,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
                         <div
                           onClick={() => {
                             setDepositAmount(
-                              balanceCoins[tokenSelected as keyof CoinBalances]
+                              balanceCoins[tokenSelected as keyof Coins]
                             );
                           }}
                           className="center h-[28px] w-[40px]  rounded-md bg-ethBalance px-1 py-2 text-xs font-semibold  hover:cursor-pointer"
@@ -174,7 +165,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
                       </div>
                       <div className="text-xs font-medium text-textGray">{`$${(
                         Number(depositAmount) *
-                        pricesCoins[tokenSelected as keyof CoinPrices]
+                        pricesCoins[tokenSelected as keyof Coins]
                       ).toFixed(3)}`}</div>
                     </div>
                   </div>
@@ -254,19 +245,17 @@ const ModalSwap: FC<ModalSwapProps> = ({
                           (action === 0
                             ? underlyingToFiDiamond(
                                 addressesTokens[
-                                  tokenSelected as keyof AddressesTokens
+                                  tokenSelected as keyof CoinsString
                                 ],
                                 addressesTokens[
                                   convertTokenList[
-                                    tokenSelected as keyof AllTokens
-                                  ] as keyof AddressesTokens
+                                    tokenSelected as keyof Coins
+                                  ] as keyof CoinsString
                                 ],
                                 signer,
                                 ethers.utils.parseUnits(
                                   depositAmount.toString(),
-                                  decimalsTokens[
-                                    tokenSelected as keyof CoinDecimals
-                                  ]
+                                  decimalsTokens[tokenSelected as keyof Coins]
                                 ),
                                 ethers.utils.parseUnits(
                                   Number(minAmountOut).toString(),
@@ -287,12 +276,12 @@ const ModalSwap: FC<ModalSwapProps> = ({
                                   Number(minAmountOut).toString(),
                                   decimalsTokens[
                                     convertTokenList[
-                                      tokenSelected as keyof AllTokens
-                                    ] as keyof CoinDecimals
+                                      tokenSelected as keyof Coins
+                                    ] as keyof Coins
                                   ]
                                 ),
                                 addressesTokens[
-                                  tokenSelected as keyof AddressesTokens
+                                  tokenSelected as keyof CoinsString
                                 ],
                                 currentWalletAddress
                               ));

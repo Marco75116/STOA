@@ -6,14 +6,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import {
-  AddressesTokens,
-  AllTokens,
-  CoinBalances,
-  CoinDecimals,
-  CoinPrices,
-  TokenSelected,
-} from "../utils/types/swap.types";
+import { CoinsString, Coins, TokenSelected } from "../utils/types/swap.types";
 import { addressDai } from "../utils/constants/address/Dai";
 import { addressUSDC, decimalUSDC } from "../utils/constants/address/USDC";
 import { addresswETH, decimalETH } from "../utils/constants/address/wETH";
@@ -30,11 +23,11 @@ import { WalletContext } from "./Wallet.context";
 type SwapContextProps = {
   tokenSelected: TokenSelected;
   setTokenSelected: Function;
-  addressesTokens: AddressesTokens;
-  decimalsTokens: CoinDecimals;
-  pricesCoins: CoinPrices;
-  balanceCoins: CoinBalances;
-  convertTokenList: AllTokens;
+  addressesTokens: CoinsString;
+  decimalsTokens: Coins;
+  pricesCoins: Coins;
+  balanceCoins: Coins;
+  convertTokenList: CoinsString;
 };
 
 type SwapProviderProps = {
@@ -45,7 +38,7 @@ export const SwapContext = createContext({} as SwapContextProps);
 
 const SwapProvider: FC<SwapProviderProps> = ({ children }) => {
   const [tokenSelected, setTokenSelected] = useState<TokenSelected>("USDC");
-  const [pricesCoins, setPricesCoins] = useState<CoinPrices>({
+  const [pricesCoins, setPricesCoins] = useState<Coins>({
     DAI: 0,
     USDFI: 0,
     USDC: 0,
@@ -55,7 +48,7 @@ const SwapProvider: FC<SwapProviderProps> = ({ children }) => {
     BTCFI: 0,
   });
 
-  const [balanceCoins, setBalanceCoins] = useState<CoinBalances>({
+  const [balanceCoins, setBalanceCoins] = useState<Coins>({
     DAI: 0,
     USDFI: 0,
     USDC: 0,
@@ -65,7 +58,7 @@ const SwapProvider: FC<SwapProviderProps> = ({ children }) => {
     BTCFI: 0,
   });
 
-  const addressesTokens: AddressesTokens = {
+  const addressesTokens: CoinsString = {
     DAI: addressDai,
     USDC: addressUSDC,
     ETH: addresswETH,
@@ -75,7 +68,7 @@ const SwapProvider: FC<SwapProviderProps> = ({ children }) => {
     BTCFI: addressBTCCOFI,
   };
 
-  const decimalsTokens: CoinDecimals = {
+  const decimalsTokens: Coins = {
     DAI: 0,
     USDFI: decimalsFI,
     USDC: decimalUSDC,
@@ -85,7 +78,7 @@ const SwapProvider: FC<SwapProviderProps> = ({ children }) => {
     BTCFI: decimalsFI,
   };
 
-  const convertTokenList: AllTokens = {
+  const convertTokenList: CoinsString = {
     USDC: "USDFI",
     ETH: "ETHFI",
     BTC: "BTCFI",
@@ -98,14 +91,14 @@ const SwapProvider: FC<SwapProviderProps> = ({ children }) => {
   const { signer, currentWalletAddress } = useContext(WalletContext);
 
   useEffect(() => {
-    if (signer) {
-      getBalances(signer, currentWalletAddress).then((balances: CoinBalances) =>
+    if (signer && currentWalletAddress) {
+      getBalances(signer, currentWalletAddress).then((balances: Coins) =>
         setBalanceCoins(balances)
       );
+      getPrices().then((prices: Coins) => {
+        setPricesCoins(prices);
+      });
     }
-    getPrices().then((prices: CoinPrices) => {
-      setPricesCoins(prices);
-    });
   }, [signer, currentWalletAddress]);
 
   return (

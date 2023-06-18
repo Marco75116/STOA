@@ -1,12 +1,7 @@
 import { addressUSDCOFI } from "../constants/address/addressesCOFI/USDCOFI";
 // import { addressDai } from "../constants/address/Dai";
 import { getBalanceERC20 } from "../ethers/ethers.view";
-import {
-  CoinBalances,
-  CoinPrices,
-  HistoryYield,
-  TokenName,
-} from "../types/swap.types";
+import { Coins, HistoryYield, TokenName } from "../types/swap.types";
 import { ethers } from "ethers";
 import { addressUSDC, decimalUSDC } from "../constants/address/USDC";
 import { addresswETH } from "../constants/address/wETH";
@@ -18,13 +13,8 @@ import axios from "axios";
 export const getBalances = async (
   signer: ethers.providers.JsonRpcSigner,
   currentWalletAddress: string
-): Promise<CoinBalances> => {
+): Promise<Coins> => {
   try {
-    // const daiBalance = await getBalanceERC20(
-    //   signer,
-    //   currentWalletAddress,
-    //   addressDai
-    // );
     const cofiBalance = await getBalanceERC20(
       signer,
       currentWalletAddress,
@@ -75,7 +65,7 @@ export const getBalances = async (
   }
 };
 
-export const getPrices = async (): Promise<CoinPrices> => {
+export const getPrices = async (): Promise<Coins> => {
   const usdcPrice = await axios
     .get(
       "https://api.coingecko.com/api/v3/simple/price?ids=usd-coin&vs_currencies=usd"

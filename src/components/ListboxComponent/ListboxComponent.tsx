@@ -2,7 +2,7 @@ import { FC, Fragment, useContext, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { ReactComponent as Arrow } from "../../assets/icons/ArrowBlack.svg";
 import { ReactComponent as CheckPink } from "../../assets/icons/CheckPink.svg";
-import { AllTokens, Token } from "../../utils/types/swap.types";
+import { Coins, Token } from "../../utils/types/swap.types";
 import { SwapContext } from "../../context/Swap.context";
 
 type ListboxComponentProps = {
@@ -30,9 +30,7 @@ const ListboxComponent: FC<ListboxComponentProps> = ({
     fromListBox && setTokenSelected(selectedToken.name);
     if (fromListBox === false) {
       const listTo = list.find((token: Token) => {
-        return (
-          token.name === convertTokenList[tokenSelected as keyof AllTokens]
-        );
+        return token.name === convertTokenList[tokenSelected as keyof Coins];
       });
       listTo && setSelectedToken(listTo);
     }
