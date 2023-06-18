@@ -2,6 +2,8 @@ import { ethers } from "ethers";
 import { abiDiamond } from "../constants/abi/Diamond";
 import { addressDiamond } from "../constants/address/Diamond";
 import { addressUSDCOFI } from "../constants/address/addressesCOFI/USDCOFI";
+import { addressBTCCOFI } from "../constants/address/addressesCOFI/BTCCOFI";
+import { addressETHCOFI } from "../constants/address/addressesCOFI/ETHCOFI";
 
 export const getBalanceERC20 = async (
   signer: ethers.providers.JsonRpcSigner,
@@ -149,6 +151,31 @@ export const getFeeCollectorStatus = async (
     );
     const feeCollectorStatus = await diamond_Contract.getFeeCollectorStatus();
     return feeCollectorStatus;
+  } catch (error) {
+    throw new Error("getFeeCollectorStatus failed : " + error);
+  }
+};
+
+export const getYieldPoints = async (
+  signer: ethers.providers.JsonRpcSigner | undefined,
+  address: string
+): Promise<ethers.BigNumber | undefined> => {
+  try {
+    const diamond_Contract = await new ethers.Contract(
+      addressDiamond,
+      abiDiamond,
+      signer
+    );
+    const arrayAddressFiTokens = [
+      addressUSDCOFI,
+      addressBTCCOFI,
+      addressETHCOFI,
+    ];
+    const amountPoints = await diamond_Contract.getYieldPoints(
+      address,
+      arrayAddressFiTokens
+    );
+    return amountPoints;
   } catch (error) {
     throw new Error("getFeeCollectorStatus failed : " + error);
   }

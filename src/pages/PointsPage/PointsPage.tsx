@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ReactComponent as Bulb } from "../../assets/icons/PinkBulb.svg";
 import { ReactComponent as PointMainIllustration } from "../../assets/illustrations/PointMainIllustration.svg";
 import { ReactComponent as InviteFriendsBtn } from "../../assets/texts/InviteFriendsBtn.svg";
+import { WalletContext } from "../../context/Wallet.context";
+import { getYieldPoints } from "../../utils/ethers/ethers.view";
+import { ethers } from "ethers";
 const PointsPage = () => {
+  const [points, setPoints] = useState<number>(0);
+  const { signer, currentWalletAddress } = useContext(WalletContext);
+
+  useEffect(() => {
+    getYieldPoints(signer, currentWalletAddress).then((points) => {
+      console.log(points);
+      setPoints(Number(ethers.utils.formatEther(points || 0)));
+    });
+  }, [currentWalletAddress]);
+
   return (
     <div className=" flex min-h-[calc(100%-64px)] flex-col items-center justify-center gap-[16px] bg-bgCardNavbar  py-16">
       <div className=" card h-[532px] gap-5 p-5">
@@ -10,7 +23,7 @@ const PointsPage = () => {
         <div>
           <div className="flex flex-col justify-between  border-r-[0.5px] border-solid border-borderCardAbout py-[20px] ">
             <div className=" flex gap-[4px] text-3xl font-semibold">
-              1,000
+              {points.toFixed(0)}
               <span className="mb-[2px] flex  h-[20px] self-end  text-sm font-normal text-textGray">
                 COFI
               </span>
