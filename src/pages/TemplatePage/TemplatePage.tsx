@@ -18,9 +18,10 @@ const TemplatePage = () => {
           >
             Open modal
           </div>
-
           <br />
           <Graph />
+          <br />
+          szszsz
         </div>
       </div>
 

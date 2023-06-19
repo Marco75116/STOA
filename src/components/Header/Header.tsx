@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
 import { ReactComponent as COFILogo } from "../../assets/logos/COFILogo.svg";
 import { ReactComponent as Swap } from "../../assets/icons/swap.svg";
-// import { ReactComponent as VaultsLogo } from "../../assets/icons/Frame.svg";
-// import { ReactComponent as VaultsLogoRed } from "../../assets/icons/FrameRed.svg";
+import { ReactComponent as VaultsLogo } from "../../assets/icons/Frame.svg";
 import { ReactComponent as AboutLogo } from "../../assets/icons/Vector-2.svg";
 import { ReactComponent as COFIPointLogo } from "../../assets/logos/COFIPointLogo.svg";
 import { ReactComponent as ETHLogo } from "../../assets/logos/optimism-logo.svg";
@@ -46,19 +45,20 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Hidden for now */}
-        {/* <div
+        <div
           className={`flex h-[100%] items-center gap-[8px] hover:cursor-pointer ${
             selectedPart === 1 && "border-b-[3px] border-b-pink"
           }`}
           onClick={() => {
-            navigate("/Vaults");
+            navigate("/Earnings");
             setSelectedPart(1);
           }}
         >
-          {selectedPart === 1 ? <VaultsLogoRed /> : <VaultsLogo />}
-          <div className={`${selectedPart === 1 && "text-pink"}`}>Vaults</div>
-        </div> */}
+          <VaultsLogo stroke={selectedPart === 1 ? "#EF2A89" : "white"} />
+          <div className={`${selectedPart === 1 ? "text-pink" : "text-white"}`}>
+            Earnings
+          </div>
+        </div>
 
         <div
           className={`flex h-[100%] items-center gap-[8px] hover:cursor-pointer ${

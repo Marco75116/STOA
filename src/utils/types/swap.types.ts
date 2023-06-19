@@ -31,7 +31,7 @@ export type Token = {
 
 export type HistoryYield = {
   id: number;
-  day: number;
+  day: string;
   amountUSDFI: number;
   amountBTCFI: number;
   amountETHFI: number;
@@ -39,7 +39,7 @@ export type HistoryYield = {
 
 export type HistoryYiedAsset = {
   id: number;
-  day: number;
+  day: string;
   amount: number;
 };
 
