@@ -3,15 +3,15 @@ import SumsubWebSdk from "@sumsub/websdk-react";
 import { WalletContext } from "../../context/Wallet.context";
 import apiKYC from "../../utils/services/apiSumsub";
 import { getKycDone } from "../../utils/helpers/global.helper";
+import { useAccount, useSignMessage } from "wagmi";
 
 const KYC = () => {
-  const {
-    currentWalletAddress,
-    applicantExist,
-    setIsOpenWallet,
-    review,
-    signer,
-  } = useContext(WalletContext);
+  const { applicantExist, setIsOpenWallet, review } = useContext(WalletContext);
+  const { isConnected, address } = useAccount();
+  const { data } = useSignMessage({
+    message: "Verify your account",
+  });
+
   const [accessSDKToken, setAccessSDKToken] = useState<string>();
 
   const handler = () => Promise.resolve<string>("");
@@ -25,7 +25,7 @@ const KYC = () => {
   const config = useMemo(
     () => ({
       lang: "en",
-      email: currentWalletAddress,
+      email: address,
       i18n: {
         document: {
           subTitles: {
@@ -49,19 +49,19 @@ const KYC = () => {
         console.error("WebSDK onError", error);
       },
     }),
-    [currentWalletAddress]
+    [address]
   );
 
   const onClickVerify = async () => {
-    const signature = await signData();
+    const signature = data;
 
     if (!applicantExist) {
       await apiKYC.createApplicant({
-        externalUserId: currentWalletAddress || "",
+        externalUserId: address,
       });
     }
     const token = await apiKYC.createToken({
-      externalUserId: signature || "",
+      externalUserId: signature as any,
     });
     setAccessSDKToken(token.data.token);
   };
@@ -80,21 +80,13 @@ const KYC = () => {
     }
   }, [kycDone]);
 
-  const signData = async () => {
-    if (signer) {
-      let message = "Verify your account";
-      let signature = await signer.signMessage(message);
-      return signature;
-    }
-  };
-
   return (
     <div className=" flex min-h-[calc(100%-64px)] w-[100] flex-col justify-center gap-8  bg-bgCardNavbar">
       {!kycDone && (
         <div className=" mt-6 text-center">Verify your Identity</div>
       )}
 
-      {currentWalletAddress !== "" ? (
+      {isConnected ? (
         !accessSDKToken ? (
           !kycDone && (
             <>

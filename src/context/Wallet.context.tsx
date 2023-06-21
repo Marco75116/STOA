@@ -6,8 +6,6 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { m } from "../plugins/magic";
-import { getConstants } from "../utils/helpers/constant.helper";
 import { GlobalConstants } from "../utils/types/global.types";
 import apiKYC from "../utils/services/apiSumsub";
 import {
@@ -16,20 +14,15 @@ import {
   Review,
 } from "../utils/types/sumsub.types";
 import { getKycDone } from "../utils/helpers/global.helper";
+import { useAccount, useContractReads } from "wagmi";
+import { DiamondContract } from "../utils/constants/wagmiConfig/wagmiConfig";
+import { addressUSDCOFI } from "../utils/constants/address/addressesCOFI/USDCOFI";
+import { addressETHCOFI } from "../utils/constants/address/addressesCOFI/ETHCOFI";
+import { addressBTCCOFI } from "../utils/constants/address/addressesCOFI/BTCCOFI";
+import { decimalUSDC } from "../utils/constants/address/USDC";
+import { decimalBTC } from "../utils/constants/address/wBTC";
 
 type WalletContextProps = {
-  currentWalletAddress: string;
-  initMagicWallet: (email: string, address: string) => void;
-  disconnect: () => void;
-  isWalletConnected: boolean;
-  email: string;
-  setSigner: Function;
-  signer: ethers.providers.JsonRpcSigner | undefined;
-  provider: any;
-  setProvider: Function;
-  magicBalance: number;
-  balance: number;
-  getConnectedWalletMetamask: () => void;
   constants: GlobalConstants;
   review: Review | undefined;
   applicantExist: boolean | undefined;
@@ -46,18 +39,6 @@ type WalletProviderProps = {
 export const WalletContext = createContext({} as WalletContextProps);
 
 const WalletProvider = ({ children }: WalletProviderProps) => {
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [currentWalletAddress, setCurrentWalletAddress] = useState("");
-  const [email, setEmail] = useState<string>("");
-  const [provider, setProvider] = useState<ethers.providers.JsonRpcProvider>();
-  const [signer, setSigner] = useState<
-    ethers.providers.JsonRpcSigner | undefined
-  >();
-  const [magicBalance, setMagicBalance] = useState<number>(0);
-  const [balance, setBalance] = useState<number>(0);
-  const [walletType, setWalletType] = useState<
-    "Magic" | "Metamask" | undefined
-  >();
   const [applicantData, setApplicationData] = useState<
     ApplicantData | undefined
   >();
@@ -68,80 +49,117 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
 
   const [constants, setConstants] = useState<GlobalConstants>({
     feeCollectorStatus: undefined,
-    pointsRate: undefined,
+    points: undefined,
     redeemEnabled: undefined,
     redeemFee: undefined,
     mintEnabled: undefined,
     mintFee: undefined,
-    minDeposit: undefined,
-    minWithdraw: undefined,
+    minDepositUSDFI: undefined,
+    minDepositETHFI: undefined,
+    minDepositBTCFI: undefined,
+    minWithdrawUSDFI: undefined,
+    minWithdrawETHFI: undefined,
+    minWithdrawBTCFI: undefined,
   });
 
-  const initMagicWallet = async (email: string, address: string) => {
-    setWalletType("Magic");
-    setEmail(email);
-    setIsWalletConnected(true);
-    setCurrentWalletAddress(address);
-  };
+  const { isConnected, address } = useAccount();
+  const percentageFactor = 10 ** 4;
+  const arrayAddressFiTokens = [addressUSDCOFI, addressBTCCOFI, addressETHCOFI];
 
-  const disconnect = async () => {
-    if (walletType === "Magic") {
-      m.user.logout();
-    }
-    setIsWalletConnected(false);
-    setCurrentWalletAddress("");
-    setEmail("");
-    setWalletType(undefined);
-  };
-
-  const getbalanceMagic = async () => {
-    if (provider) {
-      const balance = await provider.getBalance(currentWalletAddress);
-      const balanceInEth = ethers.utils.formatEther(balance);
-      setBalance(Number(balanceInEth));
-      setMagicBalance(Number(balanceInEth));
-    }
-  };
-
-  const connect = (address: string) => {
-    setCurrentWalletAddress(address);
-    setIsWalletConnected(true);
-  };
-
-  const getConnectedWalletMetamask = async () => {
-    const prov = window.ethereum;
-    if (prov !== undefined) {
-      const provider = new ethers.providers.Web3Provider(prov);
-      setProvider(provider);
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-      setSigner(signer);
-      setWalletType("Metamask");
-      signer.getAddress().then((address) => {
-        connect(address);
-        provider
-          .getBalance(address)
-          .then((balance) =>
-            setBalance(parseFloat(ethers.utils.formatEther(balance)))
-          );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data } = useContractReads({
+    contracts: [
+      {
+        ...DiamondContract,
+        functionName: "getPoints",
+        args: [address as `0x${string}`, arrayAddressFiTokens],
+      },
+      {
+        ...DiamondContract,
+        functionName: "getRedeemEnabled",
+        args: [address as `0x${string}`],
+      },
+      {
+        ...DiamondContract,
+        functionName: "getRedeemFee",
+        args: [addressUSDCOFI],
+      },
+      {
+        ...DiamondContract,
+        functionName: "getMintEnabled",
+        args: [address as `0x${string}`],
+      },
+      {
+        ...DiamondContract,
+        functionName: "getMintFee",
+        args: [addressUSDCOFI],
+      },
+      {
+        ...DiamondContract,
+        functionName: "getMinDeposit",
+        args: [addressUSDCOFI as `0x${string}`],
+      },
+      {
+        ...DiamondContract,
+        functionName: "getMinDeposit",
+        args: [addressETHCOFI as `0x${string}`],
+      },
+      {
+        ...DiamondContract,
+        functionName: "getMinDeposit",
+        args: [addressBTCCOFI as `0x${string}`],
+      },
+      {
+        ...DiamondContract,
+        functionName: "getMinWithdraw",
+        args: [addressUSDCOFI as `0x${string}`],
+      },
+      {
+        ...DiamondContract,
+        functionName: "getMinWithdraw",
+        args: [addressETHCOFI as `0x${string}`],
+      },
+      {
+        ...DiamondContract,
+        functionName: "getMinWithdraw",
+        args: [addressBTCCOFI as `0x${string}`],
+      },
+    ],
+    watch: true,
+    onSuccess(data: any) {
+      setConstants({
+        feeCollectorStatus: false,
+        points: Number(ethers.utils.formatEther(data[0].result)),
+        redeemEnabled: data[1].result,
+        redeemFee:
+          Number(ethers.utils.formatUnits(data[2].result, "wei")) /
+          percentageFactor,
+        mintEnabled: data[3].result,
+        mintFee:
+          Number(ethers.utils.formatUnits(data[4].result, "wei")) /
+          percentageFactor,
+        minDepositUSDFI: Number(
+          ethers.utils.formatUnits(data[5].result, decimalUSDC)
+        ),
+        minDepositETHFI: Number(ethers.utils.formatEther(data[6].result)),
+        minDepositBTCFI: Number(
+          ethers.utils.formatUnits(data[7].result, decimalBTC)
+        ),
+        minWithdrawUSDFI: Number(
+          ethers.utils.formatUnits(data[8].result, decimalUSDC)
+        ),
+        minWithdrawETHFI: Number(ethers.utils.formatEther(data[9].result)),
+        minWithdrawBTCFI: Number(
+          ethers.utils.formatUnits(data[10].result, decimalBTC)
+        ),
       });
-    }
-  };
-
-  useEffect(() => {
-    getConnectedWalletMetamask();
-  }, []);
-
-  useEffect(() => {
-    getbalanceMagic();
-    getConstants(signer).then((gConstants) => {
-      setConstants(gConstants);
-    });
-  }, [isWalletConnected, signer]);
+    },
+    enabled: isConnected,
+  });
 
   const getApplicantData = async () => {
     const applicantData = await apiKYC.getApplicantData({
-      externalUserId: currentWalletAddress,
+      externalUserId: address,
     });
 
     return applicantData.data;
@@ -159,32 +177,20 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
     }
   };
   useEffect(() => {
-    if (currentWalletAddress !== "") {
+    if (isConnected) {
       getApplicantData().then((applicantData) => {
         checkApplicant(applicantData);
       });
     }
-  }, [currentWalletAddress]);
+  }, [address]);
 
   const kycDone: boolean | undefined = useMemo(() => {
     return getKycDone(review);
-  }, [review, currentWalletAddress]);
+  }, [review, address]);
 
   return (
     <WalletContext.Provider
       value={{
-        isWalletConnected,
-        currentWalletAddress,
-        initMagicWallet,
-        disconnect,
-        email,
-        setSigner,
-        signer,
-        provider,
-        setProvider,
-        magicBalance,
-        balance,
-        getConnectedWalletMetamask,
         constants,
         review,
         applicantExist,

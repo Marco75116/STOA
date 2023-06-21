@@ -14,6 +14,8 @@ import ModalTransak from "../../components/Modals/ModalTransak/ModalTransak";
 import { ReactComponent as USDC } from "../../assets/logos/tokens/USDC.svg";
 import { ReactComponent as BTCLogo } from "../../assets/logos/tokens/BTCLogo.svg";
 import { ReactComponent as ETHLogo } from "../../assets/logos/tokens/ETHLogo.svg";
+import { MainContext } from "../../context/Main.context";
+import { useAccount } from "wagmi";
 
 const SwapPage = () => {
   const [action, setAction] = useState<0 | 1>(0);
@@ -21,6 +23,8 @@ const SwapPage = () => {
   const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
   const [showTransak, setShowTransak] = useState<boolean>(false);
   const { kycDone } = useContext(WalletContext);
+  const { setShowModalConnexion } = useContext(MainContext);
+  const { isConnected } = useAccount();
   const navigate = useNavigate();
 
   return (
@@ -82,7 +86,9 @@ const SwapPage = () => {
               <div
                 className="center h-[40px] w-[108px] rounded-lg border-[1px] border-[#FF87B2] text-[#FF87B2] hover:cursor-pointer"
                 onClick={() => {
-                  setIsOpenPopup(true);
+                  isConnected
+                    ? setIsOpenPopup(true)
+                    : setShowModalConnexion(true);
                 }}
               >
                 Proceed
@@ -102,7 +108,9 @@ const SwapPage = () => {
               </div>
               <div
                 onClick={() => {
-                  setShowTransak(true);
+                  isConnected
+                    ? setShowTransak(true)
+                    : setShowModalConnexion(true);
                 }}
                 className="center h-[40px] w-[108px] rounded-lg border-[1px] border-[#FF87B2] text-[#FF87B2] hover:cursor-pointer"
               >

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Dialog, Transition } from "@headlessui/react";
 import { FC, Fragment, useContext, useEffect, useMemo, useState } from "react";
 import { ReactComponent as Cross } from "../../../assets/icons/Cross.svg";
@@ -6,10 +7,6 @@ import { CoinsString, Coins, Token } from "../../../utils/types/swap.types";
 import { getReceiveAmount } from "../../../utils/helpers/swap.helpers";
 import { WalletContext } from "../../../context/Wallet.context";
 import { ethers } from "ethers";
-import {
-  fiToUnderlyingDiamond,
-  underlyingToFiDiamond,
-} from "../../../utils/ethers/ethers.write";
 import { ReactComponent as DoubleArrowWithBar } from "../../../assets/icons/ArrowSwitch.svg";
 import { ReactComponent as USDFI } from "../../../assets/logos/USDCFILogo.svg";
 import { ReactComponent as BTCFILogo } from "../../../assets/logos/tokens/BTCFILogo.svg";
@@ -18,6 +15,18 @@ import { ReactComponent as USDC } from "../../../assets/logos/tokens/USDC.svg";
 import { ReactComponent as BTCLogo } from "../../../assets/logos/tokens/BTCLogo.svg";
 import { ReactComponent as ETHLogo } from "../../../assets/logos/tokens/ETHLogo.svg";
 import { SwapContext } from "../../../context/Swap.context";
+import {
+  useAccount,
+  useBalance,
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
+import { DiamondContract } from "../../../utils/constants/wagmiConfig/wagmiConfig";
+import { abiDiamond } from "../../../utils/constants/abi/Diamond";
+import { addressDiamond } from "../../../utils/constants/address/Diamond";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const listStableCoinsFrom: Token[] = [
   { name: "USDC", svgLogo: USDC },
@@ -43,10 +52,12 @@ const ModalSwap: FC<ModalSwapProps> = ({
   action,
   setAction,
 }) => {
-  const [depositAmount, setDepositAmount] = useState<number>(0);
+  const [depositAmount, setDepositAmount] = useState<number>(1);
+  const [toastId, setToastId] = useState<any>(null);
 
-  const { signer, currentWalletAddress, constants, kycDone } =
-    useContext(WalletContext);
+  const { constants, kycDone } = useContext(WalletContext);
+
+  const { address } = useAccount();
 
   const {
     tokenSelected,
@@ -65,14 +76,20 @@ const ModalSwap: FC<ModalSwapProps> = ({
   }, [depositAmount, constants, action, tokenSelected]);
 
   const estimadedReceivingUSD = useMemo(() => {
-    if (estimatedReceiving !== undefined)
+    if (estimatedReceiving !== undefined) {
       return estimatedReceiving * pricesCoins[tokenSelected as keyof Coins];
+    }
   }, [estimatedReceiving, action, pricesCoins, tokenSelected]);
 
   const minAmountOut = useMemo(() => {
-    if (estimatedReceiving !== undefined)
+    if (estimatedReceiving !== undefined) {
       return Math.floor(estimatedReceiving * 0.9975 * 10 ** 6) / 10 ** 6;
+    } else {
+      return 0;
+    }
   }, [estimatedReceiving]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setDepositAmount(0);
@@ -81,6 +98,196 @@ const ModalSwap: FC<ModalSwapProps> = ({
   function closeModal() {
     setIsOpen(false);
   }
+
+  const { config: configApprove } = usePrepareContractWrite({
+    address: addressesTokens[
+      tokenSelected as keyof CoinsString
+    ] as `0x${string}`,
+    abi: abiDiamond,
+    functionName: "approve",
+    args: [
+      addressDiamond,
+      depositAmount * 10 ** decimalsTokens[tokenSelected as keyof Coins],
+    ],
+    enabled: depositAmount !== 230,
+    onError(error) {
+      console.log("Error approve", error);
+    },
+  });
+
+  const { config: configUnderlyingToFi, refetch: refetchMint } =
+    usePrepareContractWrite({
+      ...DiamondContract,
+      functionName: "underlyingToFi",
+      args: [
+        depositAmount * 10 ** decimalsTokens[tokenSelected as keyof Coins],
+        minAmountOut *
+          10 **
+            decimalsTokens[
+              convertTokenList[tokenSelected as keyof Coins] as keyof Coins
+            ],
+        addressesTokens[
+          convertTokenList[tokenSelected as keyof Coins] as keyof CoinsString
+        ],
+        address,
+        address,
+        addressReferral === "" ? ethers.constants.AddressZero : addressReferral,
+      ],
+      enabled:
+        depositAmount !== 0 &&
+        address !== undefined &&
+        balanceCoins[tokenSelected as keyof Coins] <= depositAmount &&
+        action === 0,
+      onError(error) {
+        console.log("Error PrepareContractWrite underlyingToFi : ", error);
+      },
+    });
+
+  const { config: configFiToUnderlying } = usePrepareContractWrite({
+    ...DiamondContract,
+    functionName: "fiToUnderlying",
+    args: [
+      depositAmount * 10 ** 18 -
+        1 * 10 ** (Math.floor(depositAmount).toString().length + 2),
+      minAmountOut *
+        10 **
+          decimalsTokens[
+            convertTokenList[tokenSelected as keyof Coins] as keyof Coins
+          ],
+      addressesTokens[tokenSelected as keyof CoinsString],
+      address,
+      address,
+    ],
+    enabled: depositAmount !== 0 && address !== undefined && action === 1,
+    onError(error) {
+      console.log("Error PrepareContractWrite fiToUnderlying : ", error);
+    },
+  });
+
+  const { data: dataApprove, write: writeApprove } =
+    useContractWrite(configApprove);
+
+  const {
+    isSuccess: ApproveSuccess,
+    isLoading: isLoadingApprove,
+    isSuccess: isSuccessApprove,
+    isError: isErrorApprove,
+  } = useWaitForTransaction({
+    hash: dataApprove?.hash,
+  });
+
+  const { data: dataMint, write: writeUnderlyingToFi } = useContractWrite({
+    ...configUnderlyingToFi,
+  });
+
+  const {
+    data: dataMintWait,
+    isLoading: isLoadingMint,
+    isSuccess: isSuccessMint,
+    isError: isErrorMint,
+  } = useWaitForTransaction({
+    hash: dataMint?.hash,
+    onSuccess() {
+      navigate("/Earnings");
+    },
+  });
+
+  const { data: dataRedeem, write: writeFiToUnderlying } = useContractWrite({
+    ...configFiToUnderlying,
+  });
+
+  const {
+    data: dataRedeemWait,
+    isLoading: isLoadingRedeem,
+    isSuccess: isSuccessRedeem,
+    isError: isErrorRedeem,
+  } = useWaitForTransaction({
+    hash: dataRedeem?.hash,
+    onSuccess() {
+      navigate("/Earnings");
+    },
+  });
+
+  useEffect(() => {
+    if (isLoadingMint) {
+      let toastvalue = toast.loading("MINTING...");
+      setToastId(toastvalue);
+    }
+    if (isSuccessMint) {
+      toast.update(toastId, {
+        render: "MINT SUCCESS",
+        type: "success",
+        isLoading: false,
+        className: "rotateY animated",
+        autoClose: 5000,
+      });
+    }
+    if (isErrorMint) {
+      toast.update(toastId, {
+        render: "MINT ERROR",
+        type: "error",
+        isLoading: false,
+        className: "rotateY animated",
+        autoClose: 5000,
+      });
+    }
+  }, [isSuccessMint, isLoadingMint, isErrorMint]);
+
+  useEffect(() => {
+    if (isLoadingApprove) {
+      let toastvalue = toast.loading("APPROVE...");
+      setToastId(toastvalue);
+    }
+    if (isSuccessApprove) {
+      refetchMint();
+      toast.update(toastId, {
+        render: "APPROVE SUCCESS",
+        type: "success",
+        isLoading: false,
+        className: "rotateY animated",
+        autoClose: 5000,
+      });
+    }
+    if (isErrorApprove) {
+      toast.update(toastId, {
+        render: "APPROVE ERROR",
+        type: "error",
+        isLoading: false,
+        className: "rotateY animated",
+        autoClose: 5000,
+      });
+    }
+  }, [isSuccessApprove, isLoadingApprove, isErrorApprove]);
+
+  console.log(
+    depositAmount * 10 ** decimalsTokens[tokenSelected as keyof Coins]
+  );
+
+  useEffect(() => {
+    if (isLoadingRedeem) {
+      let toastvalue = toast.loading("REDEEM...");
+      setToastId(toastvalue);
+    }
+    if (isSuccessRedeem) {
+      refetchMint();
+      toast.update(toastId, {
+        render: "REDEEM SUCCESS",
+        type: "success",
+        isLoading: false,
+        className: "rotateY animated",
+        autoClose: 5000,
+      });
+    }
+    if (isErrorRedeem) {
+      toast.update(toastId, {
+        render: "REDEEM ERROR",
+        type: "error",
+        isLoading: false,
+        className: "rotateY animated",
+        autoClose: 5000,
+      });
+    }
+  }, [isLoadingRedeem, isSuccessRedeem, isErrorRedeem]);
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -115,6 +322,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
                 >
                   {action === 0 ? "Deposit with Wallet" : "Redeem"}
                   <Cross
+                    stroke="black"
                     className="hover:cursor-pointer"
                     onClick={() => closeModal()}
                   />
@@ -239,57 +447,19 @@ const ModalSwap: FC<ModalSwapProps> = ({
                   <div
                     className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-3 text-base font-normal text-white hover:cursor-pointer"
                     onClick={() => {
-                      {
-                        kycDone === true &&
-                          signer &&
-                          (action === 0
-                            ? underlyingToFiDiamond(
-                                addressesTokens[
-                                  tokenSelected as keyof CoinsString
-                                ],
-                                addressesTokens[
-                                  convertTokenList[
-                                    tokenSelected as keyof Coins
-                                  ] as keyof CoinsString
-                                ],
-                                signer,
-                                ethers.utils.parseUnits(
-                                  depositAmount.toString(),
-                                  decimalsTokens[tokenSelected as keyof Coins]
-                                ),
-                                ethers.utils.parseUnits(
-                                  Number(minAmountOut).toString(),
-                                  "ether"
-                                ),
-                                currentWalletAddress,
-                                addressReferral === ""
-                                  ? ethers.constants.AddressZero
-                                  : addressReferral
-                              )
-                            : fiToUnderlyingDiamond(
-                                signer,
-                                ethers.utils.parseUnits(
-                                  depositAmount.toString(),
-                                  "ether"
-                                ),
-                                ethers.utils.parseUnits(
-                                  Number(minAmountOut).toString(),
-                                  decimalsTokens[
-                                    convertTokenList[
-                                      tokenSelected as keyof Coins
-                                    ] as keyof Coins
-                                  ]
-                                ),
-                                addressesTokens[
-                                  tokenSelected as keyof CoinsString
-                                ],
-                                currentWalletAddress
-                              ));
-                      }
+                      kycDone === true && action === 1
+                        ? writeFiToUnderlying?.()
+                        : ApproveSuccess
+                        ? writeUnderlyingToFi?.()
+                        : writeApprove?.();
                     }}
                   >
                     <button type="button">
-                      {action === 0 ? "Mint" : "Redeem"}
+                      {action === 1
+                        ? "Redeem"
+                        : ApproveSuccess
+                        ? "Mint"
+                        : "Approve"}
                     </button>
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 export interface User {
-  externalUserId: string;
+  externalUserId: `0x${string}` | undefined;
 }
 
 export interface AccessToken {

@@ -2,7 +2,6 @@ import React, {
   createContext,
   FC,
   ReactNode,
-  useContext,
   useEffect,
   useState,
 } from "react";
@@ -17,8 +16,10 @@ import {
   decimalsFI,
 } from "../utils/constants/address/addressesCOFI/ETHCOFI";
 import { addressBTCCOFI } from "../utils/constants/address/addressesCOFI/BTCCOFI";
-import { getBalances, getPrices } from "../utils/helpers/swap.helpers";
-import { WalletContext } from "./Wallet.context";
+import { useAccount, useContractReads } from "wagmi";
+import { abiDiamond } from "../utils/constants/abi/Diamond";
+import { ethers } from "ethers";
+import { getPrices } from "../utils/helpers/swap.helpers";
 
 type SwapContextProps = {
   tokenSelected: TokenSelected;
@@ -88,18 +89,71 @@ const SwapProvider: FC<SwapProviderProps> = ({ children }) => {
     BTCFI: "BTC",
   };
 
-  const { signer, currentWalletAddress } = useContext(WalletContext);
+  const { address, isConnected } = useAccount();
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data } = useContractReads({
+    contracts: [
+      {
+        address: addressUSDC as `0x${string}`,
+        abi: abiDiamond as any,
+        functionName: "balanceOf",
+        args: [address as `0x${string}`],
+      },
+      {
+        address: addressUSDCOFI as `0x${string}`,
+        abi: abiDiamond as any,
+        functionName: "balanceOf",
+        args: [address as `0x${string}`],
+      },
+      {
+        address: addresswETH as `0x${string}`,
+        abi: abiDiamond as any,
+        functionName: "balanceOf",
+        args: [address as `0x${string}`],
+      },
+      {
+        address: addresswBTC as `0x${string}`,
+        abi: abiDiamond as any,
+        functionName: "balanceOf",
+        args: [address as `0x${string}`],
+      },
+      {
+        address: addressETHCOFI as `0x${string}`,
+        abi: abiDiamond as any,
+        functionName: "balanceOf",
+        args: [address as `0x${string}`],
+      },
+      {
+        address: addressBTCCOFI as `0x${string}`,
+        abi: abiDiamond as any,
+        functionName: "balanceOf",
+        args: [address as `0x${string}`],
+      },
+    ],
+    onSuccess(data: any) {
+      setBalanceCoins({
+        USDC: Number(
+          ethers.utils.formatUnits(data[0].result || 0, decimalUSDC)
+        ),
+        DAI: 0,
+        USDFI: Number(ethers.utils.formatUnits(data[1].result || 0)),
+        ETH: Number(ethers.utils.formatUnits(data[2].result || 0)),
+        BTC: Number(ethers.utils.formatUnits(data[3].result || 0, decimalBTC)),
+        ETHFI: Number(ethers.utils.formatUnits(data[4].result || 0)),
+        BTCFI: Number(ethers.utils.formatUnits(data[5].result || 0)),
+      });
+    },
+    enabled: isConnected,
+  });
 
   useEffect(() => {
-    if (signer && currentWalletAddress) {
-      getBalances(signer, currentWalletAddress).then((balances: Coins) =>
-        setBalanceCoins(balances)
-      );
+    if (isConnected) {
       getPrices().then((prices: Coins) => {
         setPricesCoins(prices);
       });
     }
-  }, [signer, currentWalletAddress]);
+  }, [isConnected]);
 
   return (
     <SwapContext.Provider
