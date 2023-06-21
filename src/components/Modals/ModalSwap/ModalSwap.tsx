@@ -259,10 +259,6 @@ const ModalSwap: FC<ModalSwapProps> = ({
     }
   }, [isSuccessApprove, isLoadingApprove, isErrorApprove]);
 
-  console.log(
-    depositAmount * 10 ** decimalsTokens[tokenSelected as keyof Coins]
-  );
-
   useEffect(() => {
     if (isLoadingRedeem) {
       let toastvalue = toast.loading("REDEEM...");

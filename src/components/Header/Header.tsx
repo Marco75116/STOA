@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ReactComponent as COFILogo } from "../../assets/logos/COFILogo.svg";
 import { ReactComponent as Swap } from "../../assets/icons/swap.svg";
 import { ReactComponent as VaultsLogo } from "../../assets/icons/Frame.svg";
@@ -11,6 +11,25 @@ import Dropdown from "../Dropdown/Dropdown";
 const Header = () => {
   const navigate = useNavigate();
   const [selectedPart, setSelectedPart] = useState<0 | 1 | 2 | 3>(0);
+
+  const pathName = useMemo(() => {
+    return location.pathname;
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (pathName === "/Swap") {
+      setSelectedPart(0);
+    }
+    if (pathName === "/Earnings") {
+      setSelectedPart(1);
+    }
+    if (pathName === "/Points") {
+      setSelectedPart(2);
+    }
+    if (pathName === "/About") {
+      setSelectedPart(3);
+    }
+  }, [pathName]);
 
   return (
     <div className="grid h-16 grid-cols-3 border-b-[0.5px] border-b-borderBottomConnectedCard bg-darkgreen px-6">
