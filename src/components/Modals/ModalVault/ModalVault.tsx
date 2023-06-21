@@ -81,7 +81,7 @@ const ModalVault: FC<ModalVaultProps> = ({
                     className="flex flex-row items-center justify-between border-b-[0.5px] border-solid border-borderCardAbout p-6  text-lg font-medium leading-6 text-gray-900"
                   >
                     New Vault
-                    <Cross />
+                    <Cross stroke="black" />
                   </Dialog.Title>
                   <div className="flex h-[372px] flex-col justify-between border-b-[0.5px] border-solid border-borderCardAbout px-[20px] py-[32px]">
                     <div className="flex h-[68px] flex-col justify-between">

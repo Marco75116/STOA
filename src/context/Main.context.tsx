@@ -12,6 +12,8 @@ type MainContextProps = {
   setShowContactModal: Function;
   showContactModal: boolean;
   windowWidth: number;
+  showModalConnexion: boolean;
+  setShowModalConnexion: Function;
 };
 
 type MainProviderProps = {
@@ -26,6 +28,7 @@ const MainProvider: FC<MainProviderProps> = ({ children }) => {
     "deposit"
   );
   const [showContactModal, setShowContactModal] = useState<boolean>(false);
+  const [showModalConnexion, setShowModalConnexion] = useState<boolean>(false);
 
   useEffect(() => {
     function handleWindowResize() {
@@ -47,6 +50,8 @@ const MainProvider: FC<MainProviderProps> = ({ children }) => {
         setShowContactModal,
         showContactModal,
         windowWidth,
+        showModalConnexion,
+        setShowModalConnexion,
       }}
     >
       {children}

@@ -13,42 +13,31 @@ import { ReactComponent as Explore } from "../../assets/icons/Explore.svg";
 import { ReactComponent as Warning } from "../../assets/icons/Warning.svg";
 import { ReactComponent as Disconnect } from "../../assets/icons/Disconnect.svg";
 import { ReactComponent as Wallet } from "../../assets/icons/Wallet.svg";
-import { ReactComponent as Mail } from "../../assets/icons/Mail.svg";
+// import { ReactComponent as Mail } from "../../assets/icons/Mail.svg";
 import axios from "axios";
 import { WalletContext } from "../../context/Wallet.context";
 import { useNavigate } from "react-router-dom";
 import { copyToClipboard, getKycDone } from "../../utils/helpers/global.helper";
-import { addressDiamond } from "../../utils/constants/address/Diamond";
+import { useAccount, useBalance, useDisconnect } from "wagmi";
 
-type DropdownProps = {
-  setOpenMagic: Function;
-};
+type DropdownProps = {};
 
-const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
+const Dropdown: FC<DropdownProps> = () => {
   const [priceEth, setPriceEth] = useState<number>(0);
-  const [addressDisplayed, setAddressDisplayed] = useState<string>("");
   const dRef = useRef<HTMLButtonElement>(null);
 
   function toggle() {
     dRef.current?.click();
   }
 
-  const {
-    email,
-    isWalletConnected,
-    currentWalletAddress,
-    disconnect,
-    balance,
-    getConnectedWalletMetamask,
-    isOpenWallet,
-    review,
-  } = useContext(WalletContext);
+  const { isOpenWallet, review } = useContext(WalletContext);
+  const { isConnected, address } = useAccount();
+  const { data } = useBalance({
+    address,
+  });
+  const { disconnect } = useDisconnect();
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setAddressDisplayed(currentWalletAddress);
-  }, [isWalletConnected]);
 
   const getConvertedPrice = () => {
     axios
@@ -63,10 +52,6 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
   useEffect(() => {
     getConvertedPrice();
   }, []);
-
-  const disconnectWallet = () => {
-    disconnect();
-  };
 
   const kycDone = useMemo(() => {
     return getKycDone(review);
@@ -93,7 +78,6 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
 
               {open && (
                 <Transition
-                  as={Fragment}
                   enter="transition ease-out duration-200"
                   enterFrom="opacity-0 translate-y-1"
                   enterTo="opacity-100 translate-y-0"
@@ -101,55 +85,7 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                   leaveFrom="opacity-100 translate-y-0"
                   leaveTo="opacity-0 translate-y-1"
                 >
-                  {!isWalletConnected ? (
-                    <Popover.Panel
-                      static
-                      className="absolute z-10 mt-3 h-[272px] w-[260px] translate-x-[-70%] transform px-4 sm:px-0 lg:max-w-3xl"
-                    >
-                      <div className="overflow-hidden rounded-lg shadow-lg ring-black ring-opacity-5">
-                        <div className="relative flex grid  gap-[6px] bg-white p-3 lg:grid-cols-1">
-                          <div className=" h-[48px] p-3 text-base font-normal">
-                            My Profile
-                          </div>
-                          <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
-                          <div className="flex h-[48px] items-center justify-between p-3 text-base font-normal">
-                            Explore
-                            <Explore
-                              className="hover:cursor-pointer"
-                              onClick={() =>
-                                window.open(
-                                  `https://optimistic.etherscan.io/address/${addressDiamond}`,
-                                  "_blank"
-                                )
-                              }
-                            />
-                          </div>
-                          <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
-                          <div
-                            className="flex h-[48px] items-center justify-center rounded-lg  bg-magicWallet p-3 text-base font-normal text-white hover:cursor-pointer
-                      "
-                            onClick={() => {
-                              setOpenMagic(true);
-                              close();
-                            }}
-                          >
-                            Magic Wallet
-                          </div>
-                          <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
-                          <div
-                            className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-3 text-base font-normal text-white hover:cursor-pointer
-                      "
-                            onClick={() => {
-                              getConnectedWalletMetamask();
-                              close();
-                            }}
-                          >
-                            Connect Wallet
-                          </div>
-                        </div>
-                      </div>
-                    </Popover.Panel>
-                  ) : (
+                  {isConnected && (
                     <Popover.Panel
                       static
                       className="absolute z-10 mt-3 h-[272px] w-[260px]  translate-x-[-30%] transform px-4 sm:px-0 lg:max-w-3xl"
@@ -165,23 +101,28 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                                   copyToClipboard("currentWalletAddress")
                                 }
                               >
-                                {addressDisplayed?.slice(0, 6) +
+                                {address?.slice(0, 6) +
                                   "..." +
-                                  addressDisplayed?.slice(38)}
+                                  address?.slice(38)}
                               </div>
                             </div>
-                            {email && (
+                            {/* {email && (
                               <div className="flex h-[52px] flex-row items-center justify-center gap-[12px]">
                                 <Mail />
                                 <div>{email}</div>
                               </div>
-                            )}
+                            )} */}
                             <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
                             <div className=" flex h-[88px] flex-col items-center justify-center">
                               <div className="text-3xl font-bold">
-                                {balance.toFixed(3)} ETH
+                                {Number(data?.formatted).toFixed(3)} ETH
                               </div>
-                              <div>${(balance * priceEth).toFixed(2)}</div>
+                              <div>
+                                $
+                                {(Number(data?.formatted) * priceEth).toFixed(
+                                  2
+                                )}
+                              </div>
                             </div>
                           </div>
                           <div className="flex h-[48px] items-center justify-between p-3 text-base font-normal">
@@ -213,7 +154,7 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                               className="hover:cursor-pointer"
                               onClick={() =>
                                 window.open(
-                                  `https://optimistic.etherscan.io/address/${addressDisplayed}`,
+                                  `https://optimistic.etherscan.io/address/${address}`,
                                   "_blank"
                                 )
                               }
@@ -223,7 +164,8 @@ const Dropdown: FC<DropdownProps> = ({ setOpenMagic }) => {
                           <div
                             className="flex h-[48px] items-center justify-between p-3 text-base font-normal hover:cursor-pointer"
                             onClick={() => {
-                              disconnectWallet();
+                              disconnect();
+                              close();
                             }}
                           >
                             Disconnect

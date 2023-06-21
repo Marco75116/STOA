@@ -9,7 +9,6 @@ import { ReactComponent as USDC } from "../../../assets/logos/tokens/USDC.svg";
 import { abiUSDC } from "../../../utils/constants/abi/USDC";
 import { addressUSDC } from "../../../utils/constants/address/USDC";
 import { ethers } from "ethers";
-import { transferDai } from "../../../utils/ethers/ethers.write";
 import { WalletContext } from "../../../context/Wallet.context";
 
 type ModalTransferProps = {
@@ -23,7 +22,6 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
   const [amount, setAmount] = useState<number>(0);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { signer } = useContext(WalletContext);
 
   const closeModal = () => {
     setIsOpen(false);
@@ -68,7 +66,7 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                           className="flex h-[32px] w-[32px] items-center justify-center rounded-lg border-[0.5px] border-solid border-borderCardNavbar hover:cursor-pointer"
                           onClick={() => closeModal()}
                         >
-                          <Cross />
+                          <Cross stroke="black" />
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-2">
@@ -135,14 +133,6 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                     </div>
                     <div className="p-[20px]">
                       <div
-                        onClick={() => {
-                          signer &&
-                            transferDai(
-                              signer,
-                              "0x3C0067736ee2694d312A44deD0D83Ba6a53cFA83",
-                              100
-                            );
-                        }}
                         className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-5  p-[10px] text-base font-normal text-white hover:cursor-pointer
                       "
                       >
@@ -156,7 +146,7 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                       className="absolute right-4 top-4 flex h-[32px] w-[32px] items-center justify-center rounded-lg border-[0.5px] border-solid border-borderCardNavbar hover:cursor-pointer"
                       onClick={() => closeModal()}
                     >
-                      <Cross />
+                      <Cross stroke="black" />
                     </div>
                     <div className="flex h-[100%] w-[100%] flex-col items-center justify-between ">
                       <div role="status">
@@ -192,7 +182,7 @@ const ModalTransfer: FC<ModalTransferProps> = ({ isOpen, setIsOpen }) => {
                       className="absolute right-4 top-4 flex h-[32px] w-[32px] items-center justify-center rounded-lg border-[0.5px] border-solid border-borderCardNavbar hover:cursor-pointer"
                       onClick={() => closeModal()}
                     >
-                      <Cross />
+                      <Cross stroke="black" />
                     </div>
                     <div className="flex h-[100%] w-[260px] flex-col items-center justify-between ">
                       <ValidationTx />
