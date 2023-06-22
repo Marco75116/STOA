@@ -5,6 +5,8 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { optimism } from "viem/chains";
+import { useNetwork, useSwitchNetwork } from "wagmi";
 
 type MainContextProps = {
   landingView: string;
@@ -29,6 +31,13 @@ const MainProvider: FC<MainProviderProps> = ({ children }) => {
   );
   const [showContactModal, setShowContactModal] = useState<boolean>(false);
   const [showModalConnexion, setShowModalConnexion] = useState<boolean>(false);
+
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
+
+  useEffect(() => {
+    if (chain?.id !== 10) switchNetwork?.(optimism.id);
+  }, [chain]);
 
   useEffect(() => {
     function handleWindowResize() {
