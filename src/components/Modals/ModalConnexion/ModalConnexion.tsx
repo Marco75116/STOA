@@ -8,6 +8,7 @@ import { ReactComponent as MagicLogo } from "../../../assets/logos/wallet/1-Icon
 
 import { optimism } from "viem/chains";
 import { useAccount, useConnect } from "wagmi";
+import apiOffChain from "../../../utils/services/apiOffChain";
 
 type ModalConnexionProps = {
   isOpen: boolean;
@@ -17,6 +18,9 @@ type ModalConnexionProps = {
 const ModalConnexion: FC<ModalConnexionProps> = ({ isOpen, setIsOpen }) => {
   const { connect, connectors, isLoading, pendingConnector } = useConnect({
     chainId: optimism.id,
+    onSuccess(data) {
+      apiOffChain.insertConnexionData(data.account);
+    },
   });
   const { isConnected } = useAccount();
   function closeModal() {
