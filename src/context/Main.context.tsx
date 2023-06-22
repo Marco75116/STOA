@@ -34,7 +34,6 @@ const MainProvider: FC<MainProviderProps> = ({ children }) => {
 
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
-
   useEffect(() => {
     if (chain?.id !== 10) switchNetwork?.(optimism.id);
   }, [chain]);

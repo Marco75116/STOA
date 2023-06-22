@@ -1,11 +1,13 @@
 import React, { useCallback, useState } from "react";
-import { PieChart, Pie, Sector } from "recharts";
+import { PieChart, Pie, Sector, Cell } from "recharts";
 
 const data = [
   { name: "USDFI", value: 400 },
   { name: "ETHFI", value: 600 },
   { name: "BTCFI", value: 300 },
 ];
+
+const COLORS = ["#394A46", "#F0C9DC", "#FFECF5"];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -24,7 +26,7 @@ const renderCustomizedLabel = ({
     <text
       x={x}
       y={y}
-      fill="white"
+      fill="gray"
       textAnchor={x > cx ? "start" : "end"}
       dominantBaseline="central"
     >
@@ -47,10 +49,10 @@ const renderActiveShape = (props: any) => {
 
   return (
     <g>
-      <text x={cx} y={cy} dy={0} textAnchor="middle" fill={fill}>
+      <text x={cx} y={cy} dy={0} textAnchor="middle" fill={"black"}>
         {payload.name}
       </text>
-      <text x={cx} y={cy} dy={20} textAnchor="middle" fill={fill}>
+      <text x={cx} y={cy} dy={20} textAnchor="middle" fill={"black"}>
         {payload.value}$
       </text>
       <Sector
@@ -89,7 +91,11 @@ const PieChartComponent = () => {
         fill="#8884d8"
         dataKey="value"
         onMouseEnter={onPieEnter}
-      />
+      >
+        {data.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        ))}
+      </Pie>
     </PieChart>
   );
 };

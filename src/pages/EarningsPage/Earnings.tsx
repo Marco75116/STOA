@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import PieChartComponent from "../../components/PieChart/PieChart";
 import Graph from "../../components/Graph/Graph";
 import { HistoryYiedAsset } from "../../utils/types/swap.types";
-import { ReactComponent as USDFI } from "../../assets/logos/USDCFILogo.svg";
-import { ReactComponent as BTCFILogo } from "../../assets/logos/tokens/BTCFILogo.svg";
-import { ReactComponent as ETHFILogo } from "../../assets/logos/tokens/ETHFILogo.svg";
+import { ReactComponent as USDC } from "../../assets/logos/tokens/USDC.svg";
+import { ReactComponent as BTCLogo } from "../../assets/logos/tokens/BTCLogo.svg";
+import { ReactComponent as ETHLogo } from "../../assets/logos/tokens/ETHLogo.svg";
 import { ReactComponent as ThreeDots } from "../../assets/icons/three-dots-svgrepo-com.svg";
 
 const historyDataMock: HistoryYiedAsset[] = [
@@ -126,10 +126,10 @@ const Earnings = () => {
           <div className=" flex flex-row justify-between rounded-xl  bg-gray-100 px-7 py-4">
             <div>
               <div className="center flex flex-row gap-3">
-                <USDFI width={44} height={44} />
+                <USDC width={44} height={44} />
                 <div>
                   <span className="text-xl ">USDFI</span>
-                  <div>Balance : 23,333 </div>
+                  <div>Balance : 23,333, Deposit :21,263 </div>
                 </div>
               </div>
             </div>
@@ -171,10 +171,10 @@ const Earnings = () => {
           <div className=" flex flex-row justify-between bg-gray-100 px-7 py-4">
             <div>
               <div className="center flex flex-row gap-3">
-                <ETHFILogo width={44} height={44} />
+                <ETHLogo width={44} height={44} />
                 <div>
                   <span className="text-xl ">USDFI</span>
-                  <div>Balance : 8,13263 </div>
+                  <div>Balance : 8.13263, Deposit :7.43263 </div>
                 </div>
               </div>
             </div>
@@ -216,10 +216,10 @@ const Earnings = () => {
           <div className=" flex flex-row justify-between bg-gray-100 px-7 py-4">
             <div>
               <div className="center flex flex-row gap-3">
-                <BTCFILogo width={44} height={44} />
+                <BTCLogo width={44} height={44} />
                 <div>
                   <span className="text-xl ">BTCFI</span>
-                  <div>Balance : 2,75654 </div>
+                  <div>Balance : 2,75654, Deposit: 2,25654</div>
                 </div>
               </div>
             </div>
