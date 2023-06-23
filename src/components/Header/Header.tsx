@@ -53,9 +53,7 @@ const Header = () => {
           }}
         >
           <Swap stroke={selectedPart === 0 ? "#EF2A89" : "white"} />
-          <div
-            className={`${selectedPart === 0 ? " text-pink" : "text-white"}`}
-          >
+          <div className={`${selectedPart === 0 ? "text-pink" : "text-white"}`}>
             Swap
           </div>
         </div>

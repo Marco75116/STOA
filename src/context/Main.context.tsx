@@ -16,6 +16,8 @@ type MainContextProps = {
   windowWidth: number;
   showModalConnexion: boolean;
   setShowModalConnexion: Function;
+  showModalForm: boolean;
+  setShowModalForm: Function;
 };
 
 type MainProviderProps = {
@@ -31,6 +33,7 @@ const MainProvider: FC<MainProviderProps> = ({ children }) => {
   );
   const [showContactModal, setShowContactModal] = useState<boolean>(false);
   const [showModalConnexion, setShowModalConnexion] = useState<boolean>(false);
+  const [showModalForm, setShowModalForm] = useState<boolean>(false);
 
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
@@ -60,6 +63,8 @@ const MainProvider: FC<MainProviderProps> = ({ children }) => {
         windowWidth,
         showModalConnexion,
         setShowModalConnexion,
+        showModalForm,
+        setShowModalForm,
       }}
     >
       {children}

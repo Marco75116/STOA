@@ -39,7 +39,7 @@ const ConnectButton = () => {
       {!isConnected && (
         <div className="text-green-400 col-span-1 flex w-full items-center justify-end gap-[8px] font-semibold  ">
           <button
-            className="  hover:bg-green-700 rounded-lg bg-white px-5 py-2 font-semibold text-black"
+            className="  rounded-lg bg-white px-5 py-2 font-semibold text-black"
             onClick={() => {
               {
                 !isConnected && setShowModalConnexion(true);

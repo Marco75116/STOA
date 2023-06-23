@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Dialog, Transition } from "@headlessui/react";
 import { FC, Fragment, useContext, useEffect, useMemo, useState } from "react";
 import { ReactComponent as Cross } from "../../../assets/icons/Cross.svg";
@@ -17,7 +16,6 @@ import { ReactComponent as ETHLogo } from "../../../assets/logos/tokens/ETHLogo.
 import { SwapContext } from "../../../context/Swap.context";
 import {
   useAccount,
-  useBalance,
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
@@ -181,6 +179,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
   });
 
   const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     data: dataMintWait,
     isLoading: isLoadingMint,
     isSuccess: isSuccessMint,
@@ -197,6 +196,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
   });
 
   const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     data: dataRedeemWait,
     isLoading: isLoadingRedeem,
     isSuccess: isSuccessRedeem,
@@ -346,11 +346,11 @@ const ModalSwap: FC<ModalSwapProps> = ({
                     </div>
                     <div className="flex flex-col gap-2">
                       <div className=" text-base font-medium">Amount</div>
-                      <div className="flex h-[40px] w-[224px]  items-center justify-between rounded-xl border-[0.5px] border-solid border-borderCardAbout p-[10px]">
+                      <div className="flex h-[40px] w-[224px]  items-center justify-between rounded-xl border-[0.5px] border-solid border-borderCardAbout p-2">
                         <input
                           type="number"
                           placeholder="0,00"
-                          className="w-[224px]"
+                          className="w-[224px"
                           value={depositAmount}
                           onChange={(event) => {
                             setDepositAmount(Number(event.target.value));

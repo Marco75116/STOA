@@ -12,3 +12,13 @@ export type GlobalConstants = {
   minWithdrawETHFI: number | undefined;
   minWithdrawBTCFI: number | undefined;
 };
+
+export type UserOffChainData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  marketing: boolean;
+  signature: string;
+};
+
+export type Address = `0x${string}` | undefined;

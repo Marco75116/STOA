@@ -16,6 +16,7 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { CoinbaseWalletConnector } from "@wagmi/core/connectors/coinbaseWallet";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { MagicAuthConnector } from "@everipedia/wagmi-magic-connector";
+import Modals from "./Modals";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [optimism],
@@ -71,6 +72,7 @@ const App = () => {
           <Header />
           <Routes />
           <Footer />
+          <Modals />
         </Router>
       </Providers>
     </WagmiConfig>

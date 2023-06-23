@@ -21,7 +21,6 @@ const TemplatePage = () => {
           <br />
           <Graph />
           <br />
-          szszsz
         </div>
       </div>
 
