@@ -15,14 +15,18 @@ const apiOffChain = {
     instance.get<boolean>(`checkDataOffChain/${address}`).catch((error) => {
       throw new Error("insertConnexionData call failed: " + error);
     }),
-  insertOffChainData: (address: Address, userData: UserOffChainData) =>
+  insertOffChainData: (
+    address: Address,
+    userData: UserOffChainData,
+    signature: string
+  ) =>
     instance.get<boolean>(`form/${address}`, {
       params: {
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
         marketing: userData.marketing === false ? 0 : 1,
-        signature: userData.signature,
+        signature: signature,
       },
     }),
 };

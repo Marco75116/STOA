@@ -28,8 +28,7 @@ const ModalOffChainData: FC<ModalOffChainDataProps> = ({
     message:
       "I certify that I am 18 years of age of older, I agree to the User Agreement, and I have read the Privacy Policy.",
     onSuccess(data) {
-      setUserData({ ...userData, signature: data });
-      apiOffChain.insertOffChainData(address, userData);
+      apiOffChain.insertOffChainData(address, userData, data);
       setRegisterDone(true);
     },
   });
