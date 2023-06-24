@@ -129,7 +129,10 @@ const Earnings = () => {
                 <USDC width={44} height={44} />
                 <div>
                   <span className="text-xl ">USDFI</span>
-                  <div>Balance : 23,333, Deposit :21,263 </div>
+                  <div>
+                    Balance : 23,333 &nbsp; &nbsp; &nbsp; Deposit :21,263 &nbsp;
+                    &nbsp; &nbsp; Earnings: 2,230{" "}
+                  </div>
                 </div>
               </div>
             </div>

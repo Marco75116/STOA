@@ -22,8 +22,9 @@ const SwapPage = () => {
   const [collapseOpen, setCollapseOpen] = useState<1 | 2 | 3 | undefined>(1);
   const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
   const [showTransak, setShowTransak] = useState<boolean>(false);
-  const { kycDone } = useContext(WalletContext);
-  const { setShowModalConnexion } = useContext(MainContext);
+  const { kycDone, registrationDone } = useContext(WalletContext);
+  const { setShowModalConnexion, setShowModalForm } = useContext(MainContext);
+
   const { isConnected } = useAccount();
   const navigate = useNavigate();
 
@@ -39,7 +40,7 @@ const SwapPage = () => {
             }}
             className="  text-gray-500 hover:cursor-pointer hover:text-gray-400"
           >
-            Let&apos;s go
+            Let&apos;s go !
           </div>
         </div>
       )}
@@ -86,9 +87,13 @@ const SwapPage = () => {
               <div
                 className="center h-[40px] w-[108px] rounded-lg border-[1px] border-[#FF87B2] text-[#FF87B2] hover:cursor-pointer"
                 onClick={() => {
-                  isConnected
-                    ? setIsOpenPopup(true)
-                    : setShowModalConnexion(true);
+                  !isConnected
+                    ? setShowModalConnexion(true)
+                    : !registrationDone
+                    ? setShowModalForm(true)
+                    : !kycDone
+                    ? navigate("/KYC")
+                    : setIsOpenPopup(true);
                 }}
               >
                 Proceed
@@ -108,9 +113,13 @@ const SwapPage = () => {
               </div>
               <div
                 onClick={() => {
-                  isConnected
-                    ? setShowTransak(true)
-                    : setShowModalConnexion(true);
+                  !isConnected
+                    ? setShowModalConnexion(true)
+                    : !registrationDone
+                    ? setShowModalForm(true)
+                    : !kycDone
+                    ? navigate("/KYC")
+                    : setShowTransak(true);
                 }}
                 className="center h-[40px] w-[108px] rounded-lg border-[1px] border-[#FF87B2] text-[#FF87B2] hover:cursor-pointer"
               >

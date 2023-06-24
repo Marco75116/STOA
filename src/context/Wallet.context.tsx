@@ -21,6 +21,8 @@ import { addressETHCOFI } from "../utils/constants/address/addressesCOFI/ETHCOFI
 import { addressBTCCOFI } from "../utils/constants/address/addressesCOFI/BTCCOFI";
 import { decimalUSDC } from "../utils/constants/address/USDC";
 import { decimalBTC } from "../utils/constants/address/wBTC";
+import apiOffChain from "../utils/services/apiOffChain";
+import { AxiosResponse } from "axios";
 
 type WalletContextProps = {
   constants: GlobalConstants;
@@ -30,6 +32,7 @@ type WalletContextProps = {
   isOpenWallet: boolean;
   setIsOpenWallet: Function;
   kycDone: boolean | undefined;
+  registrationDone: boolean;
 };
 
 type WalletProviderProps = {
@@ -46,6 +49,7 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
   const [applicantExist, setApplicantExist] = useState<boolean | undefined>();
 
   const [isOpenWallet, setIsOpenWallet] = useState<boolean>(false);
+  const [registrationDone, setRegistrationDone] = useState<boolean>(false);
 
   const [constants, setConstants] = useState<GlobalConstants>({
     feeCollectorStatus: undefined,
@@ -177,12 +181,19 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
     }
   };
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && address) {
       getApplicantData().then((applicantData) => {
         checkApplicant(applicantData);
       });
+      apiOffChain
+        .checkData(address)
+        .then((result: AxiosResponse<boolean, any>) => {
+          if (result.data) {
+            setRegistrationDone(true);
+          }
+        });
     }
-  }, [address]);
+  }, [isConnected]);
 
   const kycDone: boolean | undefined = useMemo(() => {
     return getKycDone(review);
@@ -198,6 +209,7 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
         isOpenWallet,
         setIsOpenWallet,
         kycDone,
+        registrationDone,
       }}
     >
       {children}
