@@ -18,6 +18,7 @@ export type UserOffChainData = {
   lastName: string;
   email: string;
   marketing: boolean;
+  privacy: boolean;
   signature: string;
 };
 

@@ -18,7 +18,7 @@ const apiOffChain = {
   insertOffChainData: (
     address: Address,
     userData: UserOffChainData,
-    signature: string
+    signature: `0x${string}` | undefined
   ) =>
     instance.get<boolean>(`form/${address}`, {
       params: {
