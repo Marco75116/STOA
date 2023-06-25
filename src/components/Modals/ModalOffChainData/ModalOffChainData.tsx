@@ -61,7 +61,7 @@ const ModalOffChainData: FC<ModalOffChainDataProps> = ({
     if (!registrationDone && isConnected) {
       setIsOpen(true);
     }
-  }, [registrationDone]);
+  }, [registrationDone, isConnected]);
 
   return (
     <>

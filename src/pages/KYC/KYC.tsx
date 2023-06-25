@@ -1,15 +1,20 @@
-import React, { useContext, useMemo, useEffect, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import SumsubWebSdk from "@sumsub/websdk-react";
 import { WalletContext } from "../../context/Wallet.context";
 import apiKYC from "../../utils/services/apiSumsub";
 import { useAccount, useSignMessage } from "wagmi";
+import { MainContext } from "../../context/Main.context";
 
 const KYC = () => {
-  const { applicantExist, setIsOpenWallet, kycDone } =
-    useContext(WalletContext);
+  const { applicantExist, kycDone } = useContext(WalletContext);
+  const { setShowModalConnexion } = useContext(MainContext);
+
   const { isConnected, address } = useAccount();
-  const { data } = useSignMessage({
+  const { signMessage } = useSignMessage({
     message: "Verify your account",
+    onSuccess(data) {
+      Verify(data);
+    },
   });
 
   const [accessSDKToken, setAccessSDKToken] = useState<string>();
@@ -52,7 +57,7 @@ const KYC = () => {
     [address]
   );
 
-  const onClickVerify = async () => {
+  const Verify = async (data: string) => {
     const signature = data;
 
     if (!applicantExist) {
@@ -67,13 +72,8 @@ const KYC = () => {
   };
 
   const openWalletPopup = () => {
-    setIsOpenWallet((prev: boolean) => !prev);
+    setShowModalConnexion(true);
   };
-  useEffect(() => {
-    {
-      kycDone && onClickVerify();
-    }
-  }, [kycDone]);
 
   return (
     <div className=" flex min-h-[calc(100%-64px)] w-[100] flex-col justify-center gap-8  bg-bgCardNavbar">
@@ -89,7 +89,7 @@ const KYC = () => {
                 <div
                   className="flex h-[48px] items-center justify-center rounded-lg bg-pink p-3 text-base font-normal text-white hover:cursor-pointer"
                   onClick={() => {
-                    onClickVerify();
+                    signMessage();
                   }}
                 >
                   Click to proceed
