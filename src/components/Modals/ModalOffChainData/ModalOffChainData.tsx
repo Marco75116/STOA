@@ -27,7 +27,7 @@ const ModalOffChainData: FC<ModalOffChainDataProps> = ({
     privacy: false,
   });
 
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const { signMessage } = useSignMessage({
     message:
       "I certify that I am 18 years of age of older, I agree to the User Agreement, and I have read the Privacy Policy.",
@@ -58,7 +58,7 @@ const ModalOffChainData: FC<ModalOffChainDataProps> = ({
   }
 
   useEffect(() => {
-    if (!registrationDone) {
+    if (!registrationDone && isConnected) {
       setIsOpen(true);
     }
   }, [registrationDone]);

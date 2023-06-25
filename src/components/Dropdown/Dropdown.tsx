@@ -1,13 +1,5 @@
 import { Popover, Transition } from "@headlessui/react";
-import {
-  FC,
-  Fragment,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { FC, Fragment, useContext, useEffect, useRef, useState } from "react";
 import ConnectButton from "../ConnectButton/ConnectButton";
 import { ReactComponent as Explore } from "../../assets/icons/Explore.svg";
 import { ReactComponent as Warning } from "../../assets/icons/Warning.svg";
@@ -17,7 +9,7 @@ import { ReactComponent as Wallet } from "../../assets/icons/Wallet.svg";
 import axios from "axios";
 import { WalletContext } from "../../context/Wallet.context";
 import { useNavigate } from "react-router-dom";
-import { copyToClipboard, getKycDone } from "../../utils/helpers/global.helper";
+import { copyToClipboard } from "../../utils/helpers/global.helper";
 import { useAccount, useBalance, useDisconnect } from "wagmi";
 
 type DropdownProps = {};
@@ -30,7 +22,7 @@ const Dropdown: FC<DropdownProps> = () => {
     dRef.current?.click();
   }
 
-  const { isOpenWallet, review } = useContext(WalletContext);
+  const { isOpenWallet, kycDone } = useContext(WalletContext);
   const { isConnected, address } = useAccount();
   const { data } = useBalance({
     address,
@@ -52,10 +44,6 @@ const Dropdown: FC<DropdownProps> = () => {
   useEffect(() => {
     getConvertedPrice();
   }, []);
-
-  const kycDone = useMemo(() => {
-    return getKycDone(review);
-  }, [review]);
 
   return (
     <div className="">

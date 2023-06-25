@@ -7,11 +7,12 @@ import { ReactComponent as COFIPointLogo } from "../../assets/logos/COFIPointLog
 import { ReactComponent as ETHLogo } from "../../assets/logos/optimism-logo.svg";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../Dropdown/Dropdown";
+import { useAccount } from "wagmi";
 
 const Header = () => {
   const navigate = useNavigate();
   const [selectedPart, setSelectedPart] = useState<0 | 1 | 2 | 3>(0);
-
+  const { isConnected } = useAccount();
   const pathName = useMemo(() => {
     return location.pathname;
   }, [location.pathname]);
@@ -58,20 +59,24 @@ const Header = () => {
           </div>
         </div>
 
-        <div
-          className={`flex h-[100%] items-center gap-[8px] hover:cursor-pointer ${
-            selectedPart === 1 && "border-b-[3px] border-b-pink"
-          }`}
-          onClick={() => {
-            navigate("/Earnings");
-            setSelectedPart(1);
-          }}
-        >
-          <VaultsLogo stroke={selectedPart === 1 ? "#EF2A89" : "white"} />
-          <div className={`${selectedPart === 1 ? "text-pink" : "text-white"}`}>
-            Earnings
+        {isConnected && (
+          <div
+            className={`flex h-[100%] items-center gap-[8px] hover:cursor-pointer ${
+              selectedPart === 1 && "border-b-[3px] border-b-pink"
+            }`}
+            onClick={() => {
+              navigate("/Earnings");
+              setSelectedPart(1);
+            }}
+          >
+            <VaultsLogo stroke={selectedPart === 1 ? "#EF2A89" : "white"} />
+            <div
+              className={`${selectedPart === 1 ? "text-pink" : "text-white"}`}
+            >
+              Earnings
+            </div>
           </div>
-        </div>
+        )}
 
         <div
           className={`flex h-[100%] items-center gap-[8px] hover:cursor-pointer ${

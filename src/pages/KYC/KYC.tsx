@@ -2,11 +2,11 @@ import React, { useContext, useMemo, useEffect, useState } from "react";
 import SumsubWebSdk from "@sumsub/websdk-react";
 import { WalletContext } from "../../context/Wallet.context";
 import apiKYC from "../../utils/services/apiSumsub";
-import { getKycDone } from "../../utils/helpers/global.helper";
 import { useAccount, useSignMessage } from "wagmi";
 
 const KYC = () => {
-  const { applicantExist, setIsOpenWallet, review } = useContext(WalletContext);
+  const { applicantExist, setIsOpenWallet, kycDone } =
+    useContext(WalletContext);
   const { isConnected, address } = useAccount();
   const { data } = useSignMessage({
     message: "Verify your account",
@@ -69,11 +69,6 @@ const KYC = () => {
   const openWalletPopup = () => {
     setIsOpenWallet((prev: boolean) => !prev);
   };
-
-  const kycDone = useMemo(() => {
-    return getKycDone(review);
-  }, [review]);
-
   useEffect(() => {
     {
       kycDone && onClickVerify();

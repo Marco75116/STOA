@@ -196,8 +196,8 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
   }, [isConnected]);
 
   const kycDone: boolean | undefined = useMemo(() => {
-    return getKycDone(review);
-  }, [review, address]);
+    if (isConnected) return getKycDone(review);
+  }, [review, isConnected]);
 
   return (
     <WalletContext.Provider
