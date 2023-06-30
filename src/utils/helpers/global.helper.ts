@@ -30,3 +30,15 @@ export const copyToClipboard = async (text?: string) => {
     throw new Error("Error while copying address");
   }
 };
+
+export const getFloor = (
+  num: number | undefined,
+  decimal: number | undefined
+) => {
+  try {
+    if (num !== undefined && decimal !== undefined)
+      return Math.floor(num * 10 ** decimal) / 10 ** decimal;
+  } catch (error) {
+    throw new Error("Error : " + error);
+  }
+};
