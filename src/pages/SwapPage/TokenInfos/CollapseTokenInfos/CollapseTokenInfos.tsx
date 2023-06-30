@@ -4,7 +4,7 @@ import { ReactComponent as LegendGraph } from "../../../../assets/texts/StoaEarn
 import { ReactComponent as ArrowSwap } from "../../../../assets/icons/arrowSwap.svg";
 import apiIndexer from "../../../../utils/services/apiDapp";
 import {
-  FITokensAPY,
+  FITokens,
   HistoryYiedAsset,
   TokenName,
 } from "../../../../utils/types/swap.types";
@@ -16,7 +16,7 @@ type CollapseTokenInfosProps = {
 
 const CollapseTokenInfos: FC<CollapseTokenInfosProps> = ({ tokenName }) => {
   const [historyData, setHistoryData] = useState<HistoryYiedAsset[]>();
-  const [apyData, setapyData] = useState<FITokensAPY>({
+  const [apyData, setapyData] = useState<FITokens>({
     USDFI: 0,
     ETHFI: 0,
     BTCFI: 0,
@@ -37,7 +37,7 @@ const CollapseTokenInfos: FC<CollapseTokenInfosProps> = ({ tokenName }) => {
       setHistoryData(getHistoryYieldArray(historyYieldArray, tokenName));
     });
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getApy().then((FiTokensApy) => {
+    getApy().then((FiTokens) => {
       setapyData({
         USDFI: 0.076,
         ETHFI: 0.086,
@@ -65,7 +65,7 @@ const CollapseTokenInfos: FC<CollapseTokenInfosProps> = ({ tokenName }) => {
           <div className="flex flex-row gap-2">
             <div className="center h-[90px] w-full flex-col  rounded-lg border">
               <div className=" text-base font-semibold">
-                {apyData[tokenName as keyof FITokensAPY].toPercentageFormat(2)}
+                {apyData[tokenName as keyof FITokens].toPercentageFormat(2)}
               </div>
               <div className="center flex-row gap-1 text-xs  font-normal text-textGray">
                 3 days APY <ArrowSwap />

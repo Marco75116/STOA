@@ -24,6 +24,7 @@ const KYC = () => {
   const options = { addViewportTag: false, adaptIframeHeight: true };
   const messageHandler = (type: String, payload: any) => {
     console.log("onMessage: ", type, payload);
+    window.scrollTo(0, 0);
   };
   const errorHandler = (data: any) => console.log("onError: ", data);
 

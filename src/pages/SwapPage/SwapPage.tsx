@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ReactComponent as Settings } from "../../assets/icons/Settings.svg";
 import { ReactComponent as USDFI } from "../../assets/logos/USDCFILogo.svg";
 import { ReactComponent as BTCFI } from "../../assets/logos/tokens/BTCFILogo.svg";
@@ -18,15 +18,25 @@ import { MainContext } from "../../context/Main.context";
 import { useAccount } from "wagmi";
 
 const SwapPage = () => {
-  const [action, setAction] = useState<0 | 1>(0);
   const [collapseOpen, setCollapseOpen] = useState<1 | 2 | 3 | undefined>(1);
-  const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
-  const [showTransak, setShowTransak] = useState<boolean>(false);
   const { kycDone, registrationDone } = useContext(WalletContext);
-  const { setShowModalConnexion, setShowModalForm } = useContext(MainContext);
+  const {
+    setShowModalConnexion,
+    setShowModalForm,
+    showTransak,
+    setShowTransak,
+    isOpenModalSwap,
+    setIsOpenModalSwap,
+    action,
+    setAction,
+  } = useContext(MainContext);
 
   const { isConnected } = useAccount();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
 
   return (
     <div className="center flex-col gap-3 bg-bgCardNavbar p-16">
@@ -93,7 +103,7 @@ const SwapPage = () => {
                     ? setShowModalForm(true)
                     : !kycDone
                     ? navigate("/KYC")
-                    : setIsOpenPopup(true);
+                    : setIsOpenModalSwap(true);
                 }}
               >
                 Proceed
@@ -158,8 +168,8 @@ const SwapPage = () => {
         tokenName={"BTCFI"}
       />
       <ModalSwap
-        isOpen={isOpenPopup}
-        setIsOpen={setIsOpenPopup}
+        isOpen={isOpenModalSwap}
+        setIsOpen={setIsOpenModalSwap}
         action={action}
         setAction={setAction}
       />

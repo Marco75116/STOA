@@ -33,6 +33,7 @@ type WalletContextProps = {
   setIsOpenWallet: Function;
   kycDone: boolean | undefined;
   registrationDone: boolean;
+  setRegistrationDone: Function;
 };
 
 type WalletProviderProps = {
@@ -49,7 +50,7 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
   const [applicantExist, setApplicantExist] = useState<boolean | undefined>();
 
   const [isOpenWallet, setIsOpenWallet] = useState<boolean>(false);
-  const [registrationDone, setRegistrationDone] = useState<boolean>(false);
+  const [registrationDone, setRegistrationDone] = useState<boolean>(true);
 
   const [constants, setConstants] = useState<GlobalConstants>({
     feeCollectorStatus: undefined,
@@ -188,8 +189,8 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
       apiOffChain
         .checkData(address)
         .then((result: AxiosResponse<boolean, any>) => {
-          if (result.data) {
-            setRegistrationDone(true);
+          if (!result.data) {
+            setRegistrationDone(false);
           }
         });
     }
@@ -210,6 +211,7 @@ const WalletProvider = ({ children }: WalletProviderProps) => {
         setIsOpenWallet,
         kycDone,
         registrationDone,
+        setRegistrationDone,
       }}
     >
       {children}

@@ -32,6 +32,12 @@ const Header = () => {
     }
   }, [pathName]);
 
+  useEffect(() => {
+    if (!isConnected) {
+      navigate("/Swap");
+    }
+  }, [isConnected]);
+
   return (
     <div className="grid h-16 grid-cols-3 border-b-[0.5px] border-b-borderBottomConnectedCard bg-darkgreen px-6">
       <div

@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { ReactComponent as Arrow } from "../../../assets/icons/ArrowBlack.svg";
 import { Collapse } from "react-collapse";
 import CollapseTokenInfos from "./CollapseTokenInfos/CollapseTokenInfos";
-import { FITokensAPY, TokenName } from "../../../utils/types/swap.types";
+import { FITokens, TokenName } from "../../../utils/types/swap.types";
 import apiIndexer from "../../../utils/services/apiDapp";
 
 type TokenInfosProps = {
@@ -28,7 +28,7 @@ const TokenInfos: FC<TokenInfosProps> = ({
   FiLogo,
   tokenName,
 }) => {
-  const [currentApy, setCurrentApy] = useState<FITokensAPY>({
+  const [currentApy, setCurrentApy] = useState<FITokens>({
     USDFI: 0,
     ETHFI: 0,
     BTCFI: 0,
@@ -42,7 +42,7 @@ const TokenInfos: FC<TokenInfosProps> = ({
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getApy().then((FiTokensApy) => {
+    getApy().then((FiTokens) => {
       setCurrentApy({
         USDFI: 0.078,
         ETHFI: 0.084,
@@ -61,8 +61,7 @@ const TokenInfos: FC<TokenInfosProps> = ({
           <TokenLogo />
           <span>
             deposit and earn{" "}
-            {currentApy[tokenName as keyof FITokensAPY].toPercentageFormat(1)}{" "}
-            APY
+            {currentApy[tokenName as keyof FITokens].toPercentageFormat(1)} APY
           </span>
         </div>
         <div className="center flex-row  gap-[6px] ">

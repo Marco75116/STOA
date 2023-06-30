@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FITokensAPY, HistoryYield } from "../types/swap.types";
+import { FITokens, HistoryYield } from "../types/swap.types";
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL + "defi/",
@@ -13,7 +13,7 @@ const apiService = {
     }),
   getApy: (period: number) =>
     instance
-      .get<FITokensAPY>("apy", {
+      .get<FITokens>("apy", {
         params: {
           period: period,
         },

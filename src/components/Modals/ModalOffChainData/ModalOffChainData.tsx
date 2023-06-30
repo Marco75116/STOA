@@ -39,7 +39,8 @@ const ModalOffChainData: FC<ModalOffChainDataProps> = ({
   const emailRegex = new RegExp(
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
   );
-  const { kycDone, registrationDone } = useContext(WalletContext);
+  const { kycDone, registrationDone, setRegistrationDone } =
+    useContext(WalletContext);
   const navigate = useNavigate();
 
   const {
@@ -62,6 +63,12 @@ const ModalOffChainData: FC<ModalOffChainDataProps> = ({
       setIsOpen(true);
     }
   }, [registrationDone, isConnected]);
+
+  useEffect(() => {
+    if (registrationSent) {
+      setRegistrationDone(true);
+    }
+  }, [registrationSent]);
 
   return (
     <>
@@ -90,7 +97,11 @@ const ModalOffChainData: FC<ModalOffChainDataProps> = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="flex min-h-[180px] w-full max-w-md transform flex-col gap-4 overflow-hidden rounded-3xl bg-[#161618] px-8 py-4 text-left align-middle font-bold shadow-xl transition-all">
+                <Dialog.Panel
+                  className={`flex ${
+                    kycDone ? "min-h-[140px]" : "min-h-[160px]"
+                  }  w-full max-w-md transform flex-col gap-4 overflow-hidden rounded-3xl bg-[#161618] px-8 py-4 text-left align-middle font-bold shadow-xl transition-all`}
+                >
                   <div className=" mb-2 flex items-center justify-between  text-2xl text-white">
                     <div>Registration</div>
                     <Cross
@@ -106,16 +117,20 @@ const ModalOffChainData: FC<ModalOffChainDataProps> = ({
 
                   {registrationSent ? (
                     <div className="  font-normal text-white">
-                      Thank you for submitting your details. Finish final step
-                      of identity verification to start using COFI. &nbsp;
-                      {kycDone === false && (
-                        <span
-                          onClick={() => {
-                            navigate("/KYC");
-                          }}
-                          className="  text-gray-500 hover:cursor-pointer hover:text-gray-400"
-                        >
-                          Let&apos;s go !
+                      Thank you for submitting your details.
+                      {!kycDone && (
+                        <span>
+                          {" "}
+                          Finish final step of identity verification to start
+                          using COFI. &nbsp;
+                          <span
+                            onClick={() => {
+                              navigate("/KYC");
+                            }}
+                            className="  text-gray-500 hover:cursor-pointer hover:text-gray-400"
+                          >
+                            Let&apos;s go !
+                          </span>
                         </span>
                       )}
                     </div>

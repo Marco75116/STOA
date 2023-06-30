@@ -55,7 +55,7 @@ export type TokenSelected =
   | "ETHFI"
   | "BTCFI";
 
-export type FITokensAPY = {
+export type FITokens = {
   USDFI: number;
   ETHFI: number;
   BTCFI: number;

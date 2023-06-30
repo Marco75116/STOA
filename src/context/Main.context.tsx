@@ -18,6 +18,12 @@ type MainContextProps = {
   setShowModalConnexion: Function;
   showModalForm: boolean;
   setShowModalForm: Function;
+  showTransak: boolean;
+  setShowTransak: Function;
+  isOpenModalSwap: boolean;
+  setIsOpenModalSwap: Function;
+  action: 0 | 1;
+  setAction: Function;
 };
 
 type MainProviderProps = {
@@ -34,6 +40,9 @@ const MainProvider: FC<MainProviderProps> = ({ children }) => {
   const [showContactModal, setShowContactModal] = useState<boolean>(false);
   const [showModalConnexion, setShowModalConnexion] = useState<boolean>(false);
   const [showModalForm, setShowModalForm] = useState<boolean>(false);
+  const [showTransak, setShowTransak] = useState<boolean>(false);
+  const [isOpenModalSwap, setIsOpenModalSwap] = useState<boolean>(false);
+  const [action, setAction] = useState<0 | 1>(0);
 
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
@@ -65,6 +74,12 @@ const MainProvider: FC<MainProviderProps> = ({ children }) => {
         setShowModalConnexion,
         showModalForm,
         setShowModalForm,
+        showTransak,
+        setShowTransak,
+        isOpenModalSwap,
+        setIsOpenModalSwap,
+        action,
+        setAction,
       }}
     >
       {children}
