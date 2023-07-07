@@ -5,7 +5,6 @@ import ListboxComponent from "../../../components/ListboxComponent/ListboxCompon
 import { CoinsString, Coins, Token } from "../../../utils/types/swap.types";
 import { getReceiveAmount } from "../../../utils/helpers/swap.helpers";
 import { WalletContext } from "../../../context/Wallet.context";
-import { ethers } from "ethers";
 import { ReactComponent as DoubleArrowWithBar } from "../../../assets/icons/ArrowSwitch.svg";
 import { ReactComponent as USDFI } from "../../../assets/logos/USDCFILogo.svg";
 import { ReactComponent as BTCFILogo } from "../../../assets/logos/tokens/BTCFILogo.svg";
@@ -15,22 +14,14 @@ import { ReactComponent as BTCLogo } from "../../../assets/logos/tokens/BTCLogo.
 import { ReactComponent as ETHLogo } from "../../../assets/logos/tokens/ETHLogo.svg";
 import { SwapContext } from "../../../context/Swap.context";
 import {
-  useAccount,
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
-import { DiamondContract } from "../../../utils/constants/wagmiConfig/wagmiConfig";
-import { abiDiamond } from "../../../utils/constants/abi/Diamond";
-import { addressDiamond } from "../../../utils/constants/address/Diamond";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import {
   bigIntToDecimal,
   displayBalance,
   getMinAmountOut,
   stringToBigInt,
 } from "../../../utils/helpers/global.helper";
+import useRedeem from "../../../utils/Hook/useRedeem";
+import useApprove from "../../../utils/Hook/useApprove";
+import useMint from "../../../utils/Hook/useMint";
 
 const listStableCoinsFrom: Token[] = [
   { name: "USDC", svgLogo: USDC },
@@ -57,15 +48,11 @@ const ModalSwap: FC<ModalSwapProps> = ({
   setAction,
 }) => {
   const [depositAmount, setDepositAmount] = useState<bigint>(BigInt(0));
-  const [toastId, setToastId] = useState<any>(null);
 
   const { constants, kycDone } = useContext(WalletContext);
 
-  const { address } = useAccount();
-
   const {
     tokenSelected,
-    addressesTokens,
     decimalsTokens,
     pricesCoins,
     balanceCoins,
@@ -128,8 +115,6 @@ const ModalSwap: FC<ModalSwapProps> = ({
     }
   }, [estimatedReceiving]);
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     setDepositAmount(BigInt(0));
   }, [action]);
@@ -138,182 +123,23 @@ const ModalSwap: FC<ModalSwapProps> = ({
     setIsOpen(false);
   }
 
-  const { config: configApprove } = usePrepareContractWrite({
-    address: addressesTokens[
-      tokenSelected as keyof CoinsString
-    ] as `0x${string}`,
-    abi: abiDiamond,
-    functionName: "approve",
-    args: [addressDiamond, depositAmount],
-    enabled: depositAmount !== BigInt(0),
-    onError(error) {
-      console.log("Error approve", error);
-    },
-  });
+  const { write: writeFiToUnderlying } = useRedeem(
+    depositAmount,
+    minAmountOut,
+    action
+  );
+  const { refetchMint, writeUnderlyingToFi } = useMint(
+    depositAmount,
+    minAmountOut,
+    addressReferral,
+    action
+  );
 
-  const { config: configUnderlyingToFi, refetch: refetchMint } =
-    usePrepareContractWrite({
-      ...DiamondContract,
-      functionName: "underlyingToFi",
-      args: [
-        depositAmount,
-        minAmountOut,
-        addressesTokens[
-          convertTokenList[tokenSelected as keyof Coins] as keyof CoinsString
-        ],
-        address,
-        address,
-        addressReferral === "" ? ethers.constants.AddressZero : addressReferral,
-      ],
-      enabled:
-        depositAmount !== BigInt(0) &&
-        address !== undefined &&
-        balanceCoins[tokenSelected as keyof Coins] <= depositAmount &&
-        action === 0,
-      onError(error) {
-        console.log("Error PrepareContractWrite underlyingToFi : ", error);
-      },
-    });
-
-  const { config: configFiToUnderlying } = usePrepareContractWrite({
-    ...DiamondContract,
-    functionName: "fiToUnderlying",
-    args: [
-      depositAmount,
-      minAmountOut,
-      addressesTokens[tokenSelected as keyof CoinsString],
-      address,
-      address,
-    ],
-    enabled:
-      depositAmount !== BigInt(0) && address !== undefined && action === 1,
-    onError(error) {
-      console.log("Error PrepareContractWrite fiToUnderlying : ", error);
-    },
-  });
-
-  const { data: dataApprove, write: writeApprove } =
-    useContractWrite(configApprove);
-
-  const {
-    isSuccess: ApproveSuccess,
-    isLoading: isLoadingApprove,
-    isSuccess: isSuccessApprove,
-    isError: isErrorApprove,
-  } = useWaitForTransaction({
-    hash: dataApprove?.hash,
-  });
-
-  const { data: dataMint, write: writeUnderlyingToFi } = useContractWrite({
-    ...configUnderlyingToFi,
-  });
-
-  const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    data: dataMintWait,
-    isLoading: isLoadingMint,
-    isSuccess: isSuccessMint,
-    isError: isErrorMint,
-  } = useWaitForTransaction({
-    hash: dataMint?.hash,
-    onSuccess() {
-      navigate("/Earnings");
-    },
-  });
-
-  const { data: dataRedeem, write: writeFiToUnderlying } = useContractWrite({
-    ...configFiToUnderlying,
-  });
-
-  const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    data: dataRedeemWait,
-    isLoading: isLoadingRedeem,
-    isSuccess: isSuccessRedeem,
-    isError: isErrorRedeem,
-  } = useWaitForTransaction({
-    hash: dataRedeem?.hash,
-    onSuccess() {
-      navigate("/Earnings");
-    },
-  });
-
-  useEffect(() => {
-    if (isLoadingMint) {
-      let toastvalue = toast.loading("MINTING...");
-      setToastId(toastvalue);
-    }
-    if (isSuccessMint) {
-      toast.update(toastId, {
-        render: "MINT SUCCESS",
-        type: "success",
-        isLoading: false,
-        className: "rotateY animated",
-        autoClose: 5000,
-      });
-    }
-    if (isErrorMint) {
-      toast.update(toastId, {
-        render: "MINT ERROR",
-        type: "error",
-        isLoading: false,
-        className: "rotateY animated",
-        autoClose: 5000,
-      });
-    }
-  }, [isSuccessMint, isLoadingMint, isErrorMint]);
-
-  useEffect(() => {
-    if (isLoadingApprove) {
-      let toastvalue = toast.loading("APPROVE...");
-      setToastId(toastvalue);
-    }
-    if (isSuccessApprove) {
-      refetchMint();
-      toast.update(toastId, {
-        render: "APPROVE SUCCESS",
-        type: "success",
-        isLoading: false,
-        className: "rotateY animated",
-        autoClose: 5000,
-      });
-    }
-    if (isErrorApprove) {
-      toast.update(toastId, {
-        render: "APPROVE ERROR",
-        type: "error",
-        isLoading: false,
-        className: "rotateY animated",
-        autoClose: 5000,
-      });
-    }
-  }, [isSuccessApprove, isLoadingApprove, isErrorApprove]);
-
-  useEffect(() => {
-    if (isLoadingRedeem) {
-      let toastvalue = toast.loading("REDEEM...");
-      setToastId(toastvalue);
-    }
-    if (isSuccessRedeem) {
-      refetchMint();
-      toast.update(toastId, {
-        render: "REDEEM SUCCESS",
-        type: "success",
-        isLoading: false,
-        className: "rotateY animated",
-        autoClose: 5000,
-      });
-    }
-    if (isErrorRedeem) {
-      toast.update(toastId, {
-        render: "REDEEM ERROR",
-        type: "error",
-        isLoading: false,
-        className: "rotateY animated",
-        autoClose: 5000,
-      });
-    }
-  }, [isLoadingRedeem, isSuccessRedeem, isErrorRedeem]);
+  const { ApproveSuccess, writeApprove } = useApprove(
+    depositAmount,
+    action,
+    refetchMint
+  );
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
