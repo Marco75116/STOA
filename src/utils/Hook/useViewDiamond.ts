@@ -93,13 +93,9 @@ const useViewDiamond = () => {
         feeCollectorStatus: false,
         points: Number(data[0].result),
         redeemEnabled: data[1].result,
-        redeemFee:
-          Number(ethers.utils.formatUnits(data[2].result, "wei")) /
-          percentageFactor,
+        redeemFee: Number(data[2].result) / percentageFactor,
         mintEnabled: data[3].result,
-        mintFee:
-          Number(ethers.utils.formatUnits(data[4].result, "wei")) /
-          percentageFactor,
+        mintFee: Number(data[4].result) / percentageFactor,
         minDepositUSDFI: Number(
           ethers.utils.formatUnits(data[5].result, decimalUSDC)
         ),
