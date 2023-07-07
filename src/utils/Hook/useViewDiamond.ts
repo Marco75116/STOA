@@ -91,7 +91,7 @@ const useViewDiamond = () => {
     onSuccess(data: any) {
       setConstants({
         feeCollectorStatus: false,
-        points: Number(ethers.utils.formatEther(data[0].result)),
+        points: Number(data[0].result),
         redeemEnabled: data[1].result,
         redeemFee:
           Number(ethers.utils.formatUnits(data[2].result, "wei")) /
