@@ -49,7 +49,8 @@ const Dropdown: FC<DropdownProps> = () => {
 
   useEffect(() => {
     if (isConnected) {
-      connector?.magicSDK?.user
+      const magicConnector = connector as any;
+      magicConnector?.magicSDK.user
         .getMetadata()
         .then((data: MagicMetadata) => setEmail(data.email));
     }
