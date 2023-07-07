@@ -96,3 +96,7 @@ export const getMinAmountOut = (
     throw new Error("bigIntToDecimal failed : " + error);
   }
 };
+
+export const weiToEth = (num: number) => {
+  return num / 10 ** 18;
+};

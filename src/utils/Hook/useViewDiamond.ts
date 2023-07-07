@@ -8,6 +8,7 @@ import { GlobalConstants } from "../types/global.types";
 import { ethers } from "ethers";
 import { decimalBTC } from "../constants/address/wBTC";
 import { decimalUSDC } from "../constants/address/USDC";
+import { weiToEth } from "../helpers/global.helper";
 
 const useViewDiamond = () => {
   const { isConnected, address } = useAccount();
@@ -91,25 +92,19 @@ const useViewDiamond = () => {
     onSuccess(data: any) {
       setConstants({
         feeCollectorStatus: false,
-        points: Number(data[0].result),
+        points: weiToEth(Number(data[0].result)),
         redeemEnabled: data[1].result,
         redeemFee: Number(data[2].result) / percentageFactor,
         mintEnabled: data[3].result,
         mintFee: Number(data[4].result) / percentageFactor,
-        minDepositUSDFI: Number(
-          ethers.utils.formatUnits(data[5].result, decimalUSDC)
-        ),
-        minDepositETHFI: Number(ethers.utils.formatEther(data[6].result)),
-        minDepositBTCFI: Number(
-          ethers.utils.formatUnits(data[7].result, decimalBTC)
-        ),
+        minDepositUSDFI: Number(data[5].result) / 10 ** decimalUSDC,
+        minDepositETHFI: weiToEth(Number(data[6].result)),
+        minDepositBTCFI: Number(data[7].result) / 10 ** decimalBTC,
         minWithdrawUSDFI: Number(
           ethers.utils.formatUnits(data[8].result, decimalUSDC)
         ),
-        minWithdrawETHFI: Number(ethers.utils.formatEther(data[9].result)),
-        minWithdrawBTCFI: Number(
-          ethers.utils.formatUnits(data[10].result, decimalBTC)
-        ),
+        minWithdrawETHFI: weiToEth(Number(data[9].result)),
+        minWithdrawBTCFI: Number(data[10].result) / 10 ** decimalBTC,
       });
     },
     enabled: isConnected,
