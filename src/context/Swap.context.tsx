@@ -3,9 +3,16 @@ import React, {
   FC,
   ReactNode,
   useEffect,
+  useMemo,
   useState,
 } from "react";
-import { CoinsString, Coins, TokenSelected } from "../utils/types/swap.types";
+import {
+  CoinsString,
+  Coins,
+  TokenSelected,
+  BalanceCoins,
+  FITokens,
+} from "../utils/types/swap.types";
 import { addressDai } from "../utils/constants/address/Dai";
 import { addressUSDC, decimalUSDC } from "../utils/constants/address/USDC";
 import { addresswETH, decimalETH } from "../utils/constants/address/wETH";
@@ -16,10 +23,10 @@ import {
   decimalsFI,
 } from "../utils/constants/address/addressesCOFI/ETHCOFI";
 import { addressBTCCOFI } from "../utils/constants/address/addressesCOFI/BTCCOFI";
-import { useAccount, useContractReads } from "wagmi";
-import { abiDiamond } from "../utils/constants/abi/Diamond";
-import { ethers } from "ethers";
+import { useAccount } from "wagmi";
 import { getPrices } from "../utils/helpers/swap.helpers";
+import useBalancesCoins from "../utils/Hook/useBalancesCoins";
+import { bigIntToDecimal } from "../utils/helpers/global.helper";
 
 type SwapContextProps = {
   tokenSelected: TokenSelected;
@@ -27,8 +34,9 @@ type SwapContextProps = {
   addressesTokens: CoinsString;
   decimalsTokens: Coins;
   pricesCoins: Coins;
-  balanceCoins: Coins;
+  balanceCoins: BalanceCoins;
   convertTokenList: CoinsString;
+  balanceCoinsFormatted: FITokens;
 };
 
 type SwapProviderProps = {
@@ -40,16 +48,6 @@ export const SwapContext = createContext({} as SwapContextProps);
 const SwapProvider: FC<SwapProviderProps> = ({ children }) => {
   const [tokenSelected, setTokenSelected] = useState<TokenSelected>("USDC");
   const [pricesCoins, setPricesCoins] = useState<Coins>({
-    DAI: 0,
-    USDFI: 0,
-    USDC: 0,
-    ETH: 0,
-    BTC: 0,
-    ETHFI: 0,
-    BTCFI: 0,
-  });
-
-  const [balanceCoins, setBalanceCoins] = useState<Coins>({
     DAI: 0,
     USDFI: 0,
     USDC: 0,
@@ -89,63 +87,16 @@ const SwapProvider: FC<SwapProviderProps> = ({ children }) => {
     BTCFI: "BTC",
   };
 
-  const { address, isConnected } = useAccount();
+  const { isConnected } = useAccount();
+  const { balanceCoins } = useBalancesCoins();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data } = useContractReads({
-    contracts: [
-      {
-        address: addressUSDC as `0x${string}`,
-        abi: abiDiamond as any,
-        functionName: "balanceOf",
-        args: [address as `0x${string}`],
-      },
-      {
-        address: addressUSDCOFI as `0x${string}`,
-        abi: abiDiamond as any,
-        functionName: "balanceOf",
-        args: [address as `0x${string}`],
-      },
-      {
-        address: addresswETH as `0x${string}`,
-        abi: abiDiamond as any,
-        functionName: "balanceOf",
-        args: [address as `0x${string}`],
-      },
-      {
-        address: addresswBTC as `0x${string}`,
-        abi: abiDiamond as any,
-        functionName: "balanceOf",
-        args: [address as `0x${string}`],
-      },
-      {
-        address: addressETHCOFI as `0x${string}`,
-        abi: abiDiamond as any,
-        functionName: "balanceOf",
-        args: [address as `0x${string}`],
-      },
-      {
-        address: addressBTCCOFI as `0x${string}`,
-        abi: abiDiamond as any,
-        functionName: "balanceOf",
-        args: [address as `0x${string}`],
-      },
-    ],
-    onSuccess(data: any) {
-      setBalanceCoins({
-        USDC: Number(
-          ethers.utils.formatUnits(data[0].result || 0, decimalUSDC)
-        ),
-        DAI: 0,
-        USDFI: Number(ethers.utils.formatUnits(data[1].result || 0)),
-        ETH: Number(ethers.utils.formatUnits(data[2].result || 0)),
-        BTC: Number(ethers.utils.formatUnits(data[3].result || 0, decimalBTC)),
-        ETHFI: Number(ethers.utils.formatUnits(data[4].result || 0)),
-        BTCFI: Number(ethers.utils.formatUnits(data[5].result || 0)),
-      });
-    },
-    enabled: isConnected,
-  });
+  const balanceCoinsFormatted = useMemo(() => {
+    return {
+      USDFI: bigIntToDecimal(balanceCoins.USDFI, decimalsTokens["USDFI"]) || 0,
+      ETHFI: bigIntToDecimal(balanceCoins.ETHFI, decimalsTokens["ETHFI"]) || 0,
+      BTCFI: bigIntToDecimal(balanceCoins.BTCFI, decimalsTokens["BTCFI"]) || 0,
+    };
+  }, [balanceCoins]);
 
   useEffect(() => {
     if (isConnected) {
@@ -165,6 +116,7 @@ const SwapProvider: FC<SwapProviderProps> = ({ children }) => {
         pricesCoins,
         balanceCoins,
         convertTokenList,
+        balanceCoinsFormatted,
       }}
     >
       {children}

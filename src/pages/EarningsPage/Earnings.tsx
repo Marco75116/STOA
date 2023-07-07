@@ -63,14 +63,15 @@ const Earnings = () => {
     BTCFI: 0,
   });
   const { address, isConnected } = useAccount();
-  const { pricesCoins, balanceCoins } = useContext(SwapContext);
+  const { pricesCoins, balanceCoins, balanceCoinsFormatted } =
+    useContext(SwapContext);
 
   const totalDeposit = useMemo(() => {
     return getTotalDeposit(arrayDeposit, pricesCoins);
   }, [arrayDeposit]);
 
   const totalBalance: number = useMemo(() => {
-    return getTotalBalance(balanceCoins, pricesCoins);
+    return getTotalBalance(balanceCoinsFormatted, pricesCoins);
   }, [balanceCoins, pricesCoins]);
 
   const yieldAmount: number = useMemo(() => {
@@ -82,7 +83,7 @@ const Earnings = () => {
   }, [totalBalance, totalDeposit]);
 
   const balancesFi: FITokens = useMemo(() => {
-    return getEatchFIBalance(balanceCoins, pricesCoins);
+    return getEatchFIBalance(balanceCoinsFormatted, pricesCoins);
   }, [balanceCoins, pricesCoins]);
 
   useEffect(() => {

@@ -38,20 +38,21 @@ const BalanceFI: FC<BalanceFIProps> = ({
 
   const { setShowTransak, setIsOpenModalSwap, setAction } =
     useContext(MainContext);
-  const { pricesCoins, balanceCoins } = useContext(SwapContext);
+  const { pricesCoins, balanceCoins, balanceCoinsFormatted } =
+    useContext(SwapContext);
 
   const navigate = useNavigate();
 
   const dailyYield = useMemo(() => {
     return getDailyYield(
-      balanceCoins[tokenName as TokenName],
+      balanceCoinsFormatted[tokenName as TokenName],
       apy,
       pricesCoins[tokenName as TokenName]
     );
   }, [balanceCoins, pricesCoins, apy]);
 
   const earnings = useMemo(() => {
-    return getEarnings(balanceCoins[tokenName as TokenName], deposit);
+    return getEarnings(balanceCoinsFormatted[tokenName as TokenName], deposit);
   }, [balanceCoins, deposit]);
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -80,9 +81,9 @@ const BalanceFI: FC<BalanceFIProps> = ({
             <span className="text-xl ">{tokenName}</span>
             <div>
               Balance :{" "}
-              {balanceCoins[tokenName as TokenName].cofiFormatFloor(1)} &nbsp;
-              &nbsp; &nbsp; Deposit : {deposit.cofiFormatFloor(1)} &nbsp; &nbsp;
-              &nbsp; Earnings: {earnings.cofiFormatFloor(1)}{" "}
+              {balanceCoinsFormatted[tokenName as TokenName].cofiFormatFloor(1)}{" "}
+              &nbsp; &nbsp; &nbsp; Deposit : {deposit.cofiFormatFloor(1)} &nbsp;
+              &nbsp; &nbsp; Earnings: {earnings.cofiFormatFloor(1)}{" "}
             </div>
           </div>
         </div>

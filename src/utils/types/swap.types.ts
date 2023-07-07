@@ -10,6 +10,16 @@ export type Coins = {
   BTCFI: number;
 };
 
+export type BalanceCoins = {
+  USDC: bigint;
+  DAI: bigint;
+  USDFI: bigint;
+  ETH: bigint;
+  BTC: bigint;
+  ETHFI: bigint;
+  BTCFI: bigint;
+};
+
 export type CoinsString = {
   USDC: string;
   DAI: string;

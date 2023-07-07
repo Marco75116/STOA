@@ -25,6 +25,12 @@ import { abiDiamond } from "../../../utils/constants/abi/Diamond";
 import { addressDiamond } from "../../../utils/constants/address/Diamond";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import {
+  bigIntToDecimal,
+  displayBalance,
+  getMinAmountOut,
+  stringToBigInt,
+} from "../../../utils/helpers/global.helper";
 
 const listStableCoinsFrom: Token[] = [
   { name: "USDC", svgLogo: USDC },
@@ -50,7 +56,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
   action,
   setAction,
 }) => {
-  const [depositAmount, setDepositAmount] = useState<number>(1);
+  const [depositAmount, setDepositAmount] = useState<bigint>(BigInt(0));
   const [toastId, setToastId] = useState<any>(null);
 
   const { constants, kycDone } = useContext(WalletContext);
@@ -70,27 +76,62 @@ const ModalSwap: FC<ModalSwapProps> = ({
 
   const estimatedReceiving = useMemo(() => {
     const fee = action === 0 ? constants.mintFee : constants.redeemFee;
-    return getReceiveAmount(depositAmount, fee);
+    return getReceiveAmount(
+      depositAmount,
+      fee,
+      decimalsTokens[tokenSelected as keyof Coins],
+      decimalsTokens[
+        convertTokenList[tokenSelected as keyof Coins] as keyof Coins
+      ]
+    );
   }, [depositAmount, constants, action, tokenSelected]);
+
+  const estimadedSendingUSD = useMemo(() => {
+    if (estimatedReceiving !== undefined) {
+      const estimatedSendingFormatted = bigIntToDecimal(
+        depositAmount,
+        decimalsTokens[tokenSelected as keyof Coins]
+      );
+
+      if (estimatedSendingFormatted !== undefined) {
+        return (
+          estimatedSendingFormatted * pricesCoins[tokenSelected as keyof Coins]
+        );
+      }
+    }
+    return 0;
+  }, [estimatedReceiving, action, pricesCoins, tokenSelected]);
 
   const estimadedReceivingUSD = useMemo(() => {
     if (estimatedReceiving !== undefined) {
-      return estimatedReceiving * pricesCoins[tokenSelected as keyof Coins];
+      const estimatedReceivingFormatted = bigIntToDecimal(
+        estimatedReceiving,
+        decimalsTokens[
+          convertTokenList[tokenSelected as keyof Coins] as keyof Coins
+        ]
+      );
+
+      if (estimatedReceivingFormatted !== undefined) {
+        return (
+          estimatedReceivingFormatted *
+          pricesCoins[tokenSelected as keyof Coins]
+        );
+      }
     }
   }, [estimatedReceiving, action, pricesCoins, tokenSelected]);
 
   const minAmountOut = useMemo(() => {
     if (estimatedReceiving !== undefined) {
-      return Math.floor(estimatedReceiving * 0.9975 * 10 ** 6) / 10 ** 6;
+      return getMinAmountOut(estimatedReceiving);
     } else {
-      return 0;
+      return BigInt(0);
     }
   }, [estimatedReceiving]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    setDepositAmount(0);
+    setDepositAmount(BigInt(0));
   }, [action]);
 
   function closeModal() {
@@ -103,11 +144,8 @@ const ModalSwap: FC<ModalSwapProps> = ({
     ] as `0x${string}`,
     abi: abiDiamond,
     functionName: "approve",
-    args: [
-      addressDiamond,
-      depositAmount * 10 ** decimalsTokens[tokenSelected as keyof Coins],
-    ],
-    enabled: depositAmount !== 230,
+    args: [addressDiamond, depositAmount],
+    enabled: depositAmount !== BigInt(0),
     onError(error) {
       console.log("Error approve", error);
     },
@@ -118,12 +156,8 @@ const ModalSwap: FC<ModalSwapProps> = ({
       ...DiamondContract,
       functionName: "underlyingToFi",
       args: [
-        depositAmount * 10 ** decimalsTokens[tokenSelected as keyof Coins],
-        minAmountOut *
-          10 **
-            decimalsTokens[
-              convertTokenList[tokenSelected as keyof Coins] as keyof Coins
-            ],
+        depositAmount,
+        minAmountOut,
         addressesTokens[
           convertTokenList[tokenSelected as keyof Coins] as keyof CoinsString
         ],
@@ -132,7 +166,7 @@ const ModalSwap: FC<ModalSwapProps> = ({
         addressReferral === "" ? ethers.constants.AddressZero : addressReferral,
       ],
       enabled:
-        depositAmount !== 0 &&
+        depositAmount !== BigInt(0) &&
         address !== undefined &&
         balanceCoins[tokenSelected as keyof Coins] <= depositAmount &&
         action === 0,
@@ -145,18 +179,14 @@ const ModalSwap: FC<ModalSwapProps> = ({
     ...DiamondContract,
     functionName: "fiToUnderlying",
     args: [
-      depositAmount * 10 ** 18 -
-        1 * 10 ** (Math.floor(depositAmount).toString().length + 2),
-      minAmountOut *
-        10 **
-          decimalsTokens[
-            convertTokenList[tokenSelected as keyof Coins] as keyof Coins
-          ],
+      depositAmount,
+      minAmountOut,
       addressesTokens[tokenSelected as keyof CoinsString],
       address,
       address,
     ],
-    enabled: depositAmount !== 0 && address !== undefined && action === 1,
+    enabled:
+      depositAmount !== BigInt(0) && address !== undefined && action === 1,
     onError(error) {
       console.log("Error PrepareContractWrite fiToUnderlying : ", error);
     },
@@ -336,8 +366,9 @@ const ModalSwap: FC<ModalSwapProps> = ({
                       />
                       <div className="text-xs font-medium text-textGray">
                         {` Balances :  ${
-                          balanceCoins[tokenSelected as keyof Coins].toFixed(
-                            6
+                          displayBalance(
+                            balanceCoins[tokenSelected as keyof Coins],
+                            decimalsTokens[tokenSelected as keyof CoinsString]
                           ) +
                           " " +
                           tokenSelected
@@ -351,9 +382,19 @@ const ModalSwap: FC<ModalSwapProps> = ({
                           type="number"
                           placeholder="0,00"
                           className="w-[224px"
-                          value={depositAmount}
+                          value={displayBalance(
+                            depositAmount,
+                            decimalsTokens[tokenSelected as keyof CoinsString]
+                          )}
                           onChange={(event) => {
-                            setDepositAmount(Number(event.target.value));
+                            const newAmount = stringToBigInt(
+                              event.target.value,
+                              decimalsTokens[tokenSelected as keyof CoinsString]
+                            );
+
+                            if (newAmount !== undefined) {
+                              setDepositAmount(newAmount);
+                            }
                           }}
                         />
                         <div
@@ -367,10 +408,9 @@ const ModalSwap: FC<ModalSwapProps> = ({
                           Max
                         </div>
                       </div>
-                      <div className="text-xs font-medium text-textGray">{`$${(
-                        Number(depositAmount) *
-                        pricesCoins[tokenSelected as keyof Coins]
-                      ).toFixed(3)}`}</div>
+                      <div className="text-xs font-medium text-textGray">{`$${estimadedSendingUSD.toFixed(
+                        2
+                      )}`}</div>
                     </div>
                   </div>
 
@@ -411,12 +451,19 @@ const ModalSwap: FC<ModalSwapProps> = ({
                       <input
                         type="number"
                         placeholder="0,00"
-                        value={estimatedReceiving}
+                        value={displayBalance(
+                          estimatedReceiving,
+                          decimalsTokens[
+                            convertTokenList[
+                              tokenSelected as keyof Coins
+                            ] as keyof CoinsString
+                          ]
+                        )}
                         disabled
                         className="flex h-[40px] w-[224px]  items-center justify-between rounded-xl border-[0.5px] border-solid border-borderCardAbout p-[10px]"
                       />
                       <div className="text-xs font-medium text-textGray">{`$${estimadedReceivingUSD?.toFixed(
-                        3
+                        2
                       )}`}</div>
                     </div>
                   </div>

@@ -48,12 +48,25 @@ export const getPrices = async (): Promise<Coins> => {
 };
 
 export const getReceiveAmount = (
-  depositAmount: number,
-  fee: number | undefined
-): number | undefined => {
+  depositAmount: bigint,
+  fee: number | undefined,
+  decimalIn: number | undefined,
+  decimalOut: number | undefined
+): bigint | undefined => {
   try {
-    if (fee !== undefined)
-      return Number((depositAmount * (1 - fee)).toFixed(3));
+    const percentageFactor = 10 ** 4;
+    if (
+      fee !== undefined &&
+      decimalOut !== undefined &&
+      decimalIn !== undefined
+    ) {
+      return (
+        (depositAmount *
+          BigInt((1 - fee) * percentageFactor) *
+          BigInt(10 ** decimalOut)) /
+        (BigInt(percentageFactor) * BigInt(10 ** decimalIn))
+      );
+    }
   } catch (error) {
     throw new Error("Error : " + error);
   }

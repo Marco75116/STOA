@@ -48,7 +48,7 @@ const Dropdown: FC<DropdownProps> = () => {
   }, []);
 
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && connector?.name === "Magic") {
       const magicConnector = connector as any;
       magicConnector?.magicSDK.user
         .getMetadata()

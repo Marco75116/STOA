@@ -1,12 +1,19 @@
 import { Coins, FITokens } from "../types/swap.types";
 
-export const getTotalBalance = (balanceCoins: Coins, pricesCoins: Coins) => {
+export const getTotalBalance = (
+  balanceCoins: FITokens | undefined,
+  pricesCoins: Coins
+) => {
   try {
-    return (
-      balanceCoins.USDFI * pricesCoins.USDFI +
-      balanceCoins.ETHFI * pricesCoins.ETHFI +
-      balanceCoins.BTCFI * pricesCoins.BTCFI
-    );
+    if (balanceCoins !== undefined) {
+      return (
+        balanceCoins.USDFI * pricesCoins.USDFI +
+        balanceCoins.ETHFI * pricesCoins.ETHFI +
+        balanceCoins.BTCFI * pricesCoins.BTCFI
+      );
+    } else {
+      return 0;
+    }
   } catch (error) {
     throw new Error("getTotalBalance failed : " + error);
   }
@@ -24,13 +31,24 @@ export const getTotalDeposit = (arrayDeposit: FITokens, pricesCoins: Coins) => {
   }
 };
 
-export const getEatchFIBalance = (balanceCoins: Coins, pricesCoins: Coins) => {
+export const getEatchFIBalance = (
+  balanceCoins: FITokens | undefined,
+  pricesCoins: Coins
+) => {
   try {
-    return {
-      USDFI: balanceCoins.USDFI * pricesCoins.USDFI,
-      ETHFI: balanceCoins.ETHFI * pricesCoins.ETHFI,
-      BTCFI: balanceCoins.BTCFI * pricesCoins.BTCFI,
-    };
+    if (balanceCoins !== undefined) {
+      return {
+        USDFI: balanceCoins.USDFI * pricesCoins.USDFI,
+        ETHFI: balanceCoins.ETHFI * pricesCoins.ETHFI,
+        BTCFI: balanceCoins.BTCFI * pricesCoins.BTCFI,
+      };
+    } else {
+      return {
+        USDFI: 0,
+        ETHFI: 0,
+        BTCFI: 0,
+      };
+    }
   } catch (error) {
     throw new Error("getEatchFIBalance failed : " + error);
   }
