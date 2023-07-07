@@ -5,16 +5,18 @@ import { ReactComponent as Explore } from "../../assets/icons/Explore.svg";
 import { ReactComponent as Warning } from "../../assets/icons/Warning.svg";
 import { ReactComponent as Disconnect } from "../../assets/icons/Disconnect.svg";
 import { ReactComponent as Wallet } from "../../assets/icons/Wallet.svg";
-// import { ReactComponent as Mail } from "../../assets/icons/Mail.svg";
+import { ReactComponent as Mail } from "../../assets/icons/Mail.svg";
 import axios from "axios";
 import { WalletContext } from "../../context/Wallet.context";
 import { useNavigate } from "react-router-dom";
 import { copyToClipboard } from "../../utils/helpers/global.helper";
 import { useAccount, useBalance, useDisconnect } from "wagmi";
+import { MagicMetadata } from "../../utils/types/global.types";
 
 type DropdownProps = {};
 
 const Dropdown: FC<DropdownProps> = () => {
+  const [email, setEmail] = useState<string>("");
   const [priceEth, setPriceEth] = useState<number>(0);
   const dRef = useRef<HTMLButtonElement>(null);
 
@@ -23,7 +25,7 @@ const Dropdown: FC<DropdownProps> = () => {
   }
 
   const { isOpenWallet, kycDone } = useContext(WalletContext);
-  const { isConnected, address } = useAccount();
+  const { isConnected, connector, address } = useAccount();
   const { data } = useBalance({
     address,
   });
@@ -44,6 +46,14 @@ const Dropdown: FC<DropdownProps> = () => {
   useEffect(() => {
     getConvertedPrice();
   }, []);
+
+  useEffect(() => {
+    if (isConnected) {
+      connector?.magicSDK?.user
+        .getMetadata()
+        .then((data: MagicMetadata) => setEmail(data.email));
+    }
+  }, [isConnected]);
 
   return (
     <div className="">
@@ -94,12 +104,12 @@ const Dropdown: FC<DropdownProps> = () => {
                                   address?.slice(38)}
                               </div>
                             </div>
-                            {/* {email && (
+                            {connector?.name === "Magic" && (
                               <div className="flex h-[52px] flex-row items-center justify-center gap-[12px]">
                                 <Mail />
                                 <div>{email}</div>
                               </div>
-                            )} */}
+                            )}
                             <div className=" border-t-[0.5px] border-solid border-[#00000033]"></div>
                             <div className=" flex h-[88px] flex-col items-center justify-center">
                               <div className="text-3xl font-bold">
