@@ -100,9 +100,7 @@ const useViewDiamond = () => {
         minDepositUSDFI: Number(data[5].result) / 10 ** decimalUSDC,
         minDepositETHFI: weiToEth(Number(data[6].result)),
         minDepositBTCFI: Number(data[7].result) / 10 ** decimalBTC,
-        minWithdrawUSDFI: Number(
-          ethers.utils.formatUnits(data[8].result, decimalUSDC)
-        ),
+        minWithdrawUSDFI: Number(data[8].result) / 10 ** decimalUSDC,
         minWithdrawETHFI: weiToEth(Number(data[9].result)),
         minWithdrawBTCFI: Number(data[10].result) / 10 ** decimalBTC,
       });
