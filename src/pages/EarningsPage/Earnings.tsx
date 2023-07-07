@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useMemo, useEffect, useState } from "react";
 import PieChartComponent from "../../components/PieChart/PieChart";
 import Graph from "../../components/Graph/Graph";
 import { FITokens, HistoryYiedAsset } from "../../utils/types/swap.types";
@@ -10,9 +10,13 @@ import {
   getEatchFIBalance,
   getPercentageEarned,
   getTotalBalance,
+  getTotalDeposit,
   getYield,
 } from "../../utils/helpers/earnings.helper";
 import BalanceFI from "./BalanceFI/BalanceFI";
+import apiDefi from "../../utils/services/apiDapp";
+import { useAccount } from "wagmi";
+import { AxiosResponse } from "axios";
 
 const historyDataMock: HistoryYiedAsset[] = [
   {
@@ -53,25 +57,43 @@ const historyDataMock: HistoryYiedAsset[] = [
 ];
 
 const Earnings = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [deposit, setDeposit] = useState<number>(90);
+  const [arrayDeposit, setArrayDeposit] = useState<FITokens>({
+    USDFI: 0,
+    ETHFI: 0,
+    BTCFI: 0,
+  });
+  const { address, isConnected } = useAccount();
   const { pricesCoins, balanceCoins } = useContext(SwapContext);
+
+  const totalDeposit = useMemo(() => {
+    return getTotalDeposit(arrayDeposit, pricesCoins);
+  }, [arrayDeposit]);
 
   const totalBalance: number = useMemo(() => {
     return getTotalBalance(balanceCoins, pricesCoins);
   }, [balanceCoins, pricesCoins]);
 
   const yieldAmount: number = useMemo(() => {
-    return getYield(totalBalance, deposit);
-  }, [totalBalance, deposit]);
+    return getYield(totalBalance, totalDeposit);
+  }, [totalBalance, totalDeposit]);
 
   const percentageEarned: number = useMemo(() => {
-    return getPercentageEarned(totalBalance, deposit);
-  }, [totalBalance, deposit]);
+    return getPercentageEarned(totalBalance, totalDeposit);
+  }, [totalBalance, totalDeposit]);
 
   const balancesFi: FITokens = useMemo(() => {
     return getEatchFIBalance(balanceCoins, pricesCoins);
   }, [balanceCoins, pricesCoins]);
+
+  useEffect(() => {
+    if (isConnected) {
+      apiDefi
+        .getDepositArray(address)
+        .then((deposits: AxiosResponse<FITokens, any>) => {
+          setArrayDeposit(deposits.data);
+        });
+    }
+  }, [address]);
 
   return (
     <div className=" flex min-h-[calc(100%-64px)] flex-col items-center  gap-[16px] bg-bgCardNavbar  py-16">
@@ -85,7 +107,7 @@ const Earnings = () => {
         <div className="card flex h-28 w-52 flex-col justify-between gap-2 p-5">
           <div className="  text-2xl font-extrabold">Deposit</div>
           <div className="text-lg text-gray-600">
-            ${deposit.cofiFormatFloor(1)}
+            ${totalDeposit.cofiFormatFloor(1)}
           </div>
         </div>
         <div className="card flex h-28 w-52 flex-col justify-between gap-2 p-5">
@@ -135,25 +157,22 @@ const Earnings = () => {
         <div className=" p-3 text-xl font-extrabold">My Balances</div>
         <div className=" flex  flex-col gap-3 p-5">
           <BalanceFI
-            balanceFi={balancesFi.USDFI}
             TokenLogo={USDC}
             tokenName={"USDFI"}
             apy={0.073}
-            deposit={12}
+            deposit={arrayDeposit.USDFI}
           />
           <BalanceFI
-            balanceFi={balancesFi.ETHFI}
             TokenLogo={ETHLogo}
             tokenName={"ETHFI"}
             apy={0.073}
-            deposit={18}
+            deposit={arrayDeposit.ETHFI}
           />
           <BalanceFI
-            balanceFi={balancesFi.BTCFI}
             TokenLogo={BTCLogo}
             tokenName={"BTCFI"}
             apy={0.073}
-            deposit={20}
+            deposit={arrayDeposit.BTCFI}
           />
         </div>
       </div>

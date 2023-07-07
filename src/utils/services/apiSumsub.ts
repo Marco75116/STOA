@@ -6,7 +6,7 @@ const instance = axios.create({
   timeout: 30000,
 });
 
-const apiService = {
+const apiSumsub = {
   createApplicant: (externalUserId: User) =>
     instance
       .post(`createApplicant/${externalUserId.externalUserId}`)
@@ -31,4 +31,4 @@ const apiService = {
       }),
 };
 
-export default apiService;
+export default apiSumsub;

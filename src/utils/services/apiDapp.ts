@@ -6,7 +6,7 @@ const instance = axios.create({
   timeout: 30000,
 });
 
-const apiService = {
+const apiDefi = {
   getHistoryYield: () =>
     instance.get<HistoryYield[]>(`historyYield/`).catch((error) => {
       throw new Error("getHistoryYield call failed: " + error);
@@ -21,6 +21,10 @@ const apiService = {
       .catch((error) => {
         throw new Error("getApy call failed: " + error);
       }),
+  getDepositArray: (address: `0x${string}` | undefined) =>
+    instance.get<FITokens>(`deposit/${address}`).catch((error) => {
+      throw new Error("getDepositArray call failed: " + error);
+    }),
 };
 
-export default apiService;
+export default apiDefi;

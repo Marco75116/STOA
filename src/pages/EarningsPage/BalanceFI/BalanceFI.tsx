@@ -14,9 +14,9 @@ import {
   getDailyYield,
   getEarnings,
 } from "../../../utils/helpers/earnings.helper";
+import { SwapContext } from "../../../context/Swap.context";
 
 type BalanceFIProps = {
-  balanceFi: number;
   TokenLogo: React.FunctionComponent<
     React.SVGProps<SVGSVGElement> & {
       title?: string | undefined;
@@ -28,7 +28,6 @@ type BalanceFIProps = {
 };
 
 const BalanceFI: FC<BalanceFIProps> = ({
-  balanceFi,
   TokenLogo,
   tokenName,
   apy,
@@ -39,15 +38,21 @@ const BalanceFI: FC<BalanceFIProps> = ({
 
   const { setShowTransak, setIsOpenModalSwap, setAction } =
     useContext(MainContext);
+  const { pricesCoins, balanceCoins } = useContext(SwapContext);
+
   const navigate = useNavigate();
 
   const dailyYield = useMemo(() => {
-    return getDailyYield(balanceFi, apy);
-  }, [balanceFi, apy]);
+    return getDailyYield(
+      balanceCoins[tokenName as TokenName],
+      apy,
+      pricesCoins[tokenName as TokenName]
+    );
+  }, [balanceCoins, pricesCoins, apy]);
 
   const earnings = useMemo(() => {
-    return getEarnings(balanceFi, deposit);
-  }, [balanceFi, deposit]);
+    return getEarnings(balanceCoins[tokenName as TokenName], deposit);
+  }, [balanceCoins, deposit]);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
@@ -74,17 +79,25 @@ const BalanceFI: FC<BalanceFIProps> = ({
           <div>
             <span className="text-xl ">{tokenName}</span>
             <div>
-              Balance : {balanceFi.cofiFormatFloor(1)} &nbsp; &nbsp; &nbsp;
-              Deposit : {deposit} &nbsp; &nbsp; &nbsp; Earnings:{" "}
-              {earnings.cofiFormatFloor(1)}{" "}
+              Balance :{" "}
+              {balanceCoins[tokenName as TokenName].cofiFormatFloor(1)} &nbsp;
+              &nbsp; &nbsp; Deposit : {deposit.cofiFormatFloor(1)} &nbsp; &nbsp;
+              &nbsp; Earnings: {earnings.cofiFormatFloor(1)}{" "}
             </div>
           </div>
         </div>
       </div>
       <div className="center flex flex-row gap-5">
         <div>
-          <div>Current Apy : {apy.toPercentageFormat(1)}%</div>
-          <div>Daily Yield : ${dailyYield.cofiFormatFloor(2)}</div>
+          <div>Current Apy : {apy.toPercentageFormat(1)}</div>
+          <div>
+            Daily Yield :
+            {dailyYield < 10 ** -5
+              ? " $0.00"
+              : dailyYield < 0.01
+              ? " >$0.01"
+              : dailyYield.cofiFormatFloor(2)}
+          </div>
         </div>
         <div ref={modalRef} className="center relative  cursor-pointer ">
           <ThreeDots
