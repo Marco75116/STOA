@@ -53,8 +53,6 @@ const useMint = (
   });
 
   const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    data: dataMintWait,
     isLoading: isLoadingMint,
     isSuccess: isSuccessMint,
     isError: isErrorMint,

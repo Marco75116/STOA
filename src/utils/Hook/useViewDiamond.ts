@@ -28,8 +28,7 @@ const useViewDiamond = () => {
   const percentageFactor = 10 ** 4;
   const arrayAddressFiTokens = [addressUSDCOFI, addressBTCCOFI, addressETHCOFI];
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data } = useContractReads({
+  useContractReads({
     contracts: [
       {
         ...DiamondContract,

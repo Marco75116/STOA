@@ -21,8 +21,7 @@ const useBalancesCoins = () => {
     BTCFI: BigInt(0),
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data } = useContractReads({
+  useContractReads({
     contracts: [
       {
         address: addressUSDC as `0x${string}`,
