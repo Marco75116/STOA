@@ -90,6 +90,8 @@ const SwapProvider: FC<SwapProviderProps> = ({ children }) => {
   const { isConnected } = useAccount();
   const { balanceCoins } = useBalancesCoins();
 
+  console.log(balanceCoins);
+
   const balanceCoinsFormatted = useMemo(() => {
     return {
       USDFI: bigIntToDecimal(balanceCoins.USDFI, decimalsTokens["USDFI"]) || 0,
