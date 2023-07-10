@@ -29,6 +29,24 @@ const apiOffChain = {
         signature: signature,
       },
     }),
+  modifyOffChainData: (
+    userData: UserOffChainData,
+    signature: `0x${string}` | undefined
+  ) =>
+    instance.get<boolean>("modifyForm/", {
+      params: {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+        signature: signature,
+      },
+    }),
+  getProfilData: (address: Address) =>
+    instance
+      .get<UserOffChainData>(`getProfilData/${address}`)
+      .catch((error) => {
+        throw new Error("getProfilData call failed: " + error);
+      }),
 };
 
 export default apiOffChain;

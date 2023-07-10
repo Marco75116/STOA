@@ -16,6 +16,7 @@ import { ReactComponent as BTCLogo } from "../../assets/logos/tokens/BTCLogo.svg
 import { ReactComponent as ETHLogo } from "../../assets/logos/tokens/ETHLogo.svg";
 import { MainContext } from "../../context/Main.context";
 import { useAccount } from "wagmi";
+import { ReactComponent as SettingsModif } from "../../assets/icons/settings-svgrepo-com.svg";
 
 const SwapPage = () => {
   const [collapseOpen, setCollapseOpen] = useState<1 | 2 | 3 | undefined>(1);
@@ -29,6 +30,8 @@ const SwapPage = () => {
     setIsOpenModalSwap,
     action,
     setAction,
+    userData,
+    setShowModalModifyForm,
   } = useContext(MainContext);
 
   const { isConnected } = useAccount();
@@ -39,7 +42,18 @@ const SwapPage = () => {
   }, []);
 
   return (
-    <div className="center flex-col gap-3 bg-bgCardNavbar p-16">
+    <div className="center flex-col gap-3 bg-bgCardNavbar px-72 py-16">
+      {userData.firstName !== "" && (
+        <div className="center mb-4  self-start text-2xl font-bold">
+          HI {userData.firstName.toUpperCase()} !&nbsp; &nbsp;
+          <SettingsModif
+            className=" cursor-pointer "
+            onClick={() => {
+              setShowModalModifyForm(true);
+            }}
+          />
+        </div>
+      )}
       {kycDone === false && (
         <div className="center flex flex-row gap-2">
           <Warning />

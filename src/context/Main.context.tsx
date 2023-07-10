@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import React, {
   createContext,
   FC,
@@ -5,8 +6,10 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import apiOffChain from "../utils/services/apiOffChain";
+import { UserOffChainData } from "../utils/types/global.types";
 import { optimism } from "viem/chains";
-import { useNetwork, useSwitchNetwork } from "wagmi";
+import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 
 type MainContextProps = {
   landingView: string;
@@ -24,6 +27,9 @@ type MainContextProps = {
   setIsOpenModalSwap: Function;
   action: 0 | 1;
   setAction: Function;
+  showModalModifyForm: boolean;
+  setShowModalModifyForm: Function;
+  userData: UserOffChainData;
 };
 
 type MainProviderProps = {
@@ -40,15 +46,45 @@ const MainProvider: FC<MainProviderProps> = ({ children }) => {
   const [showContactModal, setShowContactModal] = useState<boolean>(false);
   const [showModalConnexion, setShowModalConnexion] = useState<boolean>(false);
   const [showModalForm, setShowModalForm] = useState<boolean>(false);
+  const [showModalModifyForm, setShowModalModifyForm] =
+    useState<boolean>(false);
   const [showTransak, setShowTransak] = useState<boolean>(false);
   const [isOpenModalSwap, setIsOpenModalSwap] = useState<boolean>(false);
   const [action, setAction] = useState<0 | 1>(0);
+  const { isConnected, address } = useAccount();
+  const [userData, setUserData] = useState<UserOffChainData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    marketing: false,
+    signature: "",
+    privacy: false,
+  });
 
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
   useEffect(() => {
     if (chain?.id !== 10) switchNetwork?.(optimism.id);
   }, [chain]);
+
+  useEffect(() => {
+    if (isConnected) {
+      apiOffChain
+        .getProfilData(address)
+        .then((result: AxiosResponse<UserOffChainData, any>) => {
+          const profil: UserOffChainData = result.data;
+
+          setUserData({
+            firstName: profil.firstName,
+            lastName: profil.lastName,
+            email: profil.email,
+            marketing: false,
+            signature: "",
+            privacy: false,
+          });
+        });
+    }
+  }, [isConnected]);
 
   useEffect(() => {
     function handleWindowResize() {
@@ -80,6 +116,9 @@ const MainProvider: FC<MainProviderProps> = ({ children }) => {
         setIsOpenModalSwap,
         action,
         setAction,
+        showModalModifyForm,
+        setShowModalModifyForm,
+        userData,
       }}
     >
       {children}

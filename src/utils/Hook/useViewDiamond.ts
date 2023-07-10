@@ -5,7 +5,6 @@ import { addressUSDCOFI } from "../constants/address/addressesCOFI/USDCOFI";
 import { DiamondContract } from "../constants/wagmiConfig/wagmiConfig";
 import { useState } from "react";
 import { GlobalConstants } from "../types/global.types";
-import { ethers } from "ethers";
 import { decimalBTC } from "../constants/address/wBTC";
 import { decimalUSDC } from "../constants/address/USDC";
 import { weiToEth } from "../helpers/global.helper";
