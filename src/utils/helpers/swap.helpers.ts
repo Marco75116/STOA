@@ -55,11 +55,7 @@ export const getReceiveAmount = (
 ): bigint | undefined => {
   try {
     const percentageFactor = 10 ** 4;
-    if (
-      fee !== undefined &&
-      decimalOut !== undefined &&
-      decimalIn !== undefined
-    ) {
+    if (fee && decimalOut && decimalIn) {
       return (
         (depositAmount *
           BigInt((1 - fee) * percentageFactor) *
