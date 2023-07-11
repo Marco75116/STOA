@@ -61,7 +61,7 @@ export const bigIntToDecimal = (
 ): number | undefined => {
   try {
     if (num !== undefined && decimal !== undefined) {
-      return Number(num / BigInt(10 ** (decimal - 6))) / 10 ** 6;
+      return Number(num) / 10 ** decimal;
     }
   } catch (error) {
     throw new Error("bigIntToDecimal failed : " + error);
@@ -87,10 +87,8 @@ export const getMinAmountOut = (
   try {
     const percentageFactor = 10000;
     if (num !== undefined) {
-      return (
-        BigInt(Number(num) * 0.9975 * percentageFactor) /
-        BigInt(percentageFactor)
-      );
+      const factor = 0.9975 * percentageFactor;
+      return BigInt(Number(num) * factor) / BigInt(percentageFactor);
     }
   } catch (error) {
     throw new Error("bigIntToDecimal failed : " + error);

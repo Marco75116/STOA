@@ -61,7 +61,6 @@ const useBalancesCoins = () => {
       },
     ],
     onSuccess(data: any) {
-      console.log(data);
       setBalanceCoins({
         USDC: data[0].result,
         DAI: BigInt(0),
